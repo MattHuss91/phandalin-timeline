@@ -9,7 +9,7 @@ search_name = st.text_input("Search character name:")
 st.title("Phandalin Campaign Timeline")
 
 # Connect to database
-conn = sqlite3.connect("C:/Users/matth/OneDrive/dnd/Data Project/dnd_campaign.db")
+conn = sqlite3.connect("dnd_campaign.db")
 cursor = conn.cursor()
 
 # Get event timeline
