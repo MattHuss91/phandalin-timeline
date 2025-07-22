@@ -22,6 +22,6 @@ events = cursor.fetchall()
 
 # Display events
 for title, date in events:
-    st.subheader(date)
-    st.write(title)
+    st.subheader(title)
+    st.write(date)
 
