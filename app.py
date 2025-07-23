@@ -4,7 +4,6 @@ import streamlit as st
 
 st.title("The Heroes of Phandalin")
 st.write("The box was just the start")
-search_name = st.text_input("Search character name:")
 
 st.title("Phandalin Campaign Timeline")
 
@@ -37,7 +36,7 @@ end_day = [wd for wd, label in day_to_label.items() if label == selected_end][0]
 
 # Run the filtered query using world_day numbers
 cursor.execute("""
-    SELECT date_occurred, title, summary
+    SELECT date_occurred, title, summary, full_description
     FROM CampaignEvents
     WHERE world_day BETWEEN ? AND ?
     ORDER BY world_day
@@ -50,3 +49,6 @@ for date, title, summary in events:
     st.write(date)
     st.subheader(title)
     st.write(summary)
+
+with st.expander(f"More Detail: {title}"):
+     st.write(full_description)
