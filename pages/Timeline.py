@@ -4,7 +4,7 @@ import sqlite3
 st.set_page_config(page_title="Timeline", layout="centered")
 
 # Custom Fantasy Styling
-sst.markdown("""
+st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
