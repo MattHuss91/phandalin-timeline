@@ -47,5 +47,5 @@ for date, title, summary, full_description in events:
     st.header(title)
     st.write(date)
 
-    with st.expander(f"More Detail: {summary}"):
+    with st.expander(f"Summary: {summary}"):
         st.write(full_description)
