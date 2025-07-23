@@ -6,8 +6,7 @@ st.set_page_config(page_title="Timeline", layout="centered")
 # Custom Fantasy Styling
 st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap'
-    ');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap');
         html, body, .stApp {
             background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
             background-size: cover;
