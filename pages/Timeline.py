@@ -1,29 +1,54 @@
-import sqlite3
 import streamlit as st
+import sqlite3
 
 st.set_page_config(page_title="Timeline", layout="centered")
 
-# Add fantasy font and background image
+# Custom Fantasy Styling
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 
-        html, body, [class*="css"]  {
-            font-family: 'Uncial Antiqua', serif;
+        html, body {
             background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
             background-size: cover;
+            background-repeat: repeat;
+            font-family: 'Uncial Antiqua', serif !important;
             color: #2e1e0f;
         }
 
+        /* Override ALL text components */
+        * {
+            font-family: 'Uncial Antiqua', serif !important;
+            color: #2e1e0f !important;
+        }
+
+        /* Optional: make the header stand out */
+        h1, h2, h3, h4, h5, h6 {
+            color: #3a2612 !important;
+        }
+
+        /* Background fix for main content */
+        .stApp {
+            background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+            background-size: cover;
+            background-repeat: repeat;
+        }
+
+        /* Optional: tweak expanders */
+        .st-expander {
+            background-color: rgba(255, 255, 255, 0.75) !important;
+            border: 1px solid #a18865 !important;
+        }
+
+        /* Optional: round sliders */
         .stSlider > div {
-            color: #2e1e0f;
+            border-radius: 10px;
         }
     </style>
 """, unsafe_allow_html=True)
 
 
 st.title("Phandalin Campaign Timeline")
-
 # Connect to database
 conn = sqlite3.connect("dnd_campaign.db")
 cursor = conn.cursor()
