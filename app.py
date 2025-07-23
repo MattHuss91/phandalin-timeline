@@ -46,7 +46,7 @@ events = cursor.fetchall()
 
 # Display the events
 for date, title, summary, full_description in events:
-    st.Header(title)
+    st.header(title)
     st.subheader(date)
    
 
