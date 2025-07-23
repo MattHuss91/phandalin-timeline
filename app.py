@@ -12,16 +12,25 @@ st.title("Phandalin Campaign Timeline")
 conn = sqlite3.connect("dnd_campaign.db")
 cursor = conn.cursor()
 
-# Get event timeline
+# Get the min and max world_day values from the database
+cursor.execute("SELECT MIN(world_day), MAX(world_day) FROM CampaignEvents")
+min_day, max_day = cursor.fetchone()
+
+# Create a slider for the player to choose a date range
+start, end = st.slider("Select a date range", min_day, max_day, (min_day, max_day))
+
+# Query events within that world_day range
 cursor.execute("""
-    SELECT date_occurred, title 
-    FROM CampaignEvents 
-    ORDER BY world_day;
-""")
+    SELECT date_occurred, title, summary
+    FROM CampaignEvents
+    WHERE world_day BETWEEN ? AND ?
+    ORDER BY world_day
+""", (start, end))
+
+# Fetch and display results
 events = cursor.fetchall()
 
-# Display events
-for title, date in events:
-    st.subheader(title)
+for date, title, summary in events:
     st.write(date)
-
+    st.subheader(title)
+    st.write(summary)
