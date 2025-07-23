@@ -45,10 +45,11 @@ cursor.execute("""
 events = cursor.fetchall()
 
 # Display the events
-for date, title, summary, full_description in CampaignEvents:
+for date, title, summary, full_description in events:
     st.write(date)
     st.subheader(title)
     st.write(summary)
 
-with st.expander(f"More Detail: {title}"):
-     st.write(full_description)
+    with st.expander(f"More Detail: {title}"):
+        st.write(full_description)
+
