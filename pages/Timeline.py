@@ -7,6 +7,7 @@ st.set_page_config(page_title="Timeline", layout="centered")
 st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap');
+        
         html, body, .stApp {
             background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
             background-size: cover;
