@@ -12,24 +12,40 @@ st.title("Phandalin Campaign Timeline")
 conn = sqlite3.connect("dnd_campaign.db")
 cursor = conn.cursor()
 
-# Get the min and max world_day values from the database
-cursor.execute("SELECT MIN(world_day), MAX(world_day) FROM CampaignEvents")
-min_day, max_day = cursor.fetchone()
-
-# Create a slider for the player to choose a date range
-start, end = st.slider("Select a date range", min_day, max_day, (min_day, max_day))
-
-# Query events within that world_day range
+# Query world_day and formatted date from the database
 cursor.execute("""
-    SELECT date_occurred, title, summary
+    SELECT world_day, date_occurred
+    FROM CampaignEvents
+    ORDER BY world_day
+""")
+date_rows = cursor.fetchall()
+
+# Create a mapping of world_day to readable label
+day_to_label = {wd: label for wd, label in date_rows}
+
+# Create a select_slider using labels only
+labels = list(day_to_label.values())
+selected_start, selected_end = st.select_slider(
+    "Select a date range",
+    options=labels,
+    value=(labels[0], labels[-1])
+)
+
+# Reverse lookup to get the world_day numbers back
+start_day = [wd for wd, label in day_to_label.items() if label == selected_start][0]
+end_day = [wd for wd, label in day_to_label.items() if label == selected_end][0]
+
+# Run the filtered query using world_day numbers
+cursor.execute("""
+    SELECT date_occurred, title, short_description
     FROM CampaignEvents
     WHERE world_day BETWEEN ? AND ?
     ORDER BY world_day
-""", (start, end))
+""", (start_day, end_day))
 
-# Fetch and display results
 events = cursor.fetchall()
 
+# Display the events
 for date, title, summary in events:
     st.write(date)
     st.subheader(title)
