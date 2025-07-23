@@ -19,16 +19,16 @@ st.markdown("""
 
         * {
             font-family: 'Uncial Antiqua', serif !important;
-            color: #2e1e0f !important;
+            color: #000000 !important;
         }
 
         h1, h2, h3, h4, h5, h6 {
-            color: #3a2612 !important;
+            color: #000000 !important;
         }
 
         .st-expander {
             background-color: rgba(255, 255, 255, 0.8) !important;
-            border: 1px solid #a18865 !important;
+            border: 1px solid #000000 !important;
         }
     </style>
 """, unsafe_allow_html=True)
