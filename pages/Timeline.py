@@ -11,7 +11,7 @@ st.markdown("""
     html, body, [class*="css"] {
         font-family: 'Lora', serif !important;
         color: #000000 !important;
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+        background-image: url('https://i.imgur.com/pnRziEo.jpeg');
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
