@@ -1,4 +1,7 @@
 import streamlit as st
 
-# Redirect to Home
-st.switch_page("pages/Home.py")
+st.set_page_config(
+    page_title="Home",     # <- Sidebar shows "Home"
+    page_icon="📜",        # <- Optional: gives a nice emoji icon
+    layout="centered"
+)
