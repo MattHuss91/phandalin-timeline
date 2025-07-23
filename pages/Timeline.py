@@ -9,7 +9,7 @@ st.markdown("""
         @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 
         html, body, .stApp {
-            background-image: url('https://imgur.com/gallery/parchment-texture-3-7fFDpjX');
+            background-image: url('https://i.imgur.com/3poyxUG.jpeg');
             background-size: cover;
             background-repeat: repeat;
             background-attachment: fixed;
