@@ -46,10 +46,10 @@ events = cursor.fetchall()
 
 # Display the events
 for date, title, summary, full_description in events:
-    st.write(date)
-    st.subheader(title)
-    st.write(summary)
+    st.Header(title)
+    st.subheader(date)
+   
 
-    with st.expander(f"More Detail: {title}"):
+    with st.expander(f"More Detail: {summary}"):
         st.write(full_description)
 
