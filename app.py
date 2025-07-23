@@ -37,7 +37,7 @@ end_day = [wd for wd, label in day_to_label.items() if label == selected_end][0]
 
 # Run the filtered query using world_day numbers
 cursor.execute("""
-    SELECT date_occurred, title, short_description
+    SELECT date_occurred, title, summary
     FROM CampaignEvents
     WHERE world_day BETWEEN ? AND ?
     ORDER BY world_day
