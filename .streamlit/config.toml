@@ -2,10 +2,10 @@
 headless = true
 
 [theme]
-base = "light"
+base = "dark"
 
 [browser]
 gatherUsageStats = false
 
 [client]
-showSidebarNavigation = false
+showSidebarNavigation = true
