@@ -1,4 +1,8 @@
- st.title("Phandalin Campaign Timeline")
+import streamlit as st
+
+st.set_page_config(page_title="Timeline", layout="centered")
+
+st.title("Phandalin Campaign Timeline")
 
     # Connect to database
     conn = sqlite3.connect("dnd_campaign.db")
