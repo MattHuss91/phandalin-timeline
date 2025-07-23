@@ -9,12 +9,12 @@ st.markdown("""
         @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 
         html, body, .stApp {
-            background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+            background-image: url('https://i.imgur.com/Jh1zJzX.jpg');
             background-size: cover;
             background-repeat: repeat;
             background-attachment: fixed;
             font-family: 'Uncial Antiqua', serif !important;
-            color: #000000;
+            color: #000000 !important;
         }
 
         * {
@@ -22,17 +22,26 @@ st.markdown("""
             color: #000000 !important;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1, h2, h3, h4, h5, h6, p, span, div {
             color: #000000 !important;
+        }
+
+        .stContainer {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+            padding: 1rem;
+            border-radius: 10px;
         }
 
         .st-expander {
             background-color: rgba(255, 255, 255, 0.8) !important;
-            border: 1px solid #000000 !important;
+            border: 1px solid #a18865 !important;
+        }
+
+        .stMarkdown {
+            color: #000000 !important;
         }
     </style>
 """, unsafe_allow_html=True)
-
 
 st.title("Phandalin Campaign Timeline")
 # Connect to database
