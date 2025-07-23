@@ -6,23 +6,24 @@ st.set_page_config(page_title="Timeline", layout="centered")
 # Custom Fantasy Styling
 st.markdown("""
     <style>
-    /* Import fantasy header + rulebook body fonts */
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* Set page-wide font and text color */
-    html, body, [class*="css"]  {
+    html, body, [class*="css"] {
         font-family: 'Lora', serif !important;
         color: #000000 !important;
+        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 
-    /* Container styling for better contrast */
     .stContainer {
         background-color: rgba(255, 255, 255, 0.9) !important;
         padding: 1rem;
         border-radius: 10px;
     }
 
-    /* Use Cinzel for all headers (event titles, section headings) */
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Cinzel', serif !important;
         letter-spacing: 0.5px;
