@@ -8,7 +8,6 @@ st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap'
     ');
-
         html, body, .stApp {
             background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
             background-size: cover;
