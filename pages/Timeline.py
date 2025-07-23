@@ -3,6 +3,25 @@ import streamlit as st
 
 st.set_page_config(page_title="Timeline", layout="centered")
 
+# Add fantasy font and background image
+st.markdown("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+
+        html, body, [class*="css"]  {
+            font-family: 'Uncial Antiqua', serif;
+            background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+            background-size: cover;
+            color: #2e1e0f;
+        }
+
+        .stSlider > div {
+            color: #2e1e0f;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 st.title("Phandalin Campaign Timeline")
 
 # Connect to database
