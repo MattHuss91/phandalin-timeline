@@ -4,45 +4,31 @@ import sqlite3
 st.set_page_config(page_title="Timeline", layout="centered")
 
 # Custom Fantasy Styling
-st.markdown("""
+sst.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
 
-        html, body {
-            background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
+        html, body, .stApp {
+            background-image: url('https://i.imgur.com/Jh1zJzX.jpg');
             background-size: cover;
             background-repeat: repeat;
+            background-attachment: fixed;
             font-family: 'Uncial Antiqua', serif !important;
             color: #2e1e0f;
         }
 
-        /* Override ALL text components */
         * {
             font-family: 'Uncial Antiqua', serif !important;
             color: #2e1e0f !important;
         }
 
-        /* Optional: make the header stand out */
         h1, h2, h3, h4, h5, h6 {
             color: #3a2612 !important;
         }
 
-        /* Background fix for main content */
-        .stApp {
-            background-image: url('https://www.transparenttextures.com/patterns/parchment.png');
-            background-size: cover;
-            background-repeat: repeat;
-        }
-
-        /* Optional: tweak expanders */
         .st-expander {
-            background-color: rgba(255, 255, 255, 0.75) !important;
+            background-color: rgba(255, 255, 255, 0.8) !important;
             border: 1px solid #a18865 !important;
-        }
-
-        /* Optional: round sliders */
-        .stSlider > div {
-            border-radius: 10px;
         }
     </style>
 """, unsafe_allow_html=True)
