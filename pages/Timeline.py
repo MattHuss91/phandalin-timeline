@@ -14,7 +14,7 @@ st.markdown("""
             background-repeat: repeat;
             background-attachment: fixed;
             font-family: 'Uncial Antiqua', serif !important;
-            color: #2e1e0f;
+            color: #000000;
         }
 
         * {
