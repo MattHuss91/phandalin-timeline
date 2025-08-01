@@ -35,19 +35,25 @@ st.title("Character Profiles")
 # Connect to DB
 conn = sqlite3.connect("dnd_campaign.db")
 
-# Load character data
+# Load characters
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 character_names = character_df["name"].tolist()
 
-# Handle character from query string
+# Get character from query param
 query_params = st.query_params
 default_character = query_params.get("character", [""])[0]
-index = character_names.index(default_character) if default_character in character_names else 0
 
-# Selectbox with correct pre-selection
-selected_character = st.selectbox("Choose a character", character_names, index=index)
+# Use session_state to persist preselected character
+if "selected_character" not in st.session_state:
+    if default_character in character_names:
+        st.session_state.selected_character = default_character
+    else:
+        st.session_state.selected_character = character_names[0]
 
-# Get full row for selected character
+# Dropdown selector
+selected_character = st.selectbox("Choose a character", character_names, key="selected_character")
+
+# Get character data
 character_row = character_df[character_df["name"] == selected_character].iloc[0]
 character_id = int(character_row["character_id"])
 
@@ -55,7 +61,7 @@ st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
 
-# Load events
+# Load events for character
 event_df = pd.read_sql_query(
     """
     SELECT ce.date_occurred, ce.title
