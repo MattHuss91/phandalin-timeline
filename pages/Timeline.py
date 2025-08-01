@@ -93,7 +93,7 @@ for _, row in filtered_events.iterrows():
     st.header(row['title'])
     st.write(f"{row['date_occurred']} — {row['location']}")
 
-    with st.expander({row['summary']}):
+    with st.expander(f" : {row['summary']}"):
         st.write(row['full_description'])
 
     st.markdown("**People Involved:**")
