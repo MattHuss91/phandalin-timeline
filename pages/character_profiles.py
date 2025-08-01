@@ -9,7 +9,6 @@ st.set_page_config(page_title="Character Profiles", layout="centered")
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
-
     html, body, [class*="css"] {
         font-family: 'Lora', serif !important;
         color: #000000 !important;
@@ -19,13 +18,11 @@ st.markdown("""
         background-repeat: no-repeat;
         background-position: center;
     }
-
     .stContainer {
         background-color: rgba(255, 255, 255, 0.9) !important;
         padding: 1rem;
         border-radius: 10px;
     }
-
     h1, h2, h3 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
@@ -35,31 +32,27 @@ st.markdown("""
 
 st.title("Character Profiles")
 
-# Connect to the database
+# Connect to DB
 conn = sqlite3.connect("dnd_campaign.db")
 
-# Load character names and bios
+# Load character data
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 character_names = character_df["name"].tolist()
 
-# Handle query param to preselect character
+# Query param linking
 query_params = st.query_params
 default_character = query_params.get("character", [""])[0]
 index = character_names.index(default_character) if default_character in character_names else 0
 
-# Character selector
 selected_character = st.selectbox("Choose a character", character_names, index=index)
-
-# Get selected character's info
 character_row = character_df[character_df["name"] == selected_character].iloc[0]
 character_id = character_row["character_id"]
-bio = character_row["bio"]
 
 st.header(selected_character)
 st.write("### Bio")
-st.write(bio)
+st.write(character_row["bio"])
 
-# Fetch events this character appeared in
+# Load events
 event_df = pd.read_sql_query(
     """
     SELECT ce.date_occurred, ce.title
@@ -70,7 +63,7 @@ event_df = pd.read_sql_query(
     """, conn, params=(character_id,)
 )
 
-# Show events in expander
+# Show event list
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
