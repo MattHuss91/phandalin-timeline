@@ -39,14 +39,17 @@ conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 character_names = character_df["name"].tolist()
 
-# Query param linking
+# Handle character from query string
 query_params = st.query_params
 default_character = query_params.get("character", [""])[0]
 index = character_names.index(default_character) if default_character in character_names else 0
 
+# Selectbox with correct pre-selection
 selected_character = st.selectbox("Choose a character", character_names, index=index)
+
+# Get full row for selected character
 character_row = character_df[character_df["name"] == selected_character].iloc[0]
-character_id = character_row["character_id"]
+character_id = int(character_row["character_id"])
 
 st.header(selected_character)
 st.write("### Bio")
@@ -60,10 +63,9 @@ event_df = pd.read_sql_query(
     JOIN CampaignEvents ce ON ca.event_id = ce.event_id
     WHERE ca.character_id = ?
     ORDER BY ce.world_day
-    """, conn, params=(int(character_id),)
+    """, conn, params=(character_id,)
 )
 
-# Show event list
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
