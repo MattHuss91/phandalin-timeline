@@ -89,6 +89,6 @@ for _, row in filtered_events.iterrows():
     st.markdown("**People Involved:**")
     for character in row['people_involved'].split(', '):
         encoded_name = urllib.parse.quote(character)
-        st.markdown(f"- [{character}](/character-profiles?character={encoded_name})")
+        st.markdown(f"- [{character}](/character_profiles?character={encoded_name})")
 
 conn.close()
