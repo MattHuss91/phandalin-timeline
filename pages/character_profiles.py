@@ -60,7 +60,7 @@ event_df = pd.read_sql_query(
     JOIN CampaignEvents ce ON ca.event_id = ce.event_id
     WHERE ca.character_id = ?
     ORDER BY ce.world_day
-    """, conn, params=(character_id,)
+    """, conn, params=(int(character_id),)
 )
 
 # Show event list
