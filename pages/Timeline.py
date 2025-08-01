@@ -2,6 +2,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import urllib.parse
 
 st.set_page_config(page_title="Timeline", layout="centered")
 
@@ -97,7 +98,8 @@ for _, row in filtered_events.iterrows():
 
     st.markdown("**People Involved:**")
     for character in row['people_involved'].split(', '):
-        profile_url = f"/character_profiles?character={character}"
+        encoded_name = urllib.parse.quote(character)
+        profile_url = f"/character_profiles?character={encoded_name}"
         st.markdown(f"- [{character}]({profile_url})")
 
 conn.close()
