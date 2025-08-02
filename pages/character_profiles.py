@@ -49,18 +49,18 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    /* Button styling – for regular and form buttons */
-button[kind="primary"], div.stButton > button {
+    /* Button styling – applies to form buttons and regular buttons */
+button[role="button"] {
     background-color: #333333 !important;
     color: #ffffff !important;
     font-family: 'Cinzel', serif !important;
     font-weight: bold !important;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 5px !important;
 }
 
-button[kind="primary"]:hover, div.stButton > button:hover {
+button[role="button"]:hover {
     background-color: #444444 !important;
     color: #ffffff !important;
 }
