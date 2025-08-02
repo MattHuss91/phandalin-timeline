@@ -56,7 +56,7 @@ selected_character = st.selectbox(
 )
 
 # Get selected character info
-# TODO: Replace with st.query_params when Streamlit stabilizes access timing query_params = st.experimental_get_query_params()
+# TODO: Replace with st.query_params when Streamlit stabilizes access timing
 query_params = st.experimental_get_query_params()
 default_character = query_params.get("character", [""])[0]
 
