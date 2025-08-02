@@ -34,15 +34,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("Character Profiles")
-st.write("Character ID:", character_id)
 
 # Connect to database
 conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 character_names = character_df["name"].tolist()
 
-# Get default character from query params (modern Streamlit)
-query_params = st.experimental_get_query_params()
+# Get character from query params (modern)
+query_params = st.query_params
 default_character = query_params.get("character", [""])[0]
 
 # Use query param to preselect dropdown
@@ -56,8 +55,14 @@ selected_character = st.selectbox(
     key="character_select_box"
 )
 
-# Get selected character info
-character_row = character_df[character_df["name"] == selected_character].iloc[0]
+# Find the character row safely
+character_row = character_df[character_df["name"] == selected_character]
+
+if character_row.empty:
+    st.error("Character not found.")
+    st.stop()
+
+character_row = character_row.iloc[0]
 character_id = character_row["character_id"]
 
 # Display character info
@@ -80,12 +85,12 @@ event_df = pd.read_sql_query(
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
-            event_title = row["title"]  # e.g., "Battle of Endsbury"
-            encoded_event = urllib.parse.quote(event_title)  # Make it URL-safe
+            event_title = row["title"]
+            encoded_event = urllib.parse.quote(event_title)
             encoded_character = urllib.parse.quote(selected_character)
 
-            # Create a clickable link to the timeline with both event and character name
             st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
 else:
     st.write("No recorded events.")
+
 conn.close()
