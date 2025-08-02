@@ -56,11 +56,11 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    button {
-        color: #ffffff !important;
-        font-weight: bold;
-        font-family: 'Cinzel', serif !important;
-    }
+    button[kind="primary"] {
+    color: #ffffff !important;
+    font-weight: bold;
+    font-family: 'Cinzel', serif !important;
+}
     </style>
 """, unsafe_allow_html=True)
 
