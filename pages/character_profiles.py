@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* Global App Styling */
+    /* --- GLOBAL APP STYLING --- */
     .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
@@ -20,7 +20,6 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    /* Card/Container */
     .stContainer {
         background-color: rgba(255, 255, 255, 0.9) !important;
         padding: 1rem;
@@ -28,21 +27,14 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* Keep h1/h2 headers black */
-    h1, h2 {
+    /* --- HEADINGS --- */
+    h1, h2, h3 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
         color: #000000 !important;
     }
 
-    /* h3 e.g. for Edit Bio */
-    h3 {
-        font-family: 'Cinzel', serif !important;
-        text-transform: uppercase;
-        color: #000000 !important;
-    }
-
-    /* Labels */
+    /* --- LABELS --- */
     .stSelectbox label,
     .stSlider label,
     label[data-testid="stTextAreaLabel"] {
@@ -50,14 +42,14 @@ st.markdown("""
         font-weight: bold;
     }
 
-    /* Text Area */
-    textarea {
+    /* --- TEXTAREA (Bio editor) --- */
+    textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
 
-    /* Submit Button */
+    /* --- BUTTON --- */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
