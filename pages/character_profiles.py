@@ -1,4 +1,3 @@
-
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -40,14 +39,14 @@ conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 character_names = character_df["name"].tolist()
 
-# Get character from query param
-query_params = st.query_params
-default_character = st.query_params.get("character", [""])[0] or None
+# Get default character from query params (modern Streamlit)
+raw_character = st.query_params.get("character", [""])
+default_character = raw_character[0] if raw_character else None
 
-# Calculate index
+# Use query param to preselect dropdown
 index = character_names.index(default_character) if default_character in character_names else 0
 
-# Display dropdown
+# Dropdown
 selected_character = st.selectbox(
     "Choose a character",
     character_names,
@@ -56,10 +55,10 @@ selected_character = st.selectbox(
 )
 
 # Get selected character info
-# TODO: Replace with query_params when Streamlit stabilizes access timing
-query_params = st.experimental_get_query_params()
-default_character = query_params.get("character", [""])[0]
+character_row = character_df[character_df["name"] == selected_character].iloc[0]
+character_id = character_row["character_id"]
 
+# Display character info
 st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
@@ -75,6 +74,7 @@ event_df = pd.read_sql_query(
     """, conn, params=(character_id,)
 )
 
+# Display event list
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
