@@ -34,6 +34,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("Character Profiles")
+st.write("Character ID:", character_id)
 
 # Connect to database
 conn = sqlite3.connect("dnd_campaign.db")
