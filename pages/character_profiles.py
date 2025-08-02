@@ -86,6 +86,12 @@ st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
 
+# Editable bio form
+with st.form("edit_bio_form"):
+    new_bio = st.text_area("Edit Bio", character_row["bio"], height=200)
+    submitted = st.form_submit_button("Save Changes")
+
+
 # --- Load Related Events ---
 event_df = pd.read_sql_query(
     """
