@@ -49,9 +49,7 @@ st.markdown("""
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
-
-    /* This targets the label for st.text_area */
-    label[data-testid="stMarkdownContainer"] > div {
+    div[data-testid="stMarkdownContainer"] > p {
         color: #000000 !important;
         font-weight: bold;
         font-family: 'Cinzel', serif !important;
@@ -65,6 +63,7 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 st.title("Character Profiles")
 
