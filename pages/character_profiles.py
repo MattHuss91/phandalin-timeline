@@ -106,5 +106,6 @@ if not event_df.empty:
             st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
 else:
     st.warning("No recorded events.")
-
+check_df = pd.read_sql_query("SELECT * FROM characterappearances", conn)
+st.write("🧪 Full characterappearances table:", check_df)
 conn.close()
