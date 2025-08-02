@@ -6,7 +6,6 @@ import urllib.parse
 st.set_page_config(page_title="Character Profiles", layout="centered")
 
 # --- Styling ---
-# --- Styling ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
@@ -30,6 +29,7 @@ st.markdown("""
     h1, h2 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
+        color: #000000 !important;
     }
 
     h3 {
