@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* --- GLOBAL APP STYLING --- */
+    /* Global app background and font */
     .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
@@ -20,35 +20,29 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    .stContainer {
-        background-color: rgba(255, 255, 255, 0.9) !important;
+    /* Main content container */
+    .block-container {
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 1rem;
         border-radius: 10px;
-        color: #000000 !important;
+        color: #000000;
     }
 
-    /* --- HEADINGS --- */
+    /* Headings */
     h1, h2, h3 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
         color: #000000 !important;
     }
 
-    /* --- SELECTBOX & SLIDER LABELS --- */
-    .stSelectbox label,
-    .stSlider label {
-        color: #000000 !important;
-        font-weight: bold !important;
-    }
-
-    /* --- TEXTAREA LABEL (Edit Bio) --- */
-    label[data-testid="stTextAreaLabel"] {
+    /* Label text (e.g. Edit Bio) */
+    label, .stTextInput label, .stTextArea label {
         color: #000000 !important;
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
     }
 
-    /* --- TEXTAREA INPUT FIELD --- */
+    /* TextArea actual input */
     textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
@@ -56,12 +50,7 @@ st.markdown("""
         font-weight: normal !important;
     }
 
-    /* --- TEXTAREA PLACEHOLDER TEXT --- */
-    textarea::placeholder {
-        color: #888888 !important;
-    }
-
-    /* --- BUTTON --- */
+    /* Save Changes button */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
@@ -77,11 +66,16 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* --- EXPANDER HEADER ('Events Involved') --- */
-    div[data-testid="stExpander"] summary {
+    /* Expander header (Events Involved) */
+    summary {
         color: #000000 !important;
-        font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
+        font-weight: bold !important;
+    }
+
+    /* Markdown content (bios, summaries, event links) */
+    .markdown-text-container, .stMarkdown, .stMarkdown p {
+        color: #000000 !important;
     }
     </style>
 """, unsafe_allow_html=True)
