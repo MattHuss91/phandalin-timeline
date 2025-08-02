@@ -24,8 +24,7 @@ st.markdown("""
         background-color: rgba(255, 255, 255, 0.9) !important;
         padding: 1rem;
         border-radius: 10px;
-        color: #000000 !important;
-    }
+     }
 
     /* --- HEADINGS --- */
     h1, h2, h3 {
