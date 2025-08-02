@@ -10,6 +10,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
+    /* Global App Styling */
     .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
@@ -17,56 +18,60 @@ st.markdown("""
         background-repeat: no-repeat;
         background-position: center;
         font-family: 'Lora', serif !important;
-        color: #000000 !important;
     }
 
+    /* Card/Container */
     .stContainer {
         background-color: rgba(255, 255, 255, 0.9) !important;
         padding: 1rem;
         border-radius: 10px;
+        color: #000000 !important;
     }
 
+    /* Keep h1/h2 headers black */
     h1, h2 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
-        color: #ffffff !important; /* Keep these headings white */
+        color: #000000 !important;
     }
 
+    /* h3 e.g. for Edit Bio */
     h3 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
         color: #000000 !important;
     }
 
+    /* Labels */
     .stSelectbox label,
-    .stSlider label {
+    .stSlider label,
+    label[data-testid="stTextAreaLabel"] {
         color: #000000 !important;
         font-weight: bold;
     }
 
+    /* Text Area */
     textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
 
-    /* Label for text area ("Edit Bio") */
-    label.css-1cpxqw2 {
-        color: #000000 !important;
-        font-weight: bold;
-        font-family: 'Cinzel', serif !important;
-    }
-
-    /* Save Changes button (form submit) */
-    button[kind="primary"] {
-        color: #ffffff !important;
+    /* Submit Button */
+    div.stButton > button {
         background-color: #333333 !important;
-        font-weight: bold !important;
+        color: #ffffff !important;
         font-family: 'Cinzel', serif !important;
-        border-radius: 6px !important;
-        padding: 0.5rem 1rem !important;
+        font-weight: bold !important;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
     }
 
+    div.stButton > button:hover {
+        background-color: #444444 !important;
+        color: #ffffff !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
