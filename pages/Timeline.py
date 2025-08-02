@@ -5,6 +5,11 @@ import urllib.parse
 
 st.set_page_config(page_title="Timeline", layout="centered")
 
+# Get query params
+query_params = st.query_params
+highlight_event = query_params.get("highlight", [""])[0]
+from_character = query_params.get("from_character", [""])[0]
+
 # Styling
 st.markdown("""
     <style>
@@ -41,7 +46,7 @@ st.markdown("""
 
 st.title("Phandalin Campaign Timeline")
 
-# Connect to the DB
+# Connect to DB
 conn = sqlite3.connect("dnd_campaign.db")
 cursor = conn.cursor()
 
@@ -70,25 +75,36 @@ GROUP BY ce.event_id;
 
 events_df = pd.read_sql_query("SELECT * FROM EventTimeline ORDER BY world_day", conn)
 
-# Character filter
-all_characters = events_df['people_involved'].str.split(', ').explode().dropna().unique()
-selected_character = st.selectbox("Filter by character", ["All"] + sorted(all_characters.tolist()))
+# Filter for highlighted event (if passed in URL)
+if highlight_event:
+    events_df = events_df[events_df["title"] == highlight_event]
 
-if selected_character != "All":
-    events_df = events_df[events_df['people_involved'].str.contains(selected_character)]
+# Back to character link
+if from_character:
+    encoded_name = urllib.parse.quote(from_character)
+    st.markdown(f"[← Back to {from_character}](/character_profiles?character={encoded_name})")
 
-# Slider setup
-labels = events_df['date_occurred'].tolist()
-day_to_label = dict(zip(events_df['world_day'], events_df['date_occurred']))
-label_to_day = {v: k for k, v in day_to_label.items()}
-selected_start, selected_end = st.select_slider("Select a date range", options=labels, value=(labels[0], labels[-1]))
-start_day = label_to_day[selected_start]
-end_day = label_to_day[selected_end]
+# Only show filters if not in highlight mode
+if not highlight_event:
+    # Character filter
+    all_characters = events_df['people_involved'].str.split(', ').explode().dropna().unique()
+    selected_character = st.selectbox("Filter by character", ["All"] + sorted(all_characters.tolist()))
 
-filtered_events = events_df[(events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)]
+    if selected_character != "All":
+        events_df = events_df[events_df['people_involved'].str.contains(selected_character)]
+
+    # Slider filter
+    labels = events_df['date_occurred'].tolist()
+    day_to_label = dict(zip(events_df['world_day'], events_df['date_occurred']))
+    label_to_day = {v: k for k, v in day_to_label.items()}
+    selected_start, selected_end = st.select_slider("Select a date range", options=labels, value=(labels[0], labels[-1]))
+    start_day = label_to_day[selected_start]
+    end_day = label_to_day[selected_end]
+
+    events_df = events_df[(events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)]
 
 # Display events
-for _, row in filtered_events.iterrows():
+for _, row in events_df.iterrows():
     st.header(row['title'])
     st.write(f"{row['date_occurred']} — {row['location']}")
     st.markdown(f"**Summary:** {row['summary']}")
@@ -100,5 +116,3 @@ for _, row in filtered_events.iterrows():
         st.markdown(f"- [{character}](/character_profiles?character={encoded_name})")
 
 conn.close()
-
-
