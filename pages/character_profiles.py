@@ -29,7 +29,7 @@ st.markdown("""
     h1, h2 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
-        /* Leave color default or inherit from .stApp */
+        color: inherit;
     }
 
     h3 {
@@ -48,6 +48,14 @@ st.markdown("""
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
+    }
+
+    /* This targets the label for st.text_area */
+    label[data-testid="stMarkdownContainer"] > div {
+        color: #000000 !important;
+        font-weight: bold;
+        font-family: 'Cinzel', serif !important;
+        text-transform: uppercase;
     }
 
     button {
