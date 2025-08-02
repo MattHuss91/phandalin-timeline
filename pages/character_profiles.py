@@ -63,6 +63,10 @@ st.markdown("""
         background-color: #444444 !important;
         color: #ffffff !important;
     }
+    /* --- Force black text in markdown and write() --- */
+.markdown-text-container, .stMarkdown, .stText, .css-18ni7ap, .css-1v0mbdj {
+    color: #000000 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
