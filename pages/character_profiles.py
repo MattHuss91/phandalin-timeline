@@ -6,6 +6,7 @@ import urllib.parse
 st.set_page_config(page_title="Character Profiles", layout="centered")
 
 # --- Styling ---
+# --- Styling ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
@@ -29,18 +30,17 @@ st.markdown("""
     h1, h2 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
-        color: inherit;
     }
 
     h3 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
-        color: #000000;
+        color: #000000 !important;
     }
 
     .stSelectbox label,
     .stSlider label {
-        color: #000000;
+        color: #000000 !important;
         font-weight: bold;
     }
 
@@ -49,21 +49,15 @@ st.markdown("""
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
-    div[data-testid="stMarkdownContainer"] > p {
-        color: #000000 !important;
-        font-weight: bold;
-        font-family: 'Cinzel', serif !important;
-        text-transform: uppercase;
-    }
 
-    button[kind="primary"] {
-    color: #ffffff !important;
-    font-weight: bold;
-    font-family: 'Cinzel', serif !important;
-}
+    div.stButton > button {
+        color: #ffffff !important;
+        background-color: #333333 !important;
+        font-weight: bold !important;
+        font-family: 'Cinzel', serif !important;
+    }
     </style>
 """, unsafe_allow_html=True)
-
 
 st.title("Character Profiles")
 
