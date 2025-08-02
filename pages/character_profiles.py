@@ -10,7 +10,7 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-/* Base app background */
+/* Background image and main styling */
 .stApp {
     background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
     background-size: cover;
@@ -20,9 +20,9 @@ st.markdown("""
     font-family: 'Lora', serif !important;
 }
 
-/* Main content area */
+/* Content container background + text color */
 .block-container {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.88) !important;
     padding: 1rem;
     border-radius: 10px;
     color: #000000 !important;
@@ -35,12 +35,17 @@ h1, h2, h3 {
     color: #000000 !important;
 }
 
-/* Text and markdown */
-p, span, div, .markdown-text-container {
+/* Force all text to black */
+html, body, span, div, p, label, li, ul, td, th {
     color: #000000 !important;
 }
 
-/* Dropdowns, sliders, textareas */
+/* Fix markdown text specifically */
+.markdown-text-container, .stMarkdown {
+    color: #000000 !important;
+}
+
+/* Dropdowns, sliders */
 .stSelectbox label,
 .stSlider label,
 label[data-testid="stTextAreaLabel"] {
@@ -48,6 +53,7 @@ label[data-testid="stTextAreaLabel"] {
     font-weight: bold;
 }
 
+/* Textareas */
 textarea, div[data-baseweb="textarea"] textarea {
     color: #000000 !important;
     background-color: #ffffff !important;
