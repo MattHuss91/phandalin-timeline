@@ -92,5 +92,34 @@ if not event_df.empty:
             st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
 else:
     st.write("No recorded events.")
+# Confirm character ID
+st.write("Selected character:", selected_character)
+st.write("Character ID:", character_id)
+st.write("Row data:", character_row)
+
+# Load related events
+event_df = pd.read_sql_query(
+    """
+    SELECT ce.date_occurred, ce.title, ce.event_id
+    FROM characterappearances ca
+    JOIN CampaignEvents ce ON ca.event_id = ce.event_id
+    WHERE ca.character_id = ?
+    ORDER BY ce.world_day
+    """, conn, params=(character_id,)
+)
+
+st.write("Event DataFrame:", event_df)
+
+# Display event list
+if not event_df.empty:
+    with st.expander("Events Involved"):
+        for _, row in event_df.iterrows():
+            event_title = row["title"]
+            encoded_event = urllib.parse.quote(event_title)
+            encoded_character = urllib.parse.quote(selected_character)
+
+            st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
+else:
+    st.warning("No recorded events for this character.")
 
 conn.close()
