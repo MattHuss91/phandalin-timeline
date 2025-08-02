@@ -70,6 +70,12 @@ st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
 
+st.write("Selected character:", selected_character)
+st.write("Character ID:", character_id, "Type:", type(character_id))
+
+# Optional: sanity check characterappearances table
+test_df = pd.read_sql_query("SELECT * FROM characterappearances WHERE character_id = ?", conn, params=(character_id,))
+st.write("Matching appearances:", test_df)
 # Load related events
 event_df = pd.read_sql_query(
     """
