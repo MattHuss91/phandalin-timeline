@@ -67,6 +67,19 @@ st.markdown("""
 .markdown-text-container, .stMarkdown, .stText, .css-18ni7ap, .css-1v0mbdj {
     color: #000000 !important;
     }
+
+    /* --- Fix white text in Bio editor label --- */
+label[data-testid="stTextAreaLabel"] {
+    color: #000000 !important;
+    font-weight: bold;
+}
+
+/* --- Fix white text in Expander titles (like 'Events Involved') --- */
+.stExpanderHeader {
+    color: #000000 !important;
+    font-weight: bold;
+    font-family: 'Cinzel', serif !important;
+}
     </style>
 """, unsafe_allow_html=True)
 
