@@ -10,8 +10,8 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* Global app background and font */
-    .stApp {
+    /* Background image applied to both app and main wrapper */
+    html, body, .stApp, .block-container {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
         background-attachment: fixed;
@@ -20,7 +20,7 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    /* Main content container */
+    /* Content container */
     .block-container {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 1rem;
@@ -35,22 +35,21 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* Label text (e.g. Edit Bio) */
+    /* Label text (e.g. "Edit Bio") */
     label, .stTextInput label, .stTextArea label {
         color: #000000 !important;
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
     }
 
-    /* TextArea actual input */
+    /* TextArea input */
     textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
-        font-weight: normal !important;
     }
 
-    /* Save Changes button */
+    /* Button styling */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
@@ -66,14 +65,14 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Expander header (Events Involved) */
+    /* Expander header ("Events Involved") */
     summary {
         color: #000000 !important;
         font-family: 'Cinzel', serif !important;
         font-weight: bold !important;
     }
 
-    /* Markdown content (bios, summaries, event links) */
+    /* Markdown text (bios, events, etc.) */
     .markdown-text-container, .stMarkdown, .stMarkdown p {
         color: #000000 !important;
     }
