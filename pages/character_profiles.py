@@ -42,7 +42,7 @@ character_names = character_df["name"].tolist()
 
 # Get character from query param
 query_params = st.query_params
-default_character = st.query_params.get("character", [""])[0]
+default_character = st.query_params.get("character", [""])[0] or None
 
 # Calculate index
 index = character_names.index(default_character) if default_character in character_names else 0
