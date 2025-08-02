@@ -72,7 +72,6 @@ div.stButton > button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-
 st.title("Character Profiles")
 
 # --- Load Data ---
