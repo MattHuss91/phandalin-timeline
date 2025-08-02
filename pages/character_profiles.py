@@ -6,7 +6,7 @@ import pandas as pd
 st.set_page_config(page_title="Character Profiles", layout="centered")
 
 # Styling
-sst.markdown("""
+st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
