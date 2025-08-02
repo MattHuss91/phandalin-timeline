@@ -55,14 +55,19 @@ selected_character = st.selectbox(
     key="character_select_box"
 )
 
-# Get selected character row
-character_row = character_df[character_df["name"] == selected_character]
+# Normalize character name for safe matching
+normalized_selection = selected_character.strip().replace("’", "'").lower()
+character_df["normalized_name"] = character_df["name"].str.strip().str.replace("’", "'").str.lower()
+
+# Lookup character by normalized name
+character_row = character_df[character_df["normalized_name"] == normalized_selection]
+
 if character_row.empty:
     st.error("Character not found.")
     st.stop()
 
 character_row = character_row.iloc[0]
-character_id = int(character_row["character_id"])  # Ensure it's an int
+character_id = int(character_row["character_id"])
 
 # DEBUG INFO
 st.write("🟦 Selected character:", selected_character)
@@ -76,7 +81,7 @@ test_df = pd.read_sql_query(
 )
 st.write("🟩 Matching rows in characterappearances table:", test_df)
 
-# Display bio
+# Display character info
 st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
@@ -106,6 +111,5 @@ if not event_df.empty:
             st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
 else:
     st.warning("No recorded events.")
-check_df = pd.read_sql_query("SELECT * FROM characterappearances", conn)
-st.write("🧪 Full characterappearances table:", check_df)
+
 conn.close()
