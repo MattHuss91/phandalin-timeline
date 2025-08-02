@@ -29,7 +29,7 @@ st.markdown("""
     h1, h2 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
-        color: #000000 !important;
+        color: #ffffff !important; /* Keep these headings white */
     }
 
     h3 {
@@ -50,12 +50,23 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    div.stButton > button {
+    /* Label for text area ("Edit Bio") */
+    label.css-1cpxqw2 {
+        color: #000000 !important;
+        font-weight: bold;
+        font-family: 'Cinzel', serif !important;
+    }
+
+    /* Save Changes button (form submit) */
+    button[kind="primary"] {
         color: #ffffff !important;
         background-color: #333333 !important;
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
+        border-radius: 6px !important;
+        padding: 0.5rem 1rem !important;
     }
+
     </style>
 """, unsafe_allow_html=True)
 
