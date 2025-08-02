@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* Background image applied to both app and main wrapper */
+    /* Background + app fonts */
     html, body, .stApp, .block-container {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
@@ -20,7 +20,7 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    /* Content container */
+    /* Content area */
     .block-container {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 1rem;
@@ -35,57 +35,58 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* Label text (e.g. "Edit Bio") */
+    /* Labels and subheadings */
     label, .stTextInput label, .stTextArea label {
         color: #000000 !important;
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
     }
 
-    /* TextArea input */
+    /* Bio text area */
     textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
 
-    /* Button styling – applies to form buttons and regular buttons */
-button[role="button"] {
-    background-color: #333333 !important;
-    color: #ffffff !important;
-    font-family: 'Cinzel', serif !important;
-    font-weight: bold !important;
-    border: none !important;
-    padding: 0.5rem 1rem !important;
-    border-radius: 5px !important;
-}
+    /* Save button styling */
+    button[role="button"] {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+        font-family: 'Cinzel', serif !important;
+        font-weight: bold !important;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 5px !important;
+    }
 
-button[role="button"]:hover {
-    background-color: #444444 !important;
-    color: #ffffff !important;
-}
+    button[role="button"]:hover {
+        background-color: #444444 !important;
+        color: #ffffff !important;
+    }
 
-    /* Expander header ("Events Involved") */
+    /* Expander */
     summary {
         color: #000000 !important;
         font-family: 'Cinzel', serif !important;
         font-weight: bold !important;
     }
 
-    /* Markdown text (bios, events, etc.) */
+    /* Markdown content (bio + events) */
     .markdown-text-container, .stMarkdown, .stMarkdown p {
         color: #000000 !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
+# --- Title ---
 st.title("Character Profiles")
 
 # --- Load Data ---
 conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 
-# --- Query Params ---
+# --- Query Parameters ---
 query_params = st.query_params
 character_id_str = query_params.get("character_id", [""])[0]
 
@@ -102,10 +103,8 @@ else:
     character_id = None
     default_name = None
 
-# --- Character Selectbox ---
+# --- Character Dropdown ---
 character_names = character_df["name"].tolist()
-
-# Compute index for dropdown
 try:
     index = character_names.index(default_name) if default_name else 0
 except ValueError:
@@ -118,22 +117,35 @@ selected_character = st.selectbox(
     key="character_select_box"
 )
 
-# --- Update Character Info from Dropdown ---
+# --- Load Character Info ---
 character_row = character_df[character_df["name"] == selected_character].iloc[0]
 character_id = int(character_row["character_id"])
 
-# --- Display Character Info ---
+# --- Display Bio ---
 st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
 
-# Editable bio form
+# --- Editable Bio Form ---
 with st.form("edit_bio_form"):
     new_bio = st.text_area("Edit Bio", character_row["bio"], height=200)
     submitted = st.form_submit_button("Save Changes")
 
+# --- Save to Database ---
+if submitted and new_bio != character_row["bio"]:
+    try:
+        conn = sqlite3.connect("dnd_campaign.db")
+        cursor = conn.cursor()
+        cursor.execute("UPDATE characters SET bio = ? WHERE character_id = ?", (new_bio, character_id))
+        conn.commit()
+        conn.close()
+        st.success("Bio updated successfully.")
+        st.rerun()
+    except Exception as e:
+        st.error(f"Error updating bio: {e}")
 
 # --- Load Related Events ---
+conn = sqlite3.connect("dnd_campaign.db")
 event_df = pd.read_sql_query(
     """
     SELECT ce.date_occurred, ce.title
@@ -143,7 +155,9 @@ event_df = pd.read_sql_query(
     ORDER BY ce.world_day
     """, conn, params=(character_id,)
 )
+conn.close()
 
+# --- Display Events ---
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
@@ -156,5 +170,3 @@ if not event_df.empty:
             )
 else:
     st.warning("No recorded events.")
-
-conn.close()
