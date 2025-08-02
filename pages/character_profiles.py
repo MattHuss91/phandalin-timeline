@@ -49,21 +49,21 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    /* Button styling */
-    div.stButton > button {
-        background-color: #333333 !important;
-        color: #ffffff !important;
-        font-family: 'Cinzel', serif !important;
-        font-weight: bold !important;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-    }
+    /* Button styling – for regular and form buttons */
+button[kind="primary"], div.stButton > button {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: bold !important;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
 
-    div.stButton > button:hover {
-        background-color: #444444 !important;
-        color: #ffffff !important;
-    }
+button[kind="primary"]:hover, div.stButton > button:hover {
+    background-color: #444444 !important;
+    color: #ffffff !important;
+}
 
     /* Expander header ("Events Involved") */
     summary {
