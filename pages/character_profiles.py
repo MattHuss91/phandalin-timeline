@@ -40,8 +40,8 @@ character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters
 character_names = character_df["name"].tolist()
 
 # Get default character from query params (modern Streamlit)
-raw_character = st.query_params.get("character", [""])
-default_character = raw_character[0] if raw_character else None
+query_params = st.experimental_get_query_params()
+default_character = query_params.get("character", [""])[0]
 
 # Use query param to preselect dropdown
 index = character_names.index(default_character) if default_character in character_names else 0
