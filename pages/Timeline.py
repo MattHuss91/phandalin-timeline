@@ -5,10 +5,10 @@ import urllib.parse
 
 st.set_page_config(page_title="Timeline", layout="centered")
 
-# Get query params
+# Read query parameters
 query_params = st.query_params
 highlight_event = query_params.get("highlight", [""])[0]
-from_character = query_params.get("from_character", [""])[0]
+from_character_id = query_params.get("from_character_id", [""])[0]
 
 # Styling
 st.markdown("""
@@ -46,11 +46,11 @@ st.markdown("""
 
 st.title("Phandalin Campaign Timeline")
 
-# Connect to DB
+# Connect to the DB
 conn = sqlite3.connect("dnd_campaign.db")
 cursor = conn.cursor()
 
-# Ensure view exists
+# Create or refresh the view
 cursor.executescript("""
 DROP VIEW IF EXISTS EventTimeline;
 CREATE VIEW EventTimeline AS
@@ -73,35 +73,46 @@ LEFT JOIN Locations l ON ce.location_id = l.location_id
 GROUP BY ce.event_id;
 """)
 
+# Load events
 events_df = pd.read_sql_query("SELECT * FROM EventTimeline ORDER BY world_day", conn)
 
-# Filter for highlighted event (if passed in URL)
+# If we're coming from a character page and highlighting one event
 if highlight_event:
     events_df = events_df[events_df["title"] == highlight_event]
 
-# Back to character link
-if from_character:
-    encoded_name = urllib.parse.quote(from_character)
-    st.markdown(f"[← Back to {from_character}](/character_profiles?character={encoded_name})")
+# If a character ID is present, add a link back
+if from_character_id.isdigit():
+    character_id = int(from_character_id)
+    character_query = "SELECT name FROM characters WHERE character_id = ?"
+    result = cursor.execute(character_query, (character_id,)).fetchone()
+    if result:
+        character_name = result[0]
+        encoded_name = urllib.parse.quote(character_name)
+        st.markdown(f"[← Back to {character_name}](/character_profiles?character_id={character_id})")
 
-# Only show filters if not in highlight mode
+# Show filters only if not in highlight mode
 if not highlight_event:
-    # Character filter
     all_characters = events_df['people_involved'].str.split(', ').explode().dropna().unique()
     selected_character = st.selectbox("Filter by character", ["All"] + sorted(all_characters.tolist()))
 
     if selected_character != "All":
         events_df = events_df[events_df['people_involved'].str.contains(selected_character)]
 
-    # Slider filter
+    # Timeline range slider
     labels = events_df['date_occurred'].tolist()
     day_to_label = dict(zip(events_df['world_day'], events_df['date_occurred']))
     label_to_day = {v: k for k, v in day_to_label.items()}
-    selected_start, selected_end = st.select_slider("Select a date range", options=labels, value=(labels[0], labels[-1]))
+    selected_start, selected_end = st.select_slider(
+        "Select a date range",
+        options=labels,
+        value=(labels[0], labels[-1])
+    )
     start_day = label_to_day[selected_start]
     end_day = label_to_day[selected_end]
 
-    events_df = events_df[(events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)]
+    events_df = events_df[
+        (events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)
+    ]
 
 # Display events
 for _, row in events_df.iterrows():
@@ -112,7 +123,11 @@ for _, row in events_df.iterrows():
 
     st.markdown("**People Involved:**")
     for character in row['people_involved'].split(', '):
-        encoded_name = urllib.parse.quote(character)
-        st.markdown(f"- [{character}](/character_profiles?character={encoded_name})")
+        character_id_query = cursor.execute(
+            "SELECT character_id FROM characters WHERE name = ?", (character,)
+        ).fetchone()
+        if character_id_query:
+            character_id_link = character_id_query[0]
+            st.markdown(f"- [{character}](/character_profiles?character_id={character_id_link})")
 
 conn.close()
