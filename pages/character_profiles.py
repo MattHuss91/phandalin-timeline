@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import urllib.parse
 
 st.set_page_config(page_title="Character Profiles", layout="centered")
 
@@ -78,8 +79,12 @@ event_df = pd.read_sql_query(
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
-            st.markdown(f"- {row['date_occurred']}: {row['title']}")
+            event_title = row["title"]  # e.g., "Battle of Endsbury"
+            encoded_event = urllib.parse.quote(event_title)  # Make it URL-safe
+            encoded_character = urllib.parse.quote(selected_character)
+
+            # Create a clickable link to the timeline with both event and character name
+            st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
 else:
     st.write("No recorded events.")
-
 conn.close()
