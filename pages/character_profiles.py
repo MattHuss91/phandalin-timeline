@@ -40,7 +40,7 @@ conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 character_names = character_df["name"].tolist()
 
-# Get character from query params (modern)
+# Get character from query params
 query_params = st.query_params
 default_character = query_params.get("character", [""])[0]
 
@@ -55,27 +55,32 @@ selected_character = st.selectbox(
     key="character_select_box"
 )
 
-# Find the character row safely
+# Get selected character row
 character_row = character_df[character_df["name"] == selected_character]
-
 if character_row.empty:
     st.error("Character not found.")
     st.stop()
 
 character_row = character_row.iloc[0]
-character_id = character_row["character_id"]
+character_id = int(character_row["character_id"])  # Ensure it's an int
 
-# Display character info
+# DEBUG INFO
+st.write("🟦 Selected character:", selected_character)
+st.write("🟦 Character ID:", character_id, "| Type:", type(character_id))
+
+# DEBUG: Check matching entries in characterappearances table
+test_df = pd.read_sql_query(
+    "SELECT * FROM characterappearances WHERE character_id = ?",
+    conn,
+    params=(character_id,)
+)
+st.write("🟩 Matching rows in characterappearances table:", test_df)
+
+# Display bio
 st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
 
-st.write("Selected character:", selected_character)
-st.write("Character ID:", character_id, "Type:", type(character_id))
-
-# Optional: sanity check characterappearances table
-test_df = pd.read_sql_query("SELECT * FROM characterappearances WHERE character_id = ?", conn, params=(character_id,))
-st.write("Matching appearances:", test_df)
 # Load related events
 event_df = pd.read_sql_query(
     """
@@ -87,34 +92,8 @@ event_df = pd.read_sql_query(
     """, conn, params=(character_id,)
 )
 
-# Display event list
-if not event_df.empty:
-    with st.expander("Events Involved"):
-        for _, row in event_df.iterrows():
-            event_title = row["title"]
-            encoded_event = urllib.parse.quote(event_title)
-            encoded_character = urllib.parse.quote(selected_character)
-
-            st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
-else:
-    st.write("No recorded events.")
-# Confirm character ID
-st.write("Selected character:", selected_character)
-st.write("Character ID:", character_id)
-st.write("Row data:", character_row)
-
-# Load related events
-event_df = pd.read_sql_query(
-    """
-    SELECT ce.date_occurred, ce.title, ce.event_id
-    FROM characterappearances ca
-    JOIN CampaignEvents ce ON ca.event_id = ce.event_id
-    WHERE ca.character_id = ?
-    ORDER BY ce.world_day
-    """, conn, params=(character_id,)
-)
-
-st.write("Event DataFrame:", event_df)
+# DEBUG: Show event result
+st.write("🟨 Matching events for character:", event_df)
 
 # Display event list
 if not event_df.empty:
@@ -126,6 +105,6 @@ if not event_df.empty:
 
             st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
 else:
-    st.warning("No recorded events for this character.")
+    st.warning("No recorded events.")
 
 conn.close()
