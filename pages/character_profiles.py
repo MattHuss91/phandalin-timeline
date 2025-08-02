@@ -56,8 +56,9 @@ selected_character = st.selectbox(
 )
 
 # Get selected character info
-character_row = character_df[character_df["name"] == selected_character].iloc[0]
-character_id = int(character_row["character_id"])
+# TODO: Replace with st.query_params when Streamlit stabilizes access timing query_params = st.experimental_get_query_params()
+query_params = st.experimental_get_query_params()
+default_character = query_params.get("character", [""])[0]
 
 st.header(selected_character)
 st.write("### Bio")
