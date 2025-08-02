@@ -7,69 +7,71 @@ st.set_page_config(page_title="Character Profiles", layout="centered")
 
 # --- Styling ---
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* --- BACKGROUND & BASE FONT --- */
-    .stApp {
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: 'Lora', serif !important;
-    }
+/* Base app background */
+.stApp {
+    background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Lora', serif !important;
+}
 
-    /* --- CONTAINER & TEXT COLOR --- */
-    .stContainer, .block-container {
-        background-color: rgba(255, 255, 255, 0.9) !important;
-        color: #000000 !important;
-    }
+/* Main content area */
+.block-container {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 1rem;
+    border-radius: 10px;
+    color: #000000 !important;
+}
 
-    /* --- UNIVERSAL TEXT OVERRIDE --- */
-    p, span, div, .markdown-text-container {
-        color: #000000 !important;
-    }
+/* Headings */
+h1, h2, h3 {
+    font-family: 'Cinzel', serif !important;
+    text-transform: uppercase;
+    color: #000000 !important;
+}
 
-    /* --- HEADINGS --- */
-    h1, h2, h3 {
-        font-family: 'Cinzel', serif !important;
-        text-transform: uppercase;
-        color: #000000 !important;
-    }
+/* Text and markdown */
+p, span, div, .markdown-text-container {
+    color: #000000 !important;
+}
 
-    /* --- LABELS --- */
-    .stSelectbox label,
-    .stSlider label,
-    label[data-testid="stTextAreaLabel"] {
-        color: #000000 !important;
-        font-weight: bold;
-    }
+/* Dropdowns, sliders, textareas */
+.stSelectbox label,
+.stSlider label,
+label[data-testid="stTextAreaLabel"] {
+    color: #000000 !important;
+    font-weight: bold;
+}
 
-    /* --- TEXTAREA --- */
-    textarea, div[data-baseweb="textarea"] textarea {
-        color: #000000 !important;
-        background-color: #ffffff !important;
-        font-family: 'Lora', serif !important;
-    }
+textarea, div[data-baseweb="textarea"] textarea {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+    font-family: 'Lora', serif !important;
+}
 
-    /* --- BUTTONS --- */
-    div.stButton > button {
-        background-color: #333333 !important;
-        color: #ffffff !important;
-        font-family: 'Cinzel', serif !important;
-        font-weight: bold !important;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 5px;
-    }
+/* Buttons */
+div.stButton > button {
+    background-color: #333333 !important;
+    color: #ffffff !important;
+    font-family: 'Cinzel', serif !important;
+    font-weight: bold !important;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
 
-    div.stButton > button:hover {
-        background-color: #444444 !important;
-        color: #ffffff !important;
-    }
-    </style>
+div.stButton > button:hover {
+    background-color: #444444 !important;
+    color: #ffffff !important;
+}
+</style>
 """, unsafe_allow_html=True)
+
 
 st.title("Character Profiles")
 
