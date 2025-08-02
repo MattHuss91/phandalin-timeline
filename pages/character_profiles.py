@@ -34,22 +34,34 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* --- LABELS (sliders, dropdowns, textarea) --- */
+    /* --- SELECTBOX & SLIDER LABELS --- */
     .stSelectbox label,
-    .stSlider label,
-    label[data-testid="stTextAreaLabel"] {
+    .stSlider label {
         color: #000000 !important;
         font-weight: bold !important;
     }
 
-    /* --- TEXTAREA FIELD (bio editor) --- */
+    /* --- TEXTAREA LABEL (Edit Bio) --- */
+    label[data-testid="stTextAreaLabel"] {
+        color: #000000 !important;
+        font-weight: bold !important;
+        font-family: 'Cinzel', serif !important;
+    }
+
+    /* --- TEXTAREA INPUT FIELD --- */
     textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
+        font-weight: normal !important;
     }
 
-    /* --- BUTTON STYLING --- */
+    /* --- TEXTAREA PLACEHOLDER TEXT --- */
+    textarea::placeholder {
+        color: #888888 !important;
+    }
+
+    /* --- BUTTON --- */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
@@ -65,7 +77,7 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* --- EXPANDER HEADERS (like 'Events Involved') --- */
+    /* --- EXPANDER HEADER ('Events Involved') --- */
     div[data-testid="stExpander"] summary {
         color: #000000 !important;
         font-weight: bold !important;
