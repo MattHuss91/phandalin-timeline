@@ -26,10 +26,17 @@ st.markdown("""
         border-radius: 10px;
     }
 
-    h1, h2, h3 {
+    h1, h2 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
     }
+
+   h3 {
+    font-family: 'Cinzel', serif !important;
+    text-transform: uppercase;
+    color: #000000;
+}
+
 
     .stSelectbox label,
     .stSlider label {
@@ -42,6 +49,13 @@ st.markdown("""
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
+    
+    button {
+    color: #ffffff !important;
+    font-weight: bold;
+    font-family: 'Cinzel', serif !important;
+}
+
     </style>
 """, unsafe_allow_html=True)
 
