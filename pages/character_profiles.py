@@ -30,6 +30,11 @@ st.markdown("""
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
     }
+     .stSelectbox label,
+    .stSlider label {
+        color: #000000;
+        font-weight: bold;
+    }
     </style>
 """, unsafe_allow_html=True)
 
