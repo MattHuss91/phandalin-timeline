@@ -10,7 +10,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    /* --- GLOBAL APP STYLING --- */
+    /* --- BACKGROUND & BASE FONT --- */
     .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
@@ -20,10 +20,14 @@ st.markdown("""
         font-family: 'Lora', serif !important;
     }
 
-    .stContainer {
+    /* --- CONTAINER & TEXT COLOR --- */
+    .stContainer, .block-container {
         background-color: rgba(255, 255, 255, 0.9) !important;
-        padding: 1rem;
-        border-radius: 10px;
+        color: #000000 !important;
+    }
+
+    /* --- UNIVERSAL TEXT OVERRIDE --- */
+    p, span, div, .markdown-text-container {
         color: #000000 !important;
     }
 
@@ -42,14 +46,14 @@ st.markdown("""
         font-weight: bold;
     }
 
-    /* --- TEXTAREA (Bio editor) --- */
+    /* --- TEXTAREA --- */
     textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
 
-    /* --- BUTTON --- */
+    /* --- BUTTONS --- */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
