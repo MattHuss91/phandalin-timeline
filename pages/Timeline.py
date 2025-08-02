@@ -1,4 +1,3 @@
-
 import streamlit as st
 import sqlite3
 import pandas as pd
@@ -30,6 +29,12 @@ st.markdown("""
     h1, h2, h3 {
         font-family: 'Cinzel', serif !important;
         text-transform: uppercase;
+    }
+
+    .stSelectbox label,
+    .stSlider label {
+        color: #000000;
+        font-weight: bold;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -95,4 +100,5 @@ for _, row in filtered_events.iterrows():
         st.markdown(f"- [{character}](/character_profiles?character={encoded_name})")
 
 conn.close()
+
 
