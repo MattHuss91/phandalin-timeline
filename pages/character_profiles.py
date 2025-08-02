@@ -24,7 +24,8 @@ st.markdown("""
         background-color: rgba(255, 255, 255, 0.9) !important;
         padding: 1rem;
         border-radius: 10px;
-     }
+        color: #000000 !important;
+    }
 
     /* --- HEADINGS --- */
     h1, h2, h3 {
@@ -33,22 +34,22 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* --- LABELS --- */
+    /* --- LABELS (sliders, dropdowns, textarea) --- */
     .stSelectbox label,
     .stSlider label,
     label[data-testid="stTextAreaLabel"] {
         color: #000000 !important;
-        font-weight: bold;
+        font-weight: bold !important;
     }
 
-    /* --- TEXTAREA (Bio editor) --- */
+    /* --- TEXTAREA FIELD (bio editor) --- */
     textarea, div[data-baseweb="textarea"] textarea {
         color: #000000 !important;
         background-color: #ffffff !important;
         font-family: 'Lora', serif !important;
     }
 
-    /* --- BUTTON --- */
+    /* --- BUTTON STYLING --- */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
@@ -63,23 +64,13 @@ st.markdown("""
         background-color: #444444 !important;
         color: #ffffff !important;
     }
-    /* --- Force black text in markdown and write() --- */
-.markdown-text-container, .stMarkdown, .stText, .css-18ni7ap, .css-1v0mbdj {
-    color: #000000 !important;
+
+    /* --- EXPANDER HEADERS (like 'Events Involved') --- */
+    div[data-testid="stExpander"] summary {
+        color: #000000 !important;
+        font-weight: bold !important;
+        font-family: 'Cinzel', serif !important;
     }
-
-    /* --- Fix white text in Bio editor label --- */
-label[data-testid="stTextAreaLabel"] {
-    color: #000000 !important;
-    font-weight: bold;
-}
-
-/* --- Fix white text in Expander titles (like 'Events Involved') --- */
-.stExpanderHeader {
-    color: #000000 !important;
-    font-weight: bold;
-    font-family: 'Cinzel', serif !important;
-}
     </style>
 """, unsafe_allow_html=True)
 
