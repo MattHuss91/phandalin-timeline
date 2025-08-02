@@ -38,50 +38,41 @@ st.title("Character Profiles")
 # Connect to database
 conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
-character_names = character_df["name"].tolist()
 
-# Get character from query params
+# Get character ID from query param
 query_params = st.query_params
-default_character = query_params.get("character", [""])[0]
+character_id_str = query_params.get("character_id", [""])[0]
 
-# Use query param to preselect dropdown
-index = character_names.index(default_character) if default_character in character_names else 0
+if character_id_str.isdigit():
+    character_id = int(character_id_str)
+else:
+    st.error("Invalid or missing character_id.")
+    st.stop()
 
-# Dropdown
-selected_character = st.selectbox(
-    "Choose a character",
-    character_names,
-    index=index,
-    key="character_select_box"
-)
-
-# Normalize character name for safe matching
-normalized_selection = selected_character.strip().replace("’", "'").lower()
-character_df["normalized_name"] = character_df["name"].str.strip().str.replace("’", "'").str.lower()
-
-# Lookup character by normalized name
-character_row = character_df[character_df["normalized_name"] == normalized_selection]
+# Get character row by ID
+character_row = character_df[character_df["character_id"] == character_id]
 
 if character_row.empty:
     st.error("Character not found.")
     st.stop()
 
 character_row = character_row.iloc[0]
+selected_character = character_row["name"]
+
+# Dropdown for manual override (optional)
+character_names = character_df["name"].tolist()
+selected_character = st.selectbox(
+    "Choose a character",
+    character_names,
+    index=character_df[character_df["character_id"] == character_id].index[0],
+    key="character_select_box"
+)
+
+# Update ID from dropdown (if user changes manually)
+character_row = character_df[character_df["name"] == selected_character].iloc[0]
 character_id = int(character_row["character_id"])
 
-# DEBUG INFO
-st.write("🟦 Selected character:", selected_character)
-st.write("🟦 Character ID:", character_id, "| Type:", type(character_id))
-
-# DEBUG: Check matching entries in characterappearances table
-test_df = pd.read_sql_query(
-    "SELECT * FROM characterappearances WHERE character_id = ?",
-    conn,
-    params=(character_id,)
-)
-st.write("🟩 Matching rows in characterappearances table:", test_df)
-
-# Display character info
+# Display bio
 st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
@@ -97,18 +88,17 @@ event_df = pd.read_sql_query(
     """, conn, params=(character_id,)
 )
 
-# DEBUG: Show event result
-st.write("🟨 Matching events for character:", event_df)
-
 # Display event list
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
             event_title = row["title"]
             encoded_event = urllib.parse.quote(event_title)
-            encoded_character = urllib.parse.quote(selected_character)
-
-            st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character={encoded_character})")
+            encoded_character_id = str(character_id)
+            st.markdown(
+                f"- {row['date_occurred']}: "
+                f"[{event_title}](/?highlight={encoded_event}&from_character_id={encoded_character_id})"
+            )
 else:
     st.warning("No recorded events.")
 
