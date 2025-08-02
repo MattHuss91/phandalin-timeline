@@ -5,7 +5,7 @@ import urllib.parse
 
 st.set_page_config(page_title="Character Profiles", layout="centered")
 
-# Styling
+# --- Styling ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
@@ -35,49 +35,53 @@ st.markdown("""
 
 st.title("Character Profiles")
 
-# Connect to database
+# --- Load Data ---
 conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters ORDER BY name", conn)
 
-# Get character ID from query param
+# --- Query Params ---
 query_params = st.query_params
 character_id_str = query_params.get("character_id", [""])[0]
 
 if character_id_str.isdigit():
     character_id = int(character_id_str)
+    character_row = character_df[character_df["character_id"] == character_id]
+    if character_row.empty:
+        st.warning("Character not found in database.")
+        character_id = None
+    else:
+        character_row = character_row.iloc[0]
+        default_name = character_row["name"]
 else:
-    st.error("Invalid or missing character_id.")
-    st.stop()
+    character_id = None
+    default_name = None
 
-# Get character row by ID
-character_row = character_df[character_df["character_id"] == character_id]
-
-if character_row.empty:
-    st.error("Character not found.")
-    st.stop()
-
-character_row = character_row.iloc[0]
-selected_character = character_row["name"]
-
-# Dropdown for manual override (optional)
+# --- Character Selectbox ---
 character_names = character_df["name"].tolist()
+
+# Compute index for dropdown
+try:
+    index = character_names.index(default_name) if default_name else 0
+except ValueError:
+    index = 0
+
 selected_character = st.selectbox(
     "Choose a character",
     character_names,
-    index=character_df[character_df["character_id"] == character_id].index[0],
+    index=index,
     key="character_select_box"
 )
 
-# Update ID from dropdown (if user changes manually)
+# --- Update Character Info from Dropdown ---
 character_row = character_df[character_df["name"] == selected_character].iloc[0]
 character_id = int(character_row["character_id"])
 
-# Display bio
+# --- Display Character Info ---
 st.header(selected_character)
 st.write("### Bio")
 st.write(character_row["bio"])
 
-# Load related events
+# --- Load Related Events ---
 event_df = pd.read_sql_query(
     """
     SELECT ce.date_occurred, ce.title
@@ -88,7 +92,6 @@ event_df = pd.read_sql_query(
     """, conn, params=(character_id,)
 )
 
-# Display event list
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
