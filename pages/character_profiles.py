@@ -41,8 +41,8 @@ character_df = pd.read_sql_query("SELECT character_id, name, bio FROM characters
 character_names = character_df["name"].tolist()
 
 # Get character from query param
-query_params = st.experimental_get_query_params()
-default_character = query_params.get("character", [""])[0]
+query_params = st.query_params
+default_character = st.query_params.get("character", [""])[0]
 
 # Calculate index
 index = character_names.index(default_character) if default_character in character_names else 0
