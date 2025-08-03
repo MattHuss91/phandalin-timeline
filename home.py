@@ -23,10 +23,10 @@ st.markdown("""
         color: #000000 !important;
         font-weight: bold;
     }
-
-    button[role="button"] {
-        background-color: #333333 !important;
-        color: #ffffff !important;
+    
+button[role="button"], button[role="button"] * {
+    color: #ffffff !important;
+}       
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
         border: none !important;
