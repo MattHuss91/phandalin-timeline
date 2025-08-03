@@ -65,7 +65,7 @@ phandalin-timeline/
 | **V5**  | Blank version for public use with config options                              | 2026        |
 ---
 
-### 🚀 Goals
+### Goals
 
 - Organize and track your TTRPG campaigns
 - Make information easily accessible for players
