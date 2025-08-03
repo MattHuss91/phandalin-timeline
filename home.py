@@ -25,8 +25,8 @@ st.markdown("""
         font-weight: bold;
     }
 
-    /* Button styling */
-    button[role="button"], button[role="button"] * {
+    /* Button container */
+    div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
         font-weight: bold !important;
@@ -36,7 +36,13 @@ st.markdown("""
         border-radius: 5px !important;
     }
 
-    button[role="button"]:hover {
+    /* Force text inside button to white */
+    div.stButton > button span {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+
+    div.stButton > button:hover {
         background-color: #444444 !important;
         color: #ffffff !important;
     }
