@@ -4,6 +4,7 @@ import pandas as pd
 import urllib.parse
 
 st.set_page_config(page_title="Character Profiles", layout="centered")
+user = st.session_state.get("username")  # Returns None if not logged in
 
 # --- Styling ---
 st.markdown("""
@@ -127,24 +128,24 @@ st.write("### Bio")
 st.write(character_row["bio"])
 
 # --- Editable Bio Form ---
-with st.expander ("Edit Bio"):
-   with st.form("edit_bio_form"):
-     new_bio = st.text_area("Edit Bio", character_row["bio"], height=200)
-     submitted = st.form_submit_button("Save Changes")
+if user:
+    with st.expander("Edit Bio"):
+        with st.form("edit_bio_form"):
+            new_bio = st.text_area("Edit Bio", character_row["bio"], height=200)
+            submitted = st.form_submit_button("Save Changes")
 
-# --- Save to Database ---
-if submitted and new_bio != character_row["bio"]:
-    try:
-        conn = sqlite3.connect("dnd_campaign.db")
-        cursor = conn.cursor()
-        cursor.execute("UPDATE characters SET bio = ? WHERE character_id = ?", (new_bio, character_id))
-        conn.commit()
-        conn.close()
-        st.success("Bio updated successfully.")
-        st.rerun()
-    except Exception as e:
-        st.error(f"Error updating bio: {e}")
-
+        # --- Save to Database ---
+        if submitted and new_bio != character_row["bio"]:
+            try:
+                conn = sqlite3.connect("dnd_campaign.db")
+                cursor = conn.cursor()
+                cursor.execute("UPDATE characters SET bio = ? WHERE character_id = ?", (new_bio, character_id))
+                conn.commit()
+                conn.close()
+                st.success("Bio updated successfully.")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error updating bio: {e}")
 # --- Load Related Events ---
 conn = sqlite3.connect("dnd_campaign.db")
 event_df = pd.read_sql_query(
