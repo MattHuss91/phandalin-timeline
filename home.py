@@ -10,29 +10,75 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    html, body, [class*="css"] {
-        font-family: 'Lora', serif !important;
-        color: #000000 !important;
+    .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-position: center;
+        font-family: 'Lora', serif !important;
+        color: #000000 !important;
     }
 
-    .stContainer {
-        background-color: rgba(255, 255, 255, 0.9) !important;
-        padding: 1rem;
-        border-radius: 10px;
+    label {
+        color: #000000 !important;
+        font-weight: bold;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    /* Button container */
+    div.stButton > button {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 5px !important;
+    }
+
+    /* Force text inside button to white */
+    div.stButton > button span {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+
+    div.stButton > button:hover {
+        background-color: #444444 !important;
+        color: #ffffff !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
 st.title("The Heroes of Phandalin")
 st.write("The box was just the start")
+
+# User list
+usernames = ["Admin", "Emily", "Kay", "Jon", "Chris", "Hans"]
+
+# Username: Password pairs
+users = {
+    "Admin": "adminpass",
+    "Emily": "ceridwen",
+    "Kay": "fariah",
+    "Jon": "llechan",
+    "Chris": "geoff",
+    "Hans": "sister"
+}
+
+# If not logged in, show login form
+# If not logged in, show login form
+if "username" not in st.session_state or st.session_state["username"] is None:
+    selected_user = st.selectbox("Select your user", list(users.keys()))
+    password = st.text_input("Password", type="password")
+
+    if st.button("Log in"):
+        if users[selected_user] == password:
+            st.session_state.username = selected_user
+            st.rerun()
+        else:
+            st.error("Incorrect password")
+else:
+    st.success(f"Logged in as {st.session_state['username']}")
+    if st.button("Log out"):
+        del st.session_state["username"]
+        st.rerun()
