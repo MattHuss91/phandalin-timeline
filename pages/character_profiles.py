@@ -87,7 +87,12 @@ if character_id_str.isdigit():
     character_id = int(character_id_str)
     character_row = character_df[character_df["character_id"] == character_id]
     if character_row.empty:
-        st.warning("Character not found.")
+       st.markdown(
+    f"<div style='background-color:#fff3cd; padding:1em; border-radius:5px; color:#000000; font-weight:bold;'>"
+    f"You are logged in as {user}, but you cannot edit this character."
+    f"</div>",
+    unsafe_allow_html=True
+)
         character_id = None
     else:
         character_row = character_row.iloc[0]
