@@ -170,8 +170,8 @@ if not event_df.empty:
             event_title = row["title"]
             encoded_event = urllib.parse.quote(event_title)
             st.markdown(
-                f"- {row['date_occurred']}: "
-                f"[{event_title}](/?highlight={encoded_event}&from_character_id={character_id})"
-            )
+    f"- {row['date_occurred']}: "
+    f"[{event_title}](/Timeline?highlight={encoded_event}&from_character_id={character_id})"
+)
 else:
     st.warning("No recorded events.")
