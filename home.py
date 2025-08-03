@@ -41,13 +41,13 @@ st.write("The box was just the start")
 usernames = ["Admin", "Emily", "Kay", "Jon", "Chris", "Hans"]
 
 # If not logged in, show login form
-if "username" not in st.session_state or st.session_state.username is None:
+if "username" not in st.session_state or st.session_state["username"] is None:
     selected_user = st.selectbox("Select your user", usernames)
     if st.button("Log in"):
         st.session_state.username = selected_user
         st.experimental_rerun()
 else:
-    st.success(f"Logged in as {st.session_state.username}")
+    st.success(f"Logged in as {st.session_state.[username]}")
     if st.button("Log out"):
         del st.session_state["username"]
         st.experimental_rerun()
