@@ -8,30 +8,28 @@ st.set_page_config(
 # Custom Fantasy Styling
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
-
-    .stApp {
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: 'Lora', serif !important;
+    label {
         color: #000000 !important;
+        font-weight: bold;
     }
 
-    .stContainer {
-        background-color: rgba(255, 255, 255, 0.9) !important;
-        padding: 1rem;
-        border-radius: 10px;
-    }
-
-    h1, h2, h3 {
+    button[role="button"] {
+        background-color: #333333 !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
-        text-transform: uppercase;
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 5px !important;
+    }
+
+    button[role="button"]:hover {
+        background-color: #444444 !important;
+        color: #ffffff !important;
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 
 st.title("The Heroes of Phandalin")
