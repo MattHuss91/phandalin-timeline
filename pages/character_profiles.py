@@ -106,7 +106,7 @@ except ValueError:
 selected_character = st.selectbox("Choose a character", character_names, index=index)
 character_row = character_df[character_df["name"] == selected_character].iloc[0]
 character_id = int(character_row["character_id"])
-editable_by = character_row["Editable by"]
+editable_by = character_row["editable_by"]
 
 # --- Display Bio ---
 st.header(selected_character)
