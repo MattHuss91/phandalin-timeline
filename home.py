@@ -55,12 +55,28 @@ st.write("The box was just the start")
 # User list
 usernames = ["Admin", "Emily", "Kay", "Jon", "Chris", "Hans"]
 
+# Username: Password pairs
+users = {
+    "Admin": "adminpass",
+    "Emily": "ceridwen",
+    "Kay": "fariah",
+    "Jon": "llechan",
+    "Chris": "geoff",
+    "Hans": "sister"
+}
+
+# If not logged in, show login form
 # If not logged in, show login form
 if "username" not in st.session_state or st.session_state["username"] is None:
-    selected_user = st.selectbox("Select your user", usernames)
+    selected_user = st.selectbox("Select your user", list(users.keys()))
+    password = st.text_input("Password", type="password")
+
     if st.button("Log in"):
-        st.session_state.username = selected_user
-        st.experimental_rerun()
+        if users[selected_user] == password:
+            st.session_state.username = selected_user
+            st.experimental_rerun()
+        else:
+            st.error("Incorrect password")
 else:
     st.success(f"Logged in as {st.session_state['username']}")
     if st.button("Log out"):
