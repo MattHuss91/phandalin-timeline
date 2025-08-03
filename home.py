@@ -8,7 +8,7 @@ st.set_page_config(
 # Custom Fantasy Styling
 st.markdown("""
     <style>
-     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
     .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
@@ -19,14 +19,16 @@ st.markdown("""
         font-family: 'Lora', serif !important;
         color: #000000 !important;
     }
+
     label {
         color: #000000 !important;
         font-weight: bold;
     }
-    
-button[role="button"], button[role="button"] * {
-    color: #ffffff !important;
-}       
+
+    /* Button styling */
+    button[role="button"], button[role="button"] * {
+        background-color: #333333 !important;
+        color: #ffffff !important;
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
         border: none !important;
@@ -40,8 +42,6 @@ button[role="button"], button[role="button"] * {
     }
     </style>
 """, unsafe_allow_html=True)
-
-
 
 st.title("The Heroes of Phandalin")
 st.write("The box was just the start")
