@@ -77,7 +77,7 @@ st.title("Character Profiles")
 
 # --- Load character data ---
 conn = sqlite3.connect("dnd_campaign.db")
-character_df = pd.read_sql_query("SELECT character_id, name, bio, `Editable by` FROM characters ORDER BY name", conn)
+character_df = pd.read_sql_query("SELECT character_id, name, bio, editable_by FROM characters ORDER BY name", conn)
 
 # --- Get character ID from URL ---
 query_params = st.query_params
