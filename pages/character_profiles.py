@@ -87,13 +87,14 @@ if character_id_str.isdigit():
     character_id = int(character_id_str)
     character_row = character_df[character_df["character_id"] == character_id]
     if character_row.empty:
-       st.markdown(
-    f"<div style='background-color:#fff3cd; padding:1em; border-radius:5px; color:#000000; font-weight:bold;'>"
-    f"You are logged in as {user}, but you cannot edit this character."
-    f"</div>",
-    unsafe_allow_html=True
-)
+        st.markdown(
+            "<div style='background-color:#fff3cd; padding:1em; border-radius:5px; color:#000000; font-weight:bold;'>"
+            "Character not found in the database."
+            "</div>",
+            unsafe_allow_html=True
+        )
         character_id = None
+        default_name = None
     else:
         character_row = character_row.iloc[0]
         default_name = character_row["name"]
@@ -126,7 +127,12 @@ elif user == editable_by:
     st.info(f"You are logged in as {user}, and you are allowed to edit this character.")
     can_edit = True
 elif user:
-    st.warning(f"You are logged in as {user}, but you cannot edit this character.")
+    st.markdown(
+        f"<div style='background-color:#fff3cd; padding:1em; border-radius:5px; color:#000000; font-weight:bold;'>"
+        f"You are logged in as {user}, but you cannot edit this character."
+        f"</div>",
+        unsafe_allow_html=True
+    )
     can_edit = False
 else:
     can_edit = False
@@ -163,6 +169,9 @@ if not event_df.empty:
         for _, row in event_df.iterrows():
             event_title = row["title"]
             encoded_event = urllib.parse.quote(event_title)
-            st.markdown(f"- {row['date_occurred']}: [{event_title}](/?highlight={encoded_event}&from_character_id={character_id})")
+            st.markdown(
+                f"- {row['date_occurred']}: "
+                f"[{event_title}](/?highlight={encoded_event}&from_character_id={character_id})"
+            )
 else:
     st.warning("No recorded events.")
