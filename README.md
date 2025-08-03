@@ -54,9 +54,19 @@ phandalin-timeline/
    streamlit run Home.py
    ```
 
-## Future Plans
+## 🔭 TTRPG Management Tool – Feature Roadmap
 
-- Character bios with event history
-- Interactive world map
-- Faction tracking
-- Admin-only update tools for new sessions
+| Version | Target Features                                                               | ETA         |
+|---------|-------------------------------------------------------------------------------|-------------|
+| **V1**  | Character bios and timeline viewer with login-based editing permissions       | ✔ Released  |
+| **V2**  | Factions & Locations pages (bios, characters, related events, images)         | Sept–Oct    |
+| **V3**  | Admin tool to add/edit all SQL data (events, locations, links) in one form    | Late 2025   |
+| **V4**  | Interactive map integration for towns/regions with clickable event overlays   | Late 2025   |
+| **V5**  | Blank version for public use with config options                              | 2026        |
+---
+
+### 🚀 Goals
+
+- Organize and track your TTRPG campaigns
+- Make information easily accessible for players
+- Enable secure collaboration between DMs and players
