@@ -8,6 +8,17 @@ st.set_page_config(
 # Custom Fantasy Styling
 st.markdown("""
     <style>
+     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
+
+    .stApp {
+        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
+        font-family: 'Lora', serif !important;
+        color: #000000 !important;
+    }
     label {
         color: #000000 !important;
         font-weight: bold;
