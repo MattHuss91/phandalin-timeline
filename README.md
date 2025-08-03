@@ -54,7 +54,7 @@ phandalin-timeline/
    streamlit run Home.py
    ```
 
-## 🔭 TTRPG Management Tool – Feature Roadmap
+## TTRPG Management Tool – Feature Roadmap
 
 | Version | Target Features                                                               | ETA         |
 |---------|-------------------------------------------------------------------------------|-------------|
