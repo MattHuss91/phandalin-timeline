@@ -47,7 +47,7 @@ if "username" not in st.session_state or st.session_state["username"] is None:
         st.session_state.username = selected_user
         st.experimental_rerun()
 else:
-    st.success(f"Logged in as {st.session_state.[username]}")
+    st.success(f"Logged in as {st.session_state['username']}")
     if st.button("Log out"):
         del st.session_state["username"]
         st.experimental_rerun()
