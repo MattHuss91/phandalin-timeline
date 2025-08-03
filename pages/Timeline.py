@@ -78,8 +78,11 @@ events_df = pd.read_sql_query("SELECT * FROM EventTimeline ORDER BY world_day", 
 
 # If we're coming from a character page and highlighting one event
 if highlight_event:
-    events_df = events_df[events_df["title"] == highlight_event]
-
+    filtered_df = events_df[events_df["title"].str.strip().str.lower() == highlight_event.strip().lower()]
+    if filtered_df.empty:
+        st.warning(f"No event found matching: '{highlight_event}'")
+    else:
+        events_df = filtered_df
 # If a character ID is present, add a link back
 if from_character_id.isdigit():
     character_id = int(from_character_id)
@@ -131,3 +134,4 @@ for _, row in events_df.iterrows():
             st.markdown(f"- [{character}](/character_profiles?character_id={character_id_link})")
 
 conn.close()
+
