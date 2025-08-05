@@ -5,7 +5,7 @@ import sqlite3
 from datetime import datetime
 
 db_path = "/mnt/data/dnd_campaign.db"
-src_path = "../dnd_campaign.db"  # relative to your pages folder
+src_path = "dnd_campaign.db"  
 
 if not os.path.exists(db_path):
     if os.path.exists(src_path):
@@ -401,6 +401,7 @@ if st.session_state.get("user_role") == "Admin":
 	    
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
