@@ -1,6 +1,30 @@
+import os
+import shutil
 import streamlit as st
 import sqlite3
 from datetime import datetime
+
+# Set paths for database
+db_path = "/mnt/data/dnd_campaign.db"
+src_path = "dnd_campaign.db"
+
+# Ensure /mnt/data exists (persistent writable dir in Streamlit Cloud)
+if not os.path.exists("/mnt/data"):
+    os.makedirs("/mnt/data")
+
+# Copy DB from app root to /mnt/data if not already there
+if not os.path.exists(db_path):
+    if os.path.exists(src_path):
+        shutil.copy(src_path, db_path)
+        st.write(f"Copied {src_path} to {db_path}")
+    else:
+        st.error("Source DB file not found!")
+else:
+    st.write("DB file already exists in /mnt/data/")
+
+# Now connect to the copied DB in /mnt/data
+conn = sqlite3.connect(db_path)
+c = conn.cursor()
 
 # --- Carry log in details ---
 st.set_page_config(page_title="Admin Tool", layout="centered")
@@ -379,6 +403,7 @@ if st.session_state.get("user_role") == "Admin":
 	    
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
