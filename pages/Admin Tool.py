@@ -51,7 +51,7 @@ st.markdown("""
         background-color: #444444 !important;
         color: #ffffff !important;
     }
-    html, body, .stApp, .stTextInput, .stTextArea, .stSelectbox, .stMarkdown, .stRadio, .stForm {
+    html, body, .stApp, .stTextInput, .stTextArea, .stMarkdown, .stRadio, .stForm {
         color: #000000 !important;
     }
 
@@ -335,6 +335,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
