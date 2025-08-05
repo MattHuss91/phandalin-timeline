@@ -131,7 +131,7 @@ elif mode == "Events":
                 conn.commit()
                 st.success("Event updated.")
 
-   else:  # Create Mode
+    else:  # Create Mode
         with st.form("create_event"):
             title = st.text_input("Title")
             date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
