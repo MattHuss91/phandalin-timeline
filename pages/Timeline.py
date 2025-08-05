@@ -52,7 +52,8 @@ conn = psycopg2.connect(
     dbname=st.secrets["db_name"],
     user=st.secrets["db_user"],
     password=st.secrets["db_password"],
-    port=5432
+    port=st.secrets["port"],
+    sslmode="require"
 )
 c = conn.cursor()
 
@@ -144,3 +145,4 @@ conn.close()
 
 st.markdown("---")
 st.caption("Loreweave")
+
