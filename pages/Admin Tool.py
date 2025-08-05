@@ -193,17 +193,88 @@ if action == "Location":
     mode = st.radio("Action", ["Create new", "Edit existing"])
 
     if mode == "Edit existing":
-        Location = get_all("locations", "location_id", "name")
+        locations = get_all("locations", "location_id", "name")
         loc_dict = {name: lid for lid, name in locations}
         selected_name = st.selectbox("Select Location", list(loc_dict.keys()))
         loc_id = loc_dict[selected_name]
-        
+
         c.execute("""
             SELECT name, region, description
             FROM locations WHERE location_id = ?
-        """, (location_id,))
+        """, (loc_id,))
         row = c.fetchone()
         default_name, default_region, default_description = row
+
+        with st.form("edit_location"):
+            name = st.text_input("Location Name", value=default_name)
+            region = st.text_input("Region", value=default_region)
+            description = st.text_area("Description", value=default_description)
+            submit = st.form_submit_button("Save Changes")
+            if submit:
+                c.execute(
+                    "UPDATE locations SET name = ?, region = ?, description = ? WHERE location_id = ?",
+                    (name, region, description, loc_id)
+                )
+                conn.commit()
+                st.success(f"Location '{name}' updated.")
+
+    elif mode == "Create new":
+        with st.form("create_location"):
+            name = st.text_input("Location Name")
+            region = st.text_input("Region")
+            description = st.text_area("Description")
+            submit = st.form_submit_button("Create Location")
+            if submit:
+                c.execute(
+                    "INSERT INTO locations(name, region, description) VALUES (?, ?, ?)",
+                    (name, region, description)
+                )
+                conn.commit()
+                st.success(f"Location '{name}' created.")
+                
+# --- FACTION MANAGEMENT ---
+if action == "Faction":
+    mode = st.radio("Action", ["Create new", "Edit existing"])
+
+    if mode == "Edit existing":
+        factions = get_all("factions", "faction_id", "name")
+        faction_dict = {name: fid for fid, name in factions}
+        selected_name = st.selectbox("Select Faction", list(faction_dict.keys()))
+        faction_id = faction_dict[selected_name]
+
+        c.execute("""
+            SELECT name, alignment, goals
+            FROM factions WHERE faction_id = ?
+        """, (faction_id,))
+        row = c.fetchone()
+        default_name, default_alignment, default_goals = row
+
+        with st.form("edit_faction"):
+            name = st.text_input("Faction Name", value=default_name)
+            alignment = st.text_input("Alignment", value=default_alignment)
+            goals = st.text_area("Goals", value=default_goals)
+            submit = st.form_submit_button("Save Changes")
+            if submit:
+                c.execute(
+                    "UPDATE factions SET name = ?, alignment = ?, goals = ? WHERE faction_id = ?",
+                    (name, alignment, goals, faction_id)
+                )
+                conn.commit()
+                st.success(f"Faction '{name}' updated.")
+
+    elif mode == "Create new":
+        with st.form("create_faction"):
+            name = st.text_input("Faction Name")
+            alignment = st.text_input("Alignment")
+            goals = st.text_area("Goals")
+            submit = st.form_submit_button("Create Faction")
+            if submit:
+                c.execute(
+                    "INSERT INTO factions(name, alignment, goals) VALUES (?, ?, ?)",
+                    (name, alignment, goals)
+                )
+                conn.commit()
+                st.success(f"Faction '{name}' created.")
 
 
 # --- CHARACTER EVENT LINKING ---
