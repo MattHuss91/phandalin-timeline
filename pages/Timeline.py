@@ -135,3 +135,5 @@ for _, row in events_df.iterrows():
 
 conn.close()
 
+st.markdown("---")
+st.caption("Loreweave")
