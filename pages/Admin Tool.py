@@ -30,31 +30,29 @@ if st.session_state.get("username") != "Admin":
 # --- Utility Functions ---
 def parse_date(date_str):
     try:
-        day_str, month_name, year_str = date_str.split()
+        parts = date_str.strip().split()
+        if len(parts) < 3:
+            return None, None, None, None
 
-        # Handle suffix on day (1st, 2nd, 3rd, 4th, etc.)
-        if day_str[-2:] in ("st", "nd", "rd", "th"):
-            day = int(day_str[:-2])
-        else:
-            day = int(day_str)
+        day_str, month_name, year_str = parts[:3]
 
-        # Month mapping
+        # Handle suffix on day (1st, 2nd, etc.)
+        day = int(day_str[:-2]) if day_str[-2:] in ("st", "nd", "rd", "th") else int(day_str)
+
         month_map = {
             "Verdanir": 1, "Emberfall": 2, "Duskwatch": 3, "Glimmerwane": 4,
             "Brightreach": 5, "Stormrest": 6, "Hollowshade": 7, "Deepmoor": 8,
             "Frostmere": 9, "Starwake": 10
         }
 
-        month = month_map[month_name]
+        month = month_map.get(month_name)
+        if not month:
+            return None, None, None, None
 
-        # Remove non-numeric suffix (e.g., "AF") from year
         year = int(''.join(filter(str.isdigit, year_str)))
 
-        # Calculate world_day
         world_day = (month - 1) * 36 + (day - 1)
-
         return day, month, year, world_day
-
     except Exception as e:
         print("Date parsing failed:", e)
         return None, None, None, None
@@ -62,6 +60,10 @@ def parse_date(date_str):
 def get_all(table, id_col, name_col):
     c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
     return c.fetchall()
+# --- debug ---
+st.write("Raw date_occurred input:", repr(date_occurred))
+day, month, year, world_day = parse_date(date_occurred)
+st.write("Parsed Date:", day, month, year, world_day)
 
 # --- Main interface ---
 st.title("Loreweave Admin Tool")
