@@ -29,38 +29,30 @@ if st.session_state.get("username") != "Admin":
     st.stop()
 
 # --- Utility Functions ---
-def parse_date(date_str):
+def parse_custom_date(date_str):
+    month_map = {
+        'Verdanir': 1,
+        'Emberfall': 2,
+        'Duskwatch': 3,
+        'Glimmerwane': 4,
+        'Brightreach': 5,
+        'Stormrest': 6,
+        'Hollowshade': 7,
+        'Deepmoor': 8,
+        'Frostmere': 9,
+        'Starwake': 10
+    }
+
     try:
-        parts = date_str.strip().split()
-        if len(parts) < 3:
-            return None, None, None, None
+        parts = date_str.strip().split(" ")
+        day = int(parts[0].replace("st", "").replace("nd", "").replace("rd", "").replace("th", ""))
+        month = month_map.get(parts[1], 0)
+        year = int(parts[2].replace("AF", "").strip())
 
-        day_str, month_name, year_str = parts[:3]
-
-        # Handle suffix on day (1st, 2nd, etc.)
-        day = int(day_str[:-2]) if day_str[-2:] in ("st", "nd", "rd", "th") else int(day_str)
-
-        month_map = {
-            "Verdanir": 1, "Emberfall": 2, "Duskwatch": 3, "Glimmerwane": 4,
-            "Brightreach": 5, "Stormrest": 6, "Hollowshade": 7, "Deepmoor": 8,
-            "Frostmere": 9, "Starwake": 10
-        }
-
-        month = month_map.get(month_name)
-        if not month:
-            return None, None, None, None
-
-        year = int(''.join(filter(str.isdigit, year_str)))
-
-        # Each year has 360 days (10 months x 36 days)
-        # Each month has 36 days, so we calculate:
-        # world_day = (year - 1) * 360 + (month - 1) * 36 + (day - 1)
-        world_day = (year - 1) * 360 + (month - 1) * 36 + (day - 1)
-
+        world_day = (year * 360) + ((month - 1) * 36) + (day - 1)
         return day, month, year, world_day
-
     except Exception as e:
-        print("Date parsing failed:", e)
+        st.error(f"Failed to parse date '{date_str}': {e}")
         return None, None, None, None
 
 def get_all(table, id_col, name_col):
