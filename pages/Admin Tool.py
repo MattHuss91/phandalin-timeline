@@ -63,6 +63,10 @@ st.markdown("""
         color: white !important;
     }
 
+    .css-1n76uvr {
+    color: white !important;
+    }
+
     .stTextInput input,
     .stTextArea textarea {
         color: white !important;
@@ -356,6 +360,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
