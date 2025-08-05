@@ -136,7 +136,7 @@ elif mode == "Events":
 
             if st.form_submit_button("Create"):
                 st.write("Raw input for date_occurred:", repr(date_occurred))  # 🔍 DEBUG
-                day, month, year, world_day = parse_date(date_occurred)
+                day, month, year, world_day = parse_custom_date(date_occurred)
                 st.write("Parsed Date:", day, month, year, world_day)  # 🔍 DEBUG
 
                 try:
