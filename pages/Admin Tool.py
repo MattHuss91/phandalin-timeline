@@ -161,7 +161,7 @@ elif action == "Event":
         ev_dict = {title: eid for eid, title in evs}
         sel = st.selectbox("Select Event", list(ev_dict.keys()))
         eid = ev_dict[sel]
-        c.execute("SELECT title, short_summary, long_description, date_occurred, location_id FROM events WHERE event_id = ?", (eid,))
+        c.execute("SELECT title, short_summary, long_description, date_occurred, location_id FROM campaignevents WHERE event_id = ?", (eid,))
         t0, s0, l0, d0, loc0 = c.fetchone()
         idx = list(loc_dict.keys()).index(rev_loc.get(loc0, "")) if loc0 in rev_loc else 0
         with st.form("edit_event"):
@@ -177,7 +177,7 @@ elif action == "Event":
                     st.error("Invalid date.")
                 else:
                     c.execute(
-                        "UPDATE events SET title=?, short_summary=?, long_description=?, date_occurred=?, day=?, month=?, year=?, world_day=?, location_id=? WHERE event_id=?",
+                        "UPDATE campaignevents SET title=?, short_summary=?, long_description=?, date_occurred=?, day=?, month=?, year=?, world_day=?, location_id=? WHERE event_id=?",
                         (title, summary, longd, date_input, day, m, y, wd, loc_id, eid)
                     )
                     conn.commit()
@@ -196,7 +196,7 @@ elif action == "Event":
                     st.error("Invalid date.")
                 else:
                     c.execute(
-                        "INSERT INTO campaignevents(title,short_summary,long_description,date_occurred,day,month,year,world_day,location_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                        "INSERT INTO campaigncampaignevents(title,short_summary,long_description,date_occurred,day,month,year,world_day,location_id) VALUES (?,?,?,?,?,?,?,?,?)",
                         (title, summary, longd, date_input, day, m, y, wd, loc_id)
                     )
                     conn.commit()
@@ -261,7 +261,7 @@ elif action == "Faction":
 # --- CHARACTER ↔ EVENT LINKING ---
 elif action == "Link character to event":
     chars = get_all("characters", "character_id", "name")
-    evs = get_all("events", "event_id", "title")
+    evs = get_all("campaignevents", "event_id", "title")
     char_dict = {name: cid for cid, name in chars}
     ev_dict = {title: eid for eid, title in evs}
     with st.form("link_ce"):
@@ -299,6 +299,7 @@ with open(DB_FILE, "rb") as f:
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
