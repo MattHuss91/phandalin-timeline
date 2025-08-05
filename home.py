@@ -1,5 +1,13 @@
 import streamlit as st
 
+st.write("Current working directory:", os.getcwd())
+st.write("Files in directory:", os.listdir('.'))
+
+if os.path.exists("dnd_campaign.db"):
+    st.write("dnd_campaign.db exists!")
+else:
+    st.error("dnd_campaign.db NOT found in current directory!")
+
 st.set_page_config(
     page_title="Home",     # <- Sidebar shows "Home"
     page_icon="📜",        # <- Optional: gives a nice emoji icon
@@ -83,3 +91,4 @@ else:
 
 st.markdown("---")
 st.caption("Loreweave")
+
