@@ -1,3 +1,4 @@
+
 import streamlit as st
 import psycopg2
 from datetime import datetime
@@ -133,7 +134,8 @@ elif mode == "Events":
     else:  # Create Mode
     with st.form("create_event"):
         title = st.text_input("Title")
-        date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
+        date_occurred = 
+st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
         summary = st.text_area("Summary")
         full_description = st.text_area("Full Description")
 
