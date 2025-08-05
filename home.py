@@ -35,8 +35,8 @@ st.markdown("""
         </style>
 """, unsafe_allow_html=True)
 
-st.title("The Heroes of Phandalin")
-st.write("The box was just the start")
+st.title("Loreweave")
+st.write("Heroes of Phandalin")
 
 # User list
 usernames = ["Admin", "Emily", "Kay", "Jon", "Chris", "Hans"]
