@@ -37,13 +37,9 @@ st.markdown("""
 st.markdown("""
     <div style='text-align: center; margin-top: -20px;'>
         <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
-        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Loreweave</h1>
+        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Heroes of Phandalin</h1>
     </div>
 """, unsafe_allow_html=True)
-
-st.image("https://i.imgur.com/WEGvkz8.png", use_container_width=True)
-st.title("Loreweave")
-st.write("Heroes of Phandalin")
 
 # User list
 usernames = ["Admin", "Emily", "Kay", "Jon", "Chris", "Hans"]
