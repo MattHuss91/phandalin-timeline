@@ -2,6 +2,10 @@ import streamlit as st
 import sqlite3
 from datetime import datetime
 
+# --- Carry log in details ---
+st.set_page_config(page_title="Character Profiles", layout="centered")
+user = st.session_state.get("username")
+
 # --- CONNECT TO DATABASE ---
 conn = sqlite3.connect("dnd_campaign.db")
 c = conn.cursor()
@@ -314,3 +318,4 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
