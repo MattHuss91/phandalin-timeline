@@ -157,7 +157,7 @@ elif action == "Event":
     loc_dict = {name: lid for lid, name in locs}
     rev_loc = {lid: name for name, lid in loc_dict.items()}
     if mode == "Edit existing":
-        evs = get_all("events", "event_id", "title")
+        evs = get_all("campaignevents", "event_id", "title")
         ev_dict = {title: eid for eid, title in evs}
         sel = st.selectbox("Select Event", list(ev_dict.keys()))
         eid = ev_dict[sel]
@@ -196,7 +196,7 @@ elif action == "Event":
                     st.error("Invalid date.")
                 else:
                     c.execute(
-                        "INSERT INTO events(title,short_summary,long_description,date_occurred,day,month,year,world_day,location_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                        "INSERT INTO campaignevents(title,short_summary,long_description,date_occurred,day,month,year,world_day,location_id) VALUES (?,?,?,?,?,?,?,?,?)",
                         (title, summary, longd, date_input, day, m, y, wd, loc_id)
                     )
                     conn.commit()
@@ -299,5 +299,6 @@ with open(DB_FILE, "rb") as f:
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
