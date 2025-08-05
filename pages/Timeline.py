@@ -111,28 +111,23 @@ if not highlight_event:
         events_df = events_df[events_df['people_involved'].str.contains(selected_character)]
 
     # Clean date range slider (with world_day)
-date_options = events_df[['world_day', 'date_occurred']].drop_duplicates().sort_values('world_day')
+    date_options = events_df[['world_day', 'date_occurred']].drop_duplicates().sort_values('world_day')
 
-if not date_options.empty:
-    day_to_label = dict(zip(date_options['world_day'], date_options['date_occurred']))
+    if not date_options.empty:
+        day_to_label = dict(zip(date_options['world_day'], date_options['date_occurred']))
 
-    start_day, end_day = st.select_slider(
-        "Select a date range",
-        options=date_options['world_day'].tolist(),
-        format_func=lambda x: day_to_label[x],
-        value=(date_options['world_day'].iloc[0], date_options['world_day'].iloc[-1])
-    )
+        start_day, end_day = st.select_slider(
+            "Select a date range",
+            options=date_options['world_day'].tolist(),
+            format_func=lambda x: day_to_label[x],
+            value=(date_options['world_day'].iloc[0], date_options['world_day'].iloc[-1])
+        )
 
-    events_df = events_df[
-        (events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)
-    ]
-else:
-    st.warning("No events found to generate a timeline.")
-
-# Filter dataframe by selected range
-events_df = events_df[
-    (events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)
-]
+        events_df = events_df[
+            (events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)
+        ]
+    else:
+        st.warning("No events found to generate a timeline.")
 
 # Render timeline
 for _, row in events_df.iterrows():
