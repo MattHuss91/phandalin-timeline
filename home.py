@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-# Custom Fantasy Styling
+# --- Custom Fantasy Styling ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
@@ -21,7 +21,6 @@ st.markdown("""
         font-weight: bold;
     }
 
-    /* Button container */
     div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
@@ -31,8 +30,15 @@ st.markdown("""
         padding: 0.5rem 1rem !important;
         border-radius: 5px !important;
     }
+    </style>
+""", unsafe_allow_html=True)
 
-        </style>
+# --- Logo + Title (centered, no gap) ---
+st.markdown("""
+    <div style='text-align: center; margin-top: -20px;'>
+        <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
+        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Loreweave</h1>
+    </div>
 """, unsafe_allow_html=True)
 
 st.image("https://i.imgur.com/WEGvkz8.png", use_container_width=True)
