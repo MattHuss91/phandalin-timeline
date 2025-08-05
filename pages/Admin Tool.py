@@ -73,6 +73,10 @@ st.markdown("""
         padding: 0.5rem 1rem !important;
         border-radius: 5px !important;
     }
+   div[data-baseweb="radio"] label {
+    color: black !important;
+    font-weight: bold;
+    }
 
     </style>
 """, unsafe_allow_html=True)
@@ -355,6 +359,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
