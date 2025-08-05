@@ -1,8 +1,9 @@
 import streamlit as st
-import sqlite3
+import psycopg2
 import pandas as pd
 import urllib.parse
 
+# --- Streamlit config ---
 st.set_page_config(page_title="Character Profiles", layout="centered")
 user = st.session_state.get("username")
 
@@ -75,8 +76,21 @@ st.markdown("""
 # --- Title ---
 st.title("Character Profiles")
 
+# --- Connect to Supabase ---
+try:
+    conn = psycopg2.connect(
+        host=st.secrets["db_host"],
+        dbname=st.secrets["db_name"],
+        user=st.secrets["db_user"],
+        password=st.secrets["db_password"],
+        port=st.secrets["port"],
+        sslmode="require"
+    )
+except Exception as e:
+    st.error(f"Failed to connect to database: {e}")
+    st.stop()
+
 # --- Load character data ---
-conn = sqlite3.connect("dnd_campaign.db")
 character_df = pd.read_sql_query("SELECT character_id, name, bio, editable_by FROM characters ORDER BY name", conn)
 
 # --- Get character ID from URL ---
@@ -147,32 +161,42 @@ if can_edit:
         if submitted and new_bio != character_row["bio"]:
             try:
                 cursor = conn.cursor()
-                cursor.execute("UPDATE characters SET bio = ? WHERE character_id = ?", (new_bio, character_id))
+                cursor.execute(
+                    "UPDATE characters SET bio = %s WHERE character_id = %s",
+                    (new_bio, character_id)
+                )
                 conn.commit()
+                cursor.close()
                 st.success("Bio updated successfully.")
                 st.rerun()
             except Exception as e:
                 st.error(f"Error updating bio: {e}")
 
 # --- Related Events ---
-event_df = pd.read_sql_query("""
-    SELECT ce.date_occurred, ce.title
-    FROM characterappearances ca
-    JOIN CampaignEvents ce ON ca.event_id = ce.event_id
-    WHERE ca.character_id = ?
-    ORDER BY ce.world_day
-""", conn, params=(character_id,))
+try:
+    event_df = pd.read_sql_query("""
+        SELECT ce.date_occurred, ce.title
+        FROM characterappearances ca
+        JOIN CampaignEvents ce ON ca.event_id = ce.event_id
+        WHERE ca.character_id = %s
+        ORDER BY ce.world_day
+    """, conn, params=(character_id,))
+except Exception as e:
+    st.error(f"Failed to fetch related events: {e}")
+    event_df = pd.DataFrame()
+
 conn.close()
 
+# --- Display Events ---
 if not event_df.empty:
     with st.expander("Events Involved"):
         for _, row in event_df.iterrows():
             event_title = row["title"]
             encoded_event = urllib.parse.quote(event_title)
             st.markdown(
-    f"- {row['date_occurred']}: "
-    f"[{event_title}](/Timeline?highlight={encoded_event}&from_character_id={character_id})"
-)
+                f"- {row['date_occurred']}: "
+                f"[{event_title}](/Timeline?highlight={encoded_event}&from_character_id={character_id})"
+            )
 else:
     st.warning("No recorded events.")
 
