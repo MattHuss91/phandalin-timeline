@@ -17,11 +17,6 @@ st.markdown("""
 
     /* Background & font */
     .stApp {
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-position: center;
         font-family: 'Lora', serif !important;
         color: #000000 !important;
     }
@@ -372,6 +367,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
