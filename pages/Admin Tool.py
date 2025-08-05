@@ -5,7 +5,10 @@ import sqlite3
 from datetime import datetime
 
 db_path = "/mnt/data/dnd_campaign.db"
-src_path = "dnd_campaign.db"  
+src_path = "dnd_campaign.db"
+
+st.write("Current working directory:", os.getcwd())
+st.write("Files in current directory:", os.listdir())
 
 if not os.path.exists(db_path):
     if os.path.exists(src_path):
@@ -15,7 +18,7 @@ if not os.path.exists(db_path):
         st.error(f"Source DB file not found at {src_path}!")
 else:
     st.write("DB file already exists in /mnt/data/")
-
+	
 # Now connect to the copied DB in /mnt/data
 conn = sqlite3.connect(db_path)
 c = conn.cursor()
@@ -401,6 +404,7 @@ if st.session_state.get("user_role") == "Admin":
 	    
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
