@@ -41,7 +41,8 @@ st.markdown("""
         color: #000000;
         font-weight: bold;
     }
-    /* Force text inside button to white */
+
+    /* Force button text to white */
     div.stButton > button span {
         color: #ffffff !important;
         font-weight: bold !important;
@@ -51,6 +52,7 @@ st.markdown("""
         background-color: #444444 !important;
         color: #ffffff !important;
     }
+
     html, body, .stApp, .stTextInput, .stTextArea, .stMarkdown, .stRadio, .stForm {
         color: #000000 !important;
     }
@@ -58,30 +60,40 @@ st.markdown("""
     label, h1, h2, h3, p, span, div, input, textarea {
         color: #000000 !important;
     }
-    
-    div[data-baseweb="select"] * {
+
+    /* White text inside dropdowns (including options) */
+    div[data-baseweb="select"] div {
         color: white !important;
     }
 
-    .css-1n76uvr {
-    color: white !important;
-    }
-
+    /* White text for inputs */
     .stTextInput input,
     .stTextArea textarea {
         color: white !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
     }
 
+    /* Keep radio labels black */
     .stRadio label {
         color: black !important;
     }
 
+    /* White text and styled submit buttons */
     div.stForm button, div.stForm button span {
         color: white !important;
         background-color: #333333 !important;
         font-weight: bold !important;
         font-family: 'Cinzel', serif !important;
+    }
+
+    /* White text for sidebar */
+    section[data-testid="stSidebar"] * {
+        color: white !important;
+    }
+
+    /* Optional: darken sidebar background */
+    section[data-testid="stSidebar"] {
+        background-color: rgba(0, 0, 0, 0.7) !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -363,6 +375,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
