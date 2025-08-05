@@ -110,21 +110,26 @@ if not highlight_event:
     if selected_character != "All":
         events_df = events_df[events_df['people_involved'].str.contains(selected_character)]
 
-    # Date range slider
-    labels = events_df['date_occurred'].tolist()
-    day_to_label = dict(zip(events_df['world_day'], events_df['date_occurred']))
-    label_to_day = {v: k for k, v in day_to_label.items()}
-    selected_start, selected_end = st.select_slider(
-        "Select a date range",
-        options=labels,
-        value=(labels[0], labels[-1])
-    )
-    start_day = label_to_day[selected_start]
-    end_day = label_to_day[selected_end]
+    # --- Date slider (clean display, unique values) ---
+# Create unique list of (world_day, date_occurred) tuples
+date_options = events_df[['world_day', 'date_occurred']].drop_duplicates().sort_values('world_day')
 
-    events_df = events_df[
-        (events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)
-    ]
+# Create slider labels and mapping
+day_to_label = dict(zip(date_options['world_day'], date_options['date_occurred']))
+label_to_day = {v: k for k, v in day_to_label.items()}  # for reverse lookup if needed
+
+# Use world_day as unique slider values
+start_day, end_day = st.select_slider(
+    "Select a date range",
+    options=date_options['world_day'].tolist(),
+    format_func=lambda x: day_to_label[x],  # displays the clean date
+    value=(date_options['world_day'].iloc[0], date_options['world_day'].iloc[-1])
+)
+
+# Filter dataframe by selected range
+events_df = events_df[
+    (events_df['world_day'] >= start_day) & (events_df['world_day'] <= end_day)
+]
 
 # Render timeline
 for _, row in events_df.iterrows():
