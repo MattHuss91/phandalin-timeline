@@ -22,10 +22,7 @@ st.markdown("""
 .stApp {
     font-family: 'Lora', serif !important;
     color: #ffffff !important;
-    background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-    background-size: cover;
-    background-attachment: fixed;
-}
+   }
 .stContainer {
     background-color: rgba(255, 255, 255, 0.9) !important;
     padding: 1rem;
@@ -302,3 +299,4 @@ with open(DB_FILE, "rb") as f:
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
