@@ -7,7 +7,7 @@ st.set_page_config(page_title="Admin Tool", layout="centered")
 user = st.session_state.get("username")
 
 # --- CONNECT TO DATABASE ---
-conn = sqlite3.connect("dnd_campaign.db")
+conn = sqlite3.connect("/mnt/data/dnd_campaign.db")
 c = conn.cursor()
 
 # Styling
@@ -367,6 +367,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
