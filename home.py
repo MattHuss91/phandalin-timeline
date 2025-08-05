@@ -35,6 +35,7 @@ st.markdown("""
         </style>
 """, unsafe_allow_html=True)
 
+st.image("https://i.imgur.com/MydOnTa.png")
 st.title("Loreweave")
 st.write("Heroes of Phandalin")
 
