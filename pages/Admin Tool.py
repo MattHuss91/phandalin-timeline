@@ -1,100 +1,44 @@
 import streamlit as st
-import sqlite3
+import psycopg2
 from datetime import datetime
 
-# --- Page Configuration ---
 st.set_page_config(page_title="Admin Tool", layout="centered")
 
-# --- Database Connection ---
-DB_FILE = "dnd_campaign.db"  # must be in the repo root
+# --- Database connection ---
 try:
-    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
+    conn = psycopg2.connect(
+        host=st.secrets["db_host"],
+        dbname=st.secrets["db_name"],
+        user=st.secrets["db_user"],
+        password=st.secrets["db_password"],
+        port=st.secrets["port"],
+        sslmode="require"
+    )
     c = conn.cursor()
-except sqlite3.Error as e:
-    st.error(f"Failed to connect to database: {e}")
+except Exception as e:
+    st.error(f"Database connection failed: {e}")
     st.stop()
 
 # --- Styling ---
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
+st.markdown("""<style>/* Add custom CSS here if needed */</style>""", unsafe_allow_html=True)
 
-.stApp {
-    font-family: 'Lora', serif !important;
-    color: #ffffff !important;
-   }
-.stContainer {
-    background-color: rgba(255, 255, 255, 0.9) !important;
-    padding: 1rem;
-    border-radius: 10px;
-}
-h1, h2, h3 { 
-    font-family: 'Cinzel', serif !important; 
-    text-transform: uppercase; 
-}
-label, .stSelectbox label, .stRadio label { 
-    color: #ffffff !important; 
-    font-weight: bold; 
-}
-
-/* Inputs/TextAreas */
-.stTextInput input,
-.stTextArea textarea {
-    color: white !important;
-    background-color: rgba(0, 0, 0, 0.6) !important;
-}
-
-/* Selectbox */
-div[data-baseweb="select"] { 
-    color: white !important; 
-    background-color: rgba(0, 0, 0, 0.6) !important; 
-}
-div[data-baseweb="menu"] div[role="option"] {
-    color: white !important;
-    background-color: rgba(0, 0, 0, 0.85) !important;
-}
-div[data-baseweb="menu"] div[role="option"]:hover {
-    background-color: rgba(255,255,255,0.2) !important;
-}
-
-/* Buttons */
-div.stButton > button {
-    background-color: #333333 !important;
-    color: #ffffff !important;
-    font-weight: bold !important;
-    font-family: 'Cinzel', serif !important;
-    border: none !important;
-    padding: 0.5rem 1rem !important;
-    border-radius: 5px !important;
-}
-div.stForm button, div.stForm button span {
-    color: white !important;
-    background-color: #333333 !important;
-    font-weight: bold !important;
-    font-family: 'Cinzel', serif !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# --- Authentication ---
-if st.session_state.get("user_role") != "Admin":
-    st.error("Access denied. Only Admin may use this tool.")
+# --- Access control ---
+if st.session_state.get("username") != "Admin":
+    st.error("Access denied. Only Admins can access this page.")
     st.stop()
 
 # --- Utility Functions ---
-def parse_date(text_date):
-    day_map = {f"{i}th": i for i in range(1, 37)}
-    day_map.update({"1st":1, "2nd":2, "3rd":3})
-    month_map = {
-        "Verdanir":1, "Emberfall":2, "Duskwatch":3, "Glimmerwane":4,
-        "Brightreach":5, "Stormrest":6, "Hollowshade":7,
-        "Deepmoor":8, "Frostmere":9, "Starwake":10
-    }
+def parse_date(date_str):
     try:
-        parts = text_date.split()
-        day = day_map.get(parts[0])
-        month = month_map.get(parts[1])
-        year = int(parts[2])
+        day_str, month_name, year = date_str.split()
+        day = int(day_str[:-2]) if day_str[-2:] in ("st", "nd", "rd", "th") else int(day_str)
+        month_map = {
+            "Verdanir": 1, "Emberfall": 2, "Duskwatch": 3, "Glimmerwane": 4,
+            "Brightreach": 5, "Stormrest": 6, "Hollowshade": 7, "Deepmoor": 8,
+            "Frostmere": 9, "Starwake": 10
+        }
+        month = month_map[month_name]
+        year = int(year)
         world_day = (month - 1) * 36 + (day - 1)
         return day, month, year, world_day
     except:
@@ -104,37 +48,32 @@ def get_all(table, id_col, name_col):
     c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
     return c.fetchall()
 
-# --- Page Header ---
-st.markdown("## Loreweave Admin Tool")
-action = st.selectbox("What would you like to manage?", [
-    "Character", "Event", "Location", "Faction",
-    "Link character to event", "Link character to faction"
-])
-st.markdown("---")
+# --- Main interface ---
+st.title("Loreweave Admin Tool")
+mode = st.sidebar.selectbox("What would you like to manage?", [
+    "Characters", "Events", "Locations", "Factions", "Link Character to Event", "Link Character to Faction"])
 
-# --- CHARACTER MANAGEMENT ---
-if action == "Character":
-    mode = st.radio("Action", ["Create new", "Edit existing"])
-    if mode == "Edit existing":
-        chars = get_all("characters", "character_id", "name")
-        char_dict = {name: cid for cid, name in chars}
-        sel = st.selectbox("Select Character", list(char_dict.keys()))
-        cid = char_dict[sel]
-        c.execute("SELECT name, type, status, bio, is_player FROM characters WHERE character_id = ?", (cid,))
-        name0, type0, status0, bio0, is_player0 = c.fetchone()
+# --- Characters ---
+if mode == "Characters":
+    submode = st.radio("Action", ["Create", "Edit"])
+    if submode == "Edit":
+        characters = get_all("characters", "character_id", "name")
+        char_dict = {name: cid for cid, name in characters}
+        selected = st.selectbox("Select Character", list(char_dict.keys()))
+        cid = char_dict[selected]
+        c.execute("SELECT name, type, status, bio, is_player FROM characters WHERE character_id = %s", (cid,))
+        row = c.fetchone()
         with st.form("edit_char"):
-            name = st.text_input("Name", value=name0)
-            ctype = st.text_input("Type", value=type0)
-            status = st.text_input("Status", value=status0)
-            bio = st.text_area("Bio", value=bio0)
-            is_player = st.checkbox("Is Player?", value=bool(is_player0))
-            if st.form_submit_button("Save Changes"):
-                c.execute(
-                    "UPDATE characters SET name=?, type=?, status=?, bio=?, is_player=? WHERE character_id=?",
-                    (name, ctype, status, bio, int(is_player), cid)
-                )
+            name = st.text_input("Name", value=row[0])
+            ctype = st.text_input("Type", value=row[1])
+            status = st.text_input("Status", value=row[2])
+            bio = st.text_area("Bio", value=row[3])
+            is_player = st.checkbox("Is Player?", value=row[4])
+            if st.form_submit_button("Update"):
+                c.execute("UPDATE characters SET name=%s, type=%s, status=%s, bio=%s, is_player=%s WHERE character_id = %s",
+                          (name, ctype, status, bio, is_player, cid))
                 conn.commit()
-                st.success(f"Character '{name}' updated.")
+                st.success("Character updated.")
     else:
         with st.form("create_char"):
             name = st.text_input("Name")
@@ -142,166 +81,137 @@ if action == "Character":
             status = st.text_input("Status")
             bio = st.text_area("Bio")
             is_player = st.checkbox("Is Player?")
-            if st.form_submit_button("Create Character"):
-                c.execute(
-                    "INSERT INTO characters(name,type,status,bio,is_player) VALUES (?,?,?,?,?)",
-                    (name, ctype, status, bio, int(is_player))
-                )
+            if st.form_submit_button("Create"):
+                c.execute("INSERT INTO characters (name, type, status, bio, is_player) VALUES (%s, %s, %s, %s, %s)",
+                          (name, ctype, status, bio, is_player))
                 conn.commit()
-                st.success(f"Character '{name}' created.")
+                st.success("Character created.")
 
-# --- EVENT MANAGEMENT ---
-elif action == "Event":
-    mode = st.radio("Action", ["Create new", "Edit existing"])
-    locs = get_all("locations", "location_id", "name")
-    loc_dict = {name: lid for lid, name in locs}
-    rev_loc = {lid: name for name, lid in loc_dict.items()}
-    if mode == "Edit existing":
-        evs = get_all("campaignevents", "event_id", "title")
-        ev_dict = {title: eid for eid, title in evs}
-        sel = st.selectbox("Select Event", list(ev_dict.keys()))
-        eid = ev_dict[sel]
-        c.execute("SELECT title, summary, full_description, date_occurred, location_id FROM campaignevents WHERE event_id = ?", (eid,))
-        t0, s0, l0, d0, loc0 = c.fetchone()
-        idx = list(loc_dict.keys()).index(rev_loc.get(loc0, "")) if loc0 in rev_loc else 0
+# --- Events ---
+elif mode == "Events":
+    submode = st.radio("Action", ["Create", "Edit"])
+    if submode == "Edit":
+        events = get_all("campaignevents", "event_id", "title")
+        event_dict = {name: eid for eid, name in events}
+        selected = st.selectbox("Select Event", list(event_dict.keys()))
+        eid = event_dict[selected]
+        c.execute("SELECT title, date_occurred, summary, full_description FROM campaignevents WHERE event_id = %s", (eid,))
+        row = c.fetchone()
         with st.form("edit_event"):
-            title = st.text_input("Title", value=t0)
-            summary = st.text_area("Summary", value=s0)
-            longd = st.text_area("Description", value=l0)
-            date_input = st.text_input("Date (e.g. '1st Verdanir 1452')", value=d0)
-            loc_name = st.selectbox("Location", list(loc_dict.keys()), index=idx)
-            loc_id = loc_dict[loc_name]
-            if st.form_submit_button("Save Changes"):
-                day, m, y, wd = parse_date(date_input)
-                if None in (day, m, y, wd):
-                    st.error("Invalid date.")
-                else:
-                    c.execute(
-                        "UPDATE campaignevents SET title=?, short_summary=?, long_description=?, date_occurred=?, day=?, month=?, year=?, world_day=?, location_id=? WHERE event_id=?",
-                        (title, summary, longd, date_input, day, m, y, wd, loc_id, eid)
-                    )
-                    conn.commit()
-                    st.success(f"Event '{title}' updated.")
+            title = st.text_input("Title", value=row[0])
+            date_occurred = st.text_input("Date Occurred", value=row[1])
+            summary = st.text_area("Summary", value=row[2])
+            full_description = st.text_area("Full Description", value=row[3])
+            if st.form_submit_button("Update"):
+                day, month, year, world_day = parse_date(date_occurred)
+                c.execute("""
+                    UPDATE campaignevents
+                    SET title = %s, date_occurred = %s, summary = %s, full_description = %s,
+                        day = %s, month = %s, year = %s, world_day = %s
+                    WHERE event_id = %s
+                """, (title, date_occurred, summary, full_description, day, month, year, world_day, eid))
+                conn.commit()
+                st.success("Event updated.")
     else:
         with st.form("create_event"):
             title = st.text_input("Title")
+            date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
             summary = st.text_area("Summary")
-            longd = st.text_area("Description")
-            date_input = st.text_input("Date (e.g. '1st Verdanir 1452')")
-            loc_name = st.selectbox("Location", list(loc_dict.keys()))
-            loc_id = loc_dict[loc_name]
-            if st.form_submit_button("Create Event"):
-                day, m, y, wd = parse_date(date_input)
-                if None in (day, m, y, wd):
-                    st.error("Invalid date.")
-                else:
-                    c.execute(
-                        "INSERT INTO campaigncampaignevents(title,short_summary,long_description,date_occurred,day,month,year,world_day,location_id) VALUES (?,?,?,?,?,?,?,?,?)",
-                        (title, summary, longd, date_input, day, m, y, wd, loc_id)
-                    )
-                    conn.commit()
-                    st.success(f"Event '{title}' created.")
+            full_description = st.text_area("Full Description")
+            if st.form_submit_button("Create"):
+                day, month, year, world_day = parse_date(date_occurred)
+                c.execute("""
+                    INSERT INTO campaignevents (title, date_occurred, summary, full_description, day, month, year, world_day)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """, (title, date_occurred, summary, full_description, day, month, year, world_day))
+                conn.commit()
+                st.success("Event created.")
 
-# --- LOCATION MANAGEMENT ---
-elif action == "Location":
-    mode = st.radio("Action", ["Create new", "Edit existing"])
-    if mode == "Edit existing":
+# --- Locations ---
+elif mode == "Locations":
+    submode = st.radio("Action", ["Create", "Edit"])
+    if submode == "Edit":
         locs = get_all("locations", "location_id", "name")
         loc_dict = {name: lid for lid, name in locs}
-        sel = st.selectbox("Select Location", list(loc_dict.keys()))
-        lid = loc_dict[sel]
-        c.execute("SELECT name, region, description FROM locations WHERE location_id=?", (lid,))
-        n0, r0, d0 = c.fetchone()
+        selected = st.selectbox("Select Location", list(loc_dict.keys()))
+        lid = loc_dict[selected]
+        c.execute("SELECT name, description FROM locations WHERE location_id = %s", (lid,))
+        row = c.fetchone()
         with st.form("edit_loc"):
-            name = st.text_input("Name", value=n0)
-            region = st.text_input("Region", value=r0)
-            desc = st.text_area("Description", value=d0)
-            if st.form_submit_button("Save Changes"):
-                c.execute("UPDATE locations SET name=?, region=?, description=? WHERE location_id=?", (name, region, desc, lid))
+            name = st.text_input("Name", value=row[0])
+            desc = st.text_area("Description", value=row[1])
+            if st.form_submit_button("Update"):
+                c.execute("UPDATE locations SET name = %s, description = %s WHERE location_id = %s",
+                          (name, desc, lid))
                 conn.commit()
-                st.success(f"Location '{name}' updated.")
+                st.success("Location updated.")
     else:
         with st.form("create_loc"):
             name = st.text_input("Name")
-            region = st.text_input("Region")
             desc = st.text_area("Description")
-            if st.form_submit_button("Create Location"):
-                c.execute("INSERT INTO locations(name,region,description) VALUES (?,?,?)", (name, region, desc))
+            if st.form_submit_button("Create"):
+                c.execute("INSERT INTO locations (name, description) VALUES (%s, %s)", (name, desc))
                 conn.commit()
-                st.success(f"Location '{name}' created.")
+                st.success("Location created.")
 
-# --- FACTION MANAGEMENT ---
-elif action == "Faction":
-    mode = st.radio("Action", ["Create new", "Edit existing"])
-    if mode == "Edit existing":
-        facs = get_all("factions", "faction_id", "name")
-        fac_dict = {name: fid for fid, name in facs}
-        sel = st.selectbox("Select Faction", list(fac_dict.keys()))
-        fid = fac_dict[sel]
-        c.execute("SELECT name, alignment, goals FROM factions WHERE faction_id=?", (fid,))
-        n0, a0, g0 = c.fetchone()
-        with st.form("edit_fac"):
-            name = st.text_input("Name", value=n0)
-            align = st.text_input("Alignment", value=a0)
-            goals = st.text_area("Goals", value=g0)
-            if st.form_submit_button("Save Changes"):
-                c.execute("UPDATE factions SET name=?, alignment=?, goals=? WHERE faction_id=?", (name, align, goals, fid))
+# --- Factions ---
+elif mode == "Factions":
+    submode = st.radio("Action", ["Create", "Edit"])
+    if submode == "Edit":
+        factions = get_all("factions", "faction_id", "name")
+        fac_dict = {name: fid for fid, name in factions}
+        selected = st.selectbox("Select Faction", list(fac_dict.keys()))
+        fid = fac_dict[selected]
+        c.execute("SELECT name, description FROM factions WHERE faction_id = %s", (fid,))
+        row = c.fetchone()
+        with st.form("edit_faction"):
+            name = st.text_input("Name", value=row[0])
+            desc = st.text_area("Description", value=row[1])
+            if st.form_submit_button("Update"):
+                c.execute("UPDATE factions SET name = %s, description = %s WHERE faction_id = %s",
+                          (name, desc, fid))
                 conn.commit()
-                st.success(f"Faction '{name}' updated.")
+                st.success("Faction updated.")
     else:
-        with st.form("create_fac"):
+        with st.form("create_faction"):
             name = st.text_input("Name")
-            align = st.text_input("Alignment")
-            goals = st.text_area("Goals")
-            if st.form_submit_button("Create Faction"):
-                c.execute("INSERT INTO factions(name,alignment,goals) VALUES (?,?,?)", (name, align, goals))
+            desc = st.text_area("Description")
+            if st.form_submit_button("Create"):
+                c.execute("INSERT INTO factions (name, description) VALUES (%s, %s)", (name, desc))
                 conn.commit()
-                st.success(f"Faction '{name}' created.")
+                st.success("Faction created.")
 
-# --- CHARACTER ↔ EVENT LINKING ---
-elif action == "Link character to event":
+# --- Link Character to Event ---
+elif mode == "Link Character to Event":
     chars = get_all("characters", "character_id", "name")
-    evs = get_all("campaignevents", "event_id", "title")
+    events = get_all("campaignevents", "event_id", "title")
     char_dict = {name: cid for cid, name in chars}
-    ev_dict = {title: eid for eid, title in evs}
-    with st.form("link_ce"):
-        character = st.selectbox("Character", list(char_dict.keys()))
-        event = st.selectbox("Event", list(ev_dict.keys()))
+    event_dict = {title: eid for eid, title in events}
+    with st.form("link_char_event"):
+        char = st.selectbox("Character", list(char_dict.keys()))
+        event = st.selectbox("Event", list(event_dict.keys()))
         if st.form_submit_button("Link"):
-            c.execute("INSERT INTO CharacterAppearances(character_id,event_id) VALUES(?,?)",
-                      (char_dict[character], ev_dict[event]))
+            c.execute("INSERT INTO characterappearances (character_id, event_id) VALUES (%s, %s)",
+                      (char_dict[char], event_dict[event]))
             conn.commit()
-            st.success(f"{character} linked to '{event}'.")
+            st.success(f"Linked {char} to {event}")
 
-# --- CHARACTER ↔ FACTION LINKING ---
-elif action == "Link character to faction":
+# --- Link Character to Faction ---
+elif mode == "Link Character to Faction":
     chars = get_all("characters", "character_id", "name")
-    facs = get_all("factions", "faction_id", "name")
+    factions = get_all("factions", "faction_id", "name")
     char_dict = {name: cid for cid, name in chars}
-    fac_dict = {name: fid for fid, name in facs}
-    with st.form("link_cf"):
-        character = st.selectbox("Character", list(char_dict.keys()))
-        faction = st.selectbox("Faction", list(fac_dict.keys()))
+    fac_dict = {name: fid for name, fid in factions}
+    with st.form("link_char_faction"):
+        char = st.selectbox("Character", list(char_dict.keys()))
+        fac = st.selectbox("Faction", list(fac_dict.keys()))
         if st.form_submit_button("Link"):
-            c.execute("INSERT INTO CharacterFactions(character_id,faction_id) VALUES(?,?)",
-                      (char_dict[character], fac_dict[faction]))
+            c.execute("INSERT INTO characterfactions (character_id, faction_id) VALUES (%s, %s)",
+                      (char_dict[char], fac_dict[fac]))
             conn.commit()
-            st.success(f"{character} added to '{faction}' faction.")
+            st.success(f"Linked {char} to {fac}")
 
-# --- Download Button ---
-with open(DB_FILE, "rb") as f:
-    st.download_button(
-        label="⬇️ Download updated database",
-        data=f,
-        file_name="dnd_campaign.db",
-        mime="application/octet-stream"
-    )
-
+# --- Close connection ---
+conn.close()
 st.markdown("---")
-st.caption("Loreweave Admin Panel — Full Control")
-
-
-
-
-
-
+st.caption("Loreweave Admin Console")
