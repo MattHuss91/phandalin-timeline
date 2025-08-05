@@ -7,7 +7,16 @@ st.set_page_config(page_title="Admin Tool", layout="centered")
 user = st.session_state.get("username")
 
 # --- CONNECT TO DATABASE ---
-conn = sqlite3.connect("/mnt/data/dnd_campaign.db")
+import os
+
+db_path = "/mnt/data/dnd_campaign.db"
+
+# If the file doesn't exist, copy your local template version from the repo
+if not os.path.exists(db_path):
+    import shutil
+    shutil.copy("dnd_campaign.db", db_path)
+
+conn = sqlite3.connect(db_path)
 c = conn.cursor()
 
 # Styling
@@ -364,9 +373,13 @@ elif action == "Link character to faction":
             conn.commit()
             st.success(f"{character} added to faction '{faction}'.")
             
-
+if st.session_state.get("user_role") == "Admin":
+    with open("/mnt/data/dnd_campaign.db", "rb") as f:
+        st.download_button("⬇️ Download updated database", f, file_name="dnd_campaign.db")
+	    
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
