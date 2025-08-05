@@ -54,7 +54,6 @@ def parse_custom_date(date_str):
     except Exception as e:
         st.error(f"Failed to parse date '{date_str}': {e}")
         return None, None, None, None
-
 def get_all(table, id_col, name_col):
     c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
     return c.fetchall()
