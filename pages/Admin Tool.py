@@ -15,6 +15,7 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
+    /* Background & font */
     .stApp {
         background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
         background-size: cover;
@@ -30,35 +31,39 @@ st.markdown("""
         font-weight: bold;
     }
 
-    /* Make input and text areas readable */
+    h1, h2, h3 {
+        font-family: 'Cinzel', serif !important;
+        text-transform: uppercase;
+    }
+
+    /* Input and textarea text */
     .stTextInput input,
     .stTextArea textarea {
         color: white !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
     }
 
-    /* Make selected dropdown text white */
+    /* Selectbox styling */
     div[data-baseweb="select"] {
         color: white !important;
         background-color: rgba(0, 0, 0, 0.6) !important;
     }
 
-    /* Make dropdown options white */
+    /* Dropdown menu options */
     div[data-baseweb="menu"] div[role="option"] {
         color: white !important;
-        background-color: rgba(0, 0, 0, 0.8) !important;
+        background-color: rgba(0, 0, 0, 0.85) !important;
     }
 
-    /* Dropdown option hover */
+    /* Dropdown hover effect */
     div[data-baseweb="menu"] div[role="option"]:hover {
         background-color: rgba(255, 255, 255, 0.2) !important;
     }
 
-    /* Sidebar text and background */
+    /* Sidebar styling */
     section[data-testid="stSidebar"] {
         background-color: rgba(0, 0, 0, 0.7) !important;
     }
-
     section[data-testid="stSidebar"] * {
         color: white !important;
     }
@@ -73,14 +78,22 @@ st.markdown("""
         padding: 0.5rem 1rem !important;
         border-radius: 5px !important;
     }
-   div[data-baseweb="radio"] > div > div {
-    color: black !important;
-    font-weight: bold !important;
+
+    /* Form buttons */
+    div.stForm button, div.stForm button span {
+        color: white !important;
+        background-color: #333333 !important;
+        font-weight: bold !important;
+        font-family: 'Cinzel', serif !important;
     }
 
+    /* ✅ Radio button label text fix */
+    div[data-baseweb="radio"] label > div:first-child {
+        color: black !important;
+        font-weight: bold !important;
+    }
     </style>
 """, unsafe_allow_html=True)
-
 
 # --- DATE SETTINGS ---
 def parse_date(text_date):
@@ -359,6 +372,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
