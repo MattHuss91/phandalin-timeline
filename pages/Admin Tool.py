@@ -8,10 +8,6 @@ from datetime import datetime
 db_path = "/mnt/data/dnd_campaign.db"
 src_path = "dnd_campaign.db"
 
-# Ensure /mnt/data exists (persistent writable dir in Streamlit Cloud)
-if not os.path.exists("/mnt/data"):
-    os.makedirs("/mnt/data")
-
 # Copy DB from app root to /mnt/data if not already there
 if not os.path.exists(db_path):
     if os.path.exists(src_path):
@@ -403,6 +399,7 @@ if st.session_state.get("user_role") == "Admin":
 	    
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
