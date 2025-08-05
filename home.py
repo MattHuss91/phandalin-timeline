@@ -80,3 +80,6 @@ else:
         del st.session_state["username"]
         del st.session_state["user_role"]
         st.rerun()
+
+st.markdown("---")
+st.caption("Loreweave")
