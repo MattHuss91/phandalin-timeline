@@ -4,23 +4,31 @@ import streamlit as st
 import sqlite3
 from datetime import datetime
 
-db_path_repo = "dnd_campaign.db"       # your DB in repo root
-db_path_data = "/mnt/data/dnd_campaign.db"  # path for download copy
+db_path = "/mnt/data/dnd_campaign.db"
+src_path = "dnd_campaign.db"  # relative to the current working directory
 
-# Create /mnt/data if it doesn't exist
+# Ensure /mnt/data exists before copying
 if not os.path.exists("/mnt/data"):
     try:
-        os.mkdir("/mnt/data")
+        os.makedirs("/mnt/data")  # create the directory recursively
+        st.write("Created /mnt/data directory.")
     except PermissionError:
-        st.error("Cannot create /mnt/data folder - permission denied.")
+        st.error("Permission denied: cannot create /mnt/data directory.")
+    except Exception as e:
+        st.error(f"Failed to create /mnt/data directory: {e}")
 
-# Copy the DB file to /mnt/data if it doesn't exist there
-if os.path.exists(db_path_repo) and not os.path.exists(db_path_data):
-    try:
-        shutil.copy(db_path_repo, db_path_data)
-        st.write(f"Copied DB to {db_path_data}")
-    except PermissionError:
-        st.error("Permission denied copying DB to /mnt/data.")
+# Now copy the file if needed
+if not os.path.exists(db_path):
+    if os.path.exists(src_path):
+        try:
+            shutil.copy(src_path, db_path)
+            st.write(f"Copied {src_path} to {db_path}")
+        except Exception as e:
+            st.error(f"Failed to copy DB file: {e}")
+    else:
+        st.error(f"Source DB file not found at {src_path}!")
+else:
+    st.write("DB file already exists in /mnt/data/")
 	
 # Now connect to the copied DB in /mnt/data
 conn = sqlite3.connect(db_path)
@@ -407,6 +415,7 @@ if st.session_state.get("user_role") == "Admin":
 	    
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
