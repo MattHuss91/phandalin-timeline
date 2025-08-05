@@ -36,24 +36,7 @@ st.markdown("""
         border-radius: 5px !important;
     }
 
-    /* Force text inside button to white */
-    div.stButton > button span {
-        color: #ffffff !important;
-        font-weight: bold !important;
-    }
-
-    div.stButton > button:hover {
-        background-color: #444444 !important;
-        color: #ffffff !important;
-    }
-    html, body, .stApp, .stTextInput, .stTextArea, .stSelectbox, .stMarkdown, .stRadio, .stForm {
-        color: #000000 !important;
-    }
-
-    label, h1, h2, h3, p, span, div, input, textarea {
-        color: #000000 !important;
-    }
-    </style>
+        </style>
 """, unsafe_allow_html=True)
 
 st.title("The Heroes of Phandalin")
