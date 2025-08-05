@@ -52,8 +52,13 @@ def parse_date(date_str):
 
         year = int(''.join(filter(str.isdigit, year_str)))
 
-        world_day = (month - 1) * 36 + (day - 1)
+        # Each year has 360 days (10 months x 36 days)
+        # Each month has 36 days, so we calculate:
+        # world_day = (year - 1) * 360 + (month - 1) * 36 + (day - 1)
+        world_day = (year - 1) * 360 + (month - 1) * 36 + (day - 1)
+
         return day, month, year, world_day
+
     except Exception as e:
         print("Date parsing failed:", e)
         return None, None, None, None
