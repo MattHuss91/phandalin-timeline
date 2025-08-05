@@ -33,7 +33,7 @@ h1, h2, h3 {
     text-transform: uppercase; 
 }
 label, .stSelectbox label, .stRadio label { 
-    color: #000000 !important; 
+    color: #ffffff !important; 
     font-weight: bold; 
 }
 
@@ -299,4 +299,5 @@ with open(DB_FILE, "rb") as f:
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
