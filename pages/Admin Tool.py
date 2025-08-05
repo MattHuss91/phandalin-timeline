@@ -124,7 +124,6 @@ action = st.selectbox("What would you like to manage?", [
 st.markdown("---")
 
 # --- CHARACTER MANAGEMENT ---
-
 if action == "Character":
     mode = st.radio("Action", ["Create new", "Edit existing"])
 
@@ -134,40 +133,40 @@ if action == "Character":
         selected_name = st.selectbox("Select Character", list(char_dict.keys()))
         char_id = char_dict[selected_name]
 
-        c.execute("SELECT bio, is_player FROM characters WHERE character_id = ?", (char_id,))
+        c.execute("SELECT bio, type, status, is_player FROM characters WHERE character_id = ?", (char_id,))
         row = c.fetchone()
-        default_bio, default_is_player = row
+        default_bio, default_type, default_status, default_is_player = row
 
         with st.form("edit_character"):
             name = st.text_input("Character Name", value=selected_name)
-	    type = st.text_input("Type", value=selected_type)
-	    status = st.text_input("Status", value=selected_status)
+            char_type = st.text_input("Type", value=default_type)
+            status = st.text_input("Status", value=default_status)
             bio = st.text_area("Bio", value=default_bio)
             is_player = st.checkbox("Is Player?", value=bool(default_is_player))
             submit = st.form_submit_button("Save Changes")
             if submit:
                 c.execute(
-                    "UPDATE characters SET name = ?, type = ?, status = ? bio = ?, is_player = ?  WHERE character_id = ?",
-                    (name, bio, int(is_player), char_id)
+                    "UPDATE characters SET name = ?, type = ?, status = ?, bio = ?, is_player = ? WHERE character_id = ?",
+                    (name, char_type, status, bio, int(is_player), char_id)
                 )
                 conn.commit()
                 st.success(f"Character '{name}' updated.")
+
     else:
         with st.form("create_character"):
             name = st.text_input("Character Name")
+            char_type = st.text_input("Type")
+            status = st.text_input("Status")
             bio = st.text_area("Bio")
-            type = st.text_input("Type")
-	    status = st.text_input("Status")
             is_player = st.checkbox("Is Player?")
             submit = st.form_submit_button("Create Character")
             if submit:
                 c.execute(
-                    "INSERT INTO characters (name, type, status, is_player,) VALUES (?, ?, ?, ?, ?)",
-                    (name, type, status, bio, int(is_player))
+                    "INSERT INTO characters (name, type, status, bio, is_player) VALUES (?, ?, ?, ?, ?)",
+                    (name, char_type, status, bio, int(is_player))
                 )
                 conn.commit()
                 st.success(f"Character '{name}' created.")
-
 
 # --- EVENT MANAGEMENT ---
 elif action == "Event":
@@ -364,6 +363,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
