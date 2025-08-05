@@ -48,6 +48,11 @@ def get_all(table, id_col, name_col):
     c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
     return c.fetchall()
 
+
+def get_all(table, id_col, name_col):
+    c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
+    return c.fetchall()
+
 # --- Main interface ---
 st.title("Loreweave Admin Tool")
 mode = st.sidebar.selectbox("What would you like to manage?", [
