@@ -46,6 +46,13 @@ st.markdown("""
         background-color: #444444 !important;
         color: #ffffff !important;
     }
+    html, body, .stApp, .stTextInput, .stTextArea, .stSelectbox, .stMarkdown, .stRadio, .stForm {
+        color: #000000 !important;
+    }
+
+    label, h1, h2, h3, p, span, div, input, textarea {
+        color: #000000 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
