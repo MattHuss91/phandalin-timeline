@@ -66,7 +66,6 @@ users = {
 }
 
 # If not logged in, show login form
-# If not logged in, show login form
 if "username" not in st.session_state or st.session_state["username"] is None:
     selected_user = st.selectbox("Select your user", list(users.keys()))
     password = st.text_input("Password", type="password")
@@ -74,11 +73,20 @@ if "username" not in st.session_state or st.session_state["username"] is None:
     if st.button("Log in"):
         if users[selected_user] == password:
             st.session_state.username = selected_user
+
+            
+            if selected_user == "Admin":
+                st.session_state.user_role = "Admin"
+            else:
+                st.session_state.user_role = "Player"
+
             st.rerun()
         else:
             st.error("Incorrect password")
+
 else:
     st.success(f"Logged in as {st.session_state['username']}")
     if st.button("Log out"):
         del st.session_state["username"]
+        del st.session_state["user_role"]
         st.rerun()
