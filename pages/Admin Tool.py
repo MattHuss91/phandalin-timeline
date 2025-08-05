@@ -60,10 +60,6 @@ def parse_date(date_str):
 def get_all(table, id_col, name_col):
     c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
     return c.fetchall()
-# --- debug ---
-st.write("Raw date_occurred input:", repr(date_occurred))
-day, month, year, world_day = parse_date(date_occurred)
-st.write("Parsed Date:", day, month, year, world_day)
 
 # --- Main interface ---
 st.title("Loreweave Admin Tool")
@@ -135,26 +131,26 @@ elif mode == "Events":
                 st.success("Event updated.")
 
     else:  # Create Mode
-        with st.form("create_event"):
-            title = st.text_input("Title")
-            date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
-            summary = st.text_area("Summary")
-            full_description = st.text_area("Full Description")
+    with st.form("create_event"):
+        title = st.text_input("Title")
+        date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
+        summary = st.text_area("Summary")
+        full_description = st.text_area("Full Description")
 
-            if st.form_submit_button("Create"):
-                day, month, year, world_day = parse_date(date_occurred)
-                st.write("Parsed Date:", day, month, year, world_day)
-                st.write("Insert Data:", title, date_occurred, summary, full_description)
+        if st.form_submit_button("Create"):
+            st.write("Raw input for date_occurred:", repr(date_occurred))  # 🔍 DEBUG
+            day, month, year, world_day = parse_date(date_occurred)
+            st.write("Parsed Date:", day, month, year, world_day)  # 🔍 DEBUG
 
-                try:
-                    c.execute("""
-                        INSERT INTO campaignevents (title, date_occurred, summary, full_description, day, month, year, world_day)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                    """, (title, date_occurred, summary, full_description, day, month, year, world_day))
-                    conn.commit()
-                    st.success("Event created.")
-                except Exception as e:
-                    st.error(f"Error creating event: {e}")
+            try:
+                c.execute("""
+                    INSERT INTO campaignevents (title, date_occurred, summary, full_description, day, month, year, world_day)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """, (title, date_occurred, summary, full_description, day, month, year, world_day))
+                conn.commit()
+                st.success("Event created.")
+            except Exception as e:
+                st.error(f"Error creating event: {e}")
 
 # --- Locations ---
 elif mode == "Locations":
