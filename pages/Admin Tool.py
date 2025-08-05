@@ -140,12 +140,14 @@ if action == "Character":
 
         with st.form("edit_character"):
             name = st.text_input("Character Name", value=selected_name)
+	    type = st.text_input("Type", value=selected_type)
+	    status = st.text_input("Status", value=selected_status)
             bio = st.text_area("Bio", value=default_bio)
             is_player = st.checkbox("Is Player?", value=bool(default_is_player))
             submit = st.form_submit_button("Save Changes")
             if submit:
                 c.execute(
-                    "UPDATE characters SET name = ?, bio = ?, is_player = ? WHERE character_id = ?",
+                    "UPDATE characters SET name = ?, type = ?, status = ? bio = ?, is_player = ?  WHERE character_id = ?",
                     (name, bio, int(is_player), char_id)
                 )
                 conn.commit()
@@ -154,12 +156,14 @@ if action == "Character":
         with st.form("create_character"):
             name = st.text_input("Character Name")
             bio = st.text_area("Bio")
+            type = st.text_input("Type")
+	    status = st.text_input("Status")
             is_player = st.checkbox("Is Player?")
             submit = st.form_submit_button("Create Character")
             if submit:
                 c.execute(
-                    "INSERT INTO characters (name, bio, is_player) VALUES (?, ?, ?)",
-                    (name, bio, int(is_player))
+                    "INSERT INTO characters (name, type, status, is_player,) VALUES (?, ?, ?, ?, ?)",
+                    (name, type, status, bio, int(is_player))
                 )
                 conn.commit()
                 st.success(f"Character '{name}' created.")
@@ -360,6 +364,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
