@@ -58,6 +58,27 @@ st.markdown("""
     label, h1, h2, h3, p, span, div, input, textarea {
         color: #000000 !important;
     }
+    
+    div[data-baseweb="select"] * {
+        color: white !important;
+    }
+
+    .stTextInput input,
+    .stTextArea textarea {
+        color: white !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .stRadio label {
+        color: black !important;
+    }
+
+    div.stForm button, div.stForm button span {
+        color: white !important;
+        background-color: #333333 !important;
+        font-weight: bold !important;
+        font-family: 'Cinzel', serif !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -335,6 +356,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
