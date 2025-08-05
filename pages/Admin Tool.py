@@ -36,22 +36,7 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    .stSelectbox label,
-    .stSlider label {
-        color: #000000;
-        font-weight: bold;
-    }
-
-    div.stButton > button span {
-        color: #ffffff !important;
-        font-weight: bold !important;
-    }
-
-    div.stButton > button:hover {
-        background-color: #444444 !important;
-        color: #ffffff !important;
-    }
-
+    /* General text styling */
     html, body, .stApp, .stTextInput, .stTextArea, .stMarkdown, .stRadio, .stForm {
         color: #000000 !important;
     }
@@ -60,23 +45,7 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* Selected text in dropdown */
-    div[data-baseweb="select"] div {
-        color: white !important;
-    }
-
-    /* Fixes for dropdown menu options (hover + normal) */
-    div[data-baseweb="select"] span {
-        color: white !important;
-    }
-
-    /* New: Force dropdown menu items to white */
-    div[role="listbox"] div {
-        color: white !important;
-        background-color: rgba(0, 0, 0, 0.8) !important;
-    }
-
-    /* Input field styling */
+    /* Inputs */
     .stTextInput input,
     .stTextArea textarea {
         color: white !important;
@@ -87,6 +56,17 @@ st.markdown("""
         color: black !important;
     }
 
+    /* Button styles */
+    div.stButton > button span {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+
+    div.stButton > button:hover {
+        background-color: #444444 !important;
+        color: #ffffff !important;
+    }
+
     div.stForm button, div.stForm button span {
         color: white !important;
         background-color: #333333 !important;
@@ -94,7 +74,30 @@ st.markdown("""
         font-family: 'Cinzel', serif !important;
     }
 
-    /* Sidebar text and background */
+    /* Dropdown fix */
+    div[data-baseweb="select"] * {
+        color: white !important;
+    }
+
+    div[data-baseweb="select"] {
+        background-color: rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* Dropdown menu options */
+    div[role="listbox"] {
+        background-color: rgba(0, 0, 0, 0.9) !important;
+    }
+
+    div[role="option"] {
+        color: white !important;
+        background-color: transparent !important;
+    }
+
+    div[role="option"]:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Sidebar */
     section[data-testid="stSidebar"] * {
         color: white !important;
     }
@@ -104,7 +107,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 
 # --- DATE SETTINGS ---
 def parse_date(text_date):
@@ -383,6 +385,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
