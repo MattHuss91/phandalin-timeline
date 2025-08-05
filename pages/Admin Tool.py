@@ -18,11 +18,11 @@ st.markdown("""
     /* Background & font */
     .stApp {
         font-family: 'Lora', serif !important;
-        color: #000000 !important;
+        color: #ffffff !important;
     }
 
     label {
-        color: #000000 !important;
+        color: #ffffff !important;
         font-weight: bold;
     }
 
@@ -367,6 +367,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
