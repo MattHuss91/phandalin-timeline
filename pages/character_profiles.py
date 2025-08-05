@@ -175,3 +175,6 @@ if not event_df.empty:
 )
 else:
     st.warning("No recorded events.")
+
+st.markdown("---")
+st.caption("Loreweave")
