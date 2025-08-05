@@ -36,7 +36,7 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    /* General text styling */
+    
     html, body, .stApp, .stTextInput, .stTextArea, .stMarkdown, .stRadio, .stForm {
         color: #000000 !important;
     }
@@ -45,7 +45,7 @@ st.markdown("""
         color: #000000 !important;
     }
 
-    /* Inputs */
+    
     .stTextInput input,
     .stTextArea textarea {
         color: white !important;
@@ -56,8 +56,7 @@ st.markdown("""
         color: black !important;
     }
 
-    /* Button styles */
-    div.stButton > button span {
+       div.stButton > button span {
         color: #ffffff !important;
         font-weight: bold !important;
     }
@@ -83,21 +82,20 @@ st.markdown("""
         background-color: rgba(0, 0, 0, 0.6) !important;
     }
 
-    /* Dropdown menu options */
+    
     div[role="listbox"] {
-        background-color: rgba(0, 0, 0, 0.9) !important;
+    background-color: white !important;
     }
 
     div[role="option"] {
-        color: white !important;
-        background-color: transparent !important;
+    color: black !important;
     }
 
     div[role="option"]:hover {
         background-color: rgba(255, 255, 255, 0.1) !important;
     }
 
-    /* Sidebar */
+    
     section[data-testid="stSidebar"] * {
         color: white !important;
     }
@@ -385,6 +383,7 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
 
 
