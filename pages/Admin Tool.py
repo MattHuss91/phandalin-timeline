@@ -68,7 +68,7 @@ def get_all(table, id_col, name_col):
     return c.fetchall()
 	
 # --- ADMIN CONTROL ---
-if "user_role" not in st.session_state or st.session_state.user_role != "admin":
+if "user_role" not in st.session_state or st.session_state.user_role != "Admin":
     st.error("Access denied. Only Admin may use this tool")
     st.stop()
     
@@ -318,4 +318,5 @@ elif action == "Link character to faction":
 
 st.markdown("---")
 st.caption("Loreweave Admin Panel — Full Control")
+
 
