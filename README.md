@@ -2,6 +2,10 @@
 
 An interactive web app built with Streamlit and SQLite to track the timeline of a custom D&D campaign. Players can explore story events through a custom calendar system with fantasy months and world dates.
 
+> **A Future Echoes Project**
+
+---
+
 ## Features
 
 - Filter events by in-world date using a slider
@@ -21,13 +25,13 @@ An interactive web app built with Streamlit and SQLite to track the timeline of 
 
 ```
 phandalin-timeline/
-├── .streamlit/
-│   └── config.toml
-├── Home.py                  # Main homepage
-├── Timeline.py              # Interactive timeline page
-├── dnd_campaign.db          # SQLite database of campaign events
-├── requirements.txt         # Python dependencies
-└── README.md                # This file
+â”œâ”€â”€ .streamlit/
+â”‚   â””â”€â”€ config.toml
+â”œâ”€â”€ Home.py                  # Main homepage
+â”œâ”€â”€ Timeline.py              # Interactive timeline page
+â”œâ”€â”€ dnd_campaign.db          # SQLite database of campaign events
+â”œâ”€â”€ requirements.txt         # Python dependencies
+â””â”€â”€ README.md                # This file
 ```
 
 ## Getting Started (Locally)
@@ -54,18 +58,19 @@ phandalin-timeline/
    streamlit run Home.py
    ```
 
-## TTRPG Management Tool – Feature Roadmap
+## TTRPG Management Tool â€“ Feature Roadmap
 
 | Version | Target Features                                                               | ETA         |
 |---------|-------------------------------------------------------------------------------|-------------|
-| **V1**  | Character bios and timeline viewer with login-based editing permissions       | ✔ Released  |
-| **V2**  | Factions & Locations pages (bios, characters, related events, images)         | Sept–Oct    |
+| **V1**  | Character bios and timeline viewer with login-based editing permissions       | âœ” Released  |
+| **V2**  | Factions & Locations pages (bios, characters, related events, images)         | Septâ€“Oct    |
 | **V3**  | Admin tool to add/edit all SQL data (events, locations, links) in one form    | Late 2025   |
 | **V4**  | Interactive map integration for towns/regions with clickable event overlays   | Late 2025   |
 | **V5**  | Blank version for public use with config options                              | 2026        |
+
 ---
 
-### 🚀 Goals
+### ðŸš€ Goals
 
 - Organize and track your TTRPG campaigns
 - Make information easily accessible for players
@@ -73,8 +78,11 @@ phandalin-timeline/
 
 ---
 
-© 2025 Matthew Husselbury. All rights reserved.  
+Â© 2025 Matthew Husselbury. All rights reserved.  
 **This repository is publicly visible but is not open source.**
 
 You may view and learn from this code for personal use only.  
 **Reproduction, modification, distribution, or commercial use is strictly prohibited** without the express written permission of the author.
+
+**Loreweave** is a free TTRPG management tool developed by Matthew Husselbury.  
+**Future Echoes** is the creative studio behind its design and development.
