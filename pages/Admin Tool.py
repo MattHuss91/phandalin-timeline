@@ -96,10 +96,11 @@ if mode == "Characters":
                           (name, ctype, status, bio, is_player))
                 conn.commit()
                 st.success("Character created.")
-
+# Events
 elif mode == "Events":
     submode = st.radio("Action", ["Create", "Edit"])
 
+    # --- EDIT MODE ---
     if submode == "Edit":
         # Get events and locations
         events = get_all("campaignevents", "event_id", "title")
@@ -163,18 +164,15 @@ elif mode == "Events":
                 conn.commit()
                 st.success("Event updated.")
 
-
-        else:  # Create Mode
-        
+    # --- CREATE MODE ---
+    else:
         locs = get_all("locations", "location_id", "name")
         loc_dict = {name: lid for lid, name in locs}
 
         with st.form("create_event"):
             title = st.text_input("Title")
             date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
-
             loc = st.selectbox("Location", list(loc_dict.keys()))  
-
             summary = st.text_area("Summary")
             full_description = st.text_area("Full Description")
 
@@ -201,6 +199,7 @@ elif mode == "Events":
                     st.success("Event created.")
                 except Exception as e:
                     st.error(f"Error creating event: {e}")
+
 
 # --- Locations ---
 elif mode == "Locations":
@@ -294,6 +293,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
