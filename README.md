@@ -21,44 +21,8 @@ An interactive web app built with Streamlit and SQLite to track the timeline of 
 - GitHub (version control and deployment)
 - Streamlit Cloud (hosting)
 
-## Project Structure
 
-```
-phandalin-timeline/
-â”œâ”€â”€ .streamlit/
-â”‚   â””â”€â”€ config.toml
-â”œâ”€â”€ Home.py                  # Main homepage
-â”œâ”€â”€ Timeline.py              # Interactive timeline page
-â”œâ”€â”€ dnd_campaign.db          # SQLite database of campaign events
-â”œâ”€â”€ requirements.txt         # Python dependencies
-â””â”€â”€ README.md                # This file
-```
-
-## Getting Started (Locally)
-
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/MattHuss91/phandalin-timeline.git
-   cd phandalin-timeline
-   ```
-
-2. (Optional) Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # or venv\Scripts\activate on Windows
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Run the app:
-   ```bash
-   streamlit run Home.py
-   ```
-
-## TTRPG Management Tool â€“ Feature Roadmap
+## TTRPG Management Tool Feature Roadmap
 
 | Version | Target Features                                                               | ETA         |
 |---------|-------------------------------------------------------------------------------|-------------|
@@ -70,7 +34,7 @@ phandalin-timeline/
 
 ---
 
-### ðŸš€ Goals
+### Goals
 
 - Organize and track your TTRPG campaigns
 - Make information easily accessible for players
@@ -78,7 +42,7 @@ phandalin-timeline/
 
 ---
 
-Â© 2025 Matthew Husselbury. All rights reserved.  
+© 2025 Matthew Husselbury. All rights reserved.  
 **This repository is publicly visible but is not open source.**
 
 You may view and learn from this code for personal use only.  
