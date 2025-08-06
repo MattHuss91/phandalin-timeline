@@ -230,7 +230,7 @@ elif mode == "Link Character to Faction":
         char = st.selectbox("Character", list(char_dict.keys()))
         fac = st.selectbox("Faction", list(fac_dict.keys()))
         if st.form_submit_button("Link"):
-            c.execute("INSERT INTO characterfactions (character_id, faction_id) VALUES (%s, %s)",
+            c.execute("INSERT INTO characterfaction (character_id, faction_id) VALUES (%s, %s)",
                       (char_dict[char], fac_dict[fac]))
             conn.commit()
             st.success(f"Linked {char} to {fac}")
@@ -239,6 +239,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
