@@ -57,6 +57,14 @@ conn = psycopg2.connect(
 )
 c = conn.cursor()
 
+# logo
+st.markdown("""
+    <div style='text-align: center; margin-top: -20px;'>
+        <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
+        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Heroes of Phandalin</h1>
+    </div>
+""", unsafe_allow_html=True)
+
 # Create or refresh the EventTimeline view
 c.execute("DROP VIEW IF EXISTS EventTimeline CASCADE;")
 c.execute("""
@@ -148,5 +156,6 @@ conn.close()
 
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
