@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 
-# --- Custom Fantasy Styling ---
+# Styling 
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
@@ -33,7 +33,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- Logo + Title (centered, no gap) ---
+# logo
 st.markdown("""
     <div style='text-align: center; margin-top: -20px;'>
         <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
