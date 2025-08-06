@@ -157,22 +157,24 @@ elif mode == "Locations":
         loc_dict = {name: lid for lid, name in locs}
         selected = st.selectbox("Select Location", list(loc_dict.keys()))
         lid = loc_dict[selected]
-        c.execute("SELECT name, description FROM locations WHERE location_id = %s", (lid,))
+        c.execute("SELECT name, region, description FROM locations WHERE location_id = %s", (lid,))
         row = c.fetchone()
         with st.form("edit_loc"):
             name = st.text_input("Name", value=row[0])
-            desc = st.text_area("Description", value=row[1])
+            reg = st.text_input("Region", value=row[1])
+            desc = st.text_area("Description", value=row[2])
             if st.form_submit_button("Update"):
-                c.execute("UPDATE locations SET name = %s, description = %s WHERE location_id = %s",
-                          (name, desc, lid))
+                c.execute("UPDATE locations SET name = %s, region = %s, description = %s WHERE location_id = %s",
+                          (name, reg, desc, lid))
                 conn.commit()
                 st.success("Location updated.")
     else:
         with st.form("create_loc"):
             name = st.text_input("Name")
+            reg = st.text_input("Region")
             desc = st.text_area("Description")
             if st.form_submit_button("Create"):
-                c.execute("INSERT INTO locations (name, description) VALUES (%s, %s)", (name, desc))
+                c.execute("INSERT INTO locations (name, region, description) VALUES (%s, %s, %s)", (name, reg, desc))
                 conn.commit()
                 st.success("Location created.")
 
@@ -239,6 +241,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
