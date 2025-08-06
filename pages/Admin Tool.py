@@ -184,22 +184,24 @@ elif mode == "Factions":
         fac_dict = {name: fid for fid, name in factions}
         selected = st.selectbox("Select Faction", list(fac_dict.keys()))
         fid = fac_dict[selected]
-        c.execute("SELECT name, description FROM factions WHERE faction_id = %s", (fid,))
+        c.execute("SELECT name, alignment, goals FROM factions WHERE faction_id = %s", (fid,))
         row = c.fetchone()
         with st.form("edit_faction"):
             name = st.text_input("Name", value=row[0])
+            ali = st.text_area("Allignment", value=row[1])
             desc = st.text_area("Description", value=row[1])
             if st.form_submit_button("Update"):
                 c.execute("UPDATE factions SET name = %s, description = %s WHERE faction_id = %s",
-                          (name, desc, fid))
+                          (name, ali, desc, fid))
                 conn.commit()
                 st.success("Faction updated.")
     else:
         with st.form("create_faction"):
             name = st.text_input("Name")
+            ali = st.text_input("Alignment")
             desc = st.text_area("Description")
             if st.form_submit_button("Create"):
-                c.execute("INSERT INTO factions (name, description) VALUES (%s, %s)", (name, desc))
+                c.execute("INSERT INTO factions (name, alignment, goals) VALUES (%s, %s, %s)", (name, desc))
                 conn.commit()
                 st.success("Faction created.")
 
@@ -237,4 +239,5 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
