@@ -223,7 +223,7 @@ elif mode == "Link Character to Faction":
     chars = get_all("characters", "character_id", "name")
     factions = get_all("factions", "faction_id", "name")
     char_dict = {name: cid for cid, name in chars}
-    fac_dict = {name: fid for name, fid in factions}
+    fac_dict = {name: fid for fid, name in factions}
     with st.form("link_char_faction"):
         char = st.selectbox("Character", list(char_dict.keys()))
         fac = st.selectbox("Faction", list(fac_dict.keys()))
@@ -237,3 +237,4 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
