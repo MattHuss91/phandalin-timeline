@@ -201,7 +201,7 @@ elif mode == "Factions":
             ali = st.text_input("Alignment")
             desc = st.text_area("Description")
             if st.form_submit_button("Create"):
-                c.execute("INSERT INTO factions (name, alignment, goals) VALUES (%s, %s, %s)", (name, desc))
+                c.execute("INSERT INTO factions (name, alignment, goals) VALUES (%s, %s, %s)", (name, ali, desc))
                 conn.commit()
                 st.success("Faction created.")
 
@@ -239,6 +239,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
