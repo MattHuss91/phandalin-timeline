@@ -70,3 +70,7 @@ phandalin-timeline/
 - Organize and track your TTRPG campaigns
 - Make information easily accessible for players
 - Enable secure collaboration between DMs and players
+
+© 2025 Matthew Husselbury. All rights reserved.
+
+This project is for personal use only. Please do not copy, fork, or redistribute this code.
