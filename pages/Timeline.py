@@ -44,8 +44,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("Phandalin Campaign Timeline")
-
 # Connect to Supabase PostgreSQL
 conn = psycopg2.connect(
     host=st.secrets["db_host"],
@@ -61,7 +59,7 @@ c = conn.cursor()
 st.markdown("""
     <div style='text-align: center; margin-top: -20px;'>
         <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
-        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Heroes of Phandalin</h1>
+        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Timeline</h1>
     </div>
 """, unsafe_allow_html=True)
 
@@ -156,6 +154,7 @@ conn.close()
 
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
 
