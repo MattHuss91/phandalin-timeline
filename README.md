@@ -71,6 +71,10 @@ phandalin-timeline/
 - Make information easily accessible for players
 - Enable secure collaboration between DMs and players
 
-© 2025 Matthew Husselbury. All rights reserved.
+---
 
-This project is for personal use only. Please do not copy, fork, or redistribute this code.
+© 2025 Matthew Husselbury. All rights reserved.  
+**This repository is publicly visible but is not open source.**
+
+You may view and learn from this code for personal use only.  
+**Reproduction, modification, distribution, or commercial use is strictly prohibited** without the express written permission of the author.
