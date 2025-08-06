@@ -189,7 +189,7 @@ elif mode == "Factions":
         with st.form("edit_faction"):
             name = st.text_input("Name", value=row[0])
             ali = st.text_area("Allignment", value=row[1])
-            desc = st.text_area("Description", value=row[1])
+            desc = st.text_area("Description", value=row[2])
             if st.form_submit_button("Update"):
                 c.execute("UPDATE factions SET name = %s, alignment = %s, goals = %s WHERE faction_id = %s",
                           (name, ali, desc, fid))
@@ -239,6 +239,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
