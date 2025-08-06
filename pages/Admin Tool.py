@@ -97,53 +97,106 @@ if mode == "Characters":
                 conn.commit()
                 st.success("Character created.")
 
-# --- Events ---
 elif mode == "Events":
     submode = st.radio("Action", ["Create", "Edit"])
 
     if submode == "Edit":
+        # Get events and locations
         events = get_all("campaignevents", "event_id", "title")
         event_dict = {name: eid for eid, name in events}
+
+        locs = get_all("locations", "location_id", "name")
+        loc_dict = {name: lid for lid, name in locs}
+        reverse_loc_dict = {lid: name for name, lid in loc_dict.items()}
+
         selected = st.selectbox("Select Event", list(event_dict.keys()))
         eid = event_dict[selected]
 
-        c.execute("SELECT title, date_occurred, summary, full_description FROM campaignevents WHERE event_id = %s", (eid,))
+        c.execute("""
+            SELECT title, date_occurred, location_id, summary, full_description
+            FROM campaignevents
+            WHERE event_id = %s
+        """, (eid,))
         row = c.fetchone()
 
         with st.form("edit_event"):
             title = st.text_input("Title", value=row[0])
             date_occurred = st.text_input("Date Occurred", value=row[1])
-            summary = st.text_area("Summary", value=row[2])
-            full_description = st.text_area("Full Description", value=row[3])
+
+            current_loc_name = reverse_loc_dict.get(row[2])
+            loc = st.selectbox(
+                "Location",
+                list(loc_dict.keys()),
+                index=list(loc_dict.keys()).index(current_loc_name) if current_loc_name else 0
+            )
+
+            summary = st.text_area("Summary", value=row[3])
+            full_description = st.text_area("Full Description", value=row[4])
 
             if st.form_submit_button("Update"):
-                day, month, year, world_day = parse_date(date_occurred)
+                day, month, year, world_day = parse_custom_date(date_occurred)
+
                 c.execute("""
                     UPDATE campaignevents
-                    SET title = %s, date_occurred = %s, summary = %s, full_description = %s,
-                        day = %s, month = %s, year = %s, world_day = %s
+                    SET title = %s,
+                        date_occurred = %s,
+                        location_id = %s,
+                        summary = %s,
+                        full_description = %s,
+                        day = %s,
+                        month = %s,
+                        year = %s,
+                        world_day = %s
                     WHERE event_id = %s
-                """, (title, date_occurred, summary, full_description, day, month, year, world_day, eid))
+                """, (
+                    title,
+                    date_occurred,
+                    loc_dict[loc],  
+                    summary,
+                    full_description,
+                    day,
+                    month,
+                    year,
+                    world_day,
+                    eid
+                ))
                 conn.commit()
                 st.success("Event updated.")
 
-    else:  # Create Mode
+
+        else:  # Create Mode
+        
+        locs = get_all("locations", "location_id", "name")
+        loc_dict = {name: lid for lid, name in locs}
+
         with st.form("create_event"):
             title = st.text_input("Title")
             date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
+
+            loc = st.selectbox("Location", list(loc_dict.keys()))  
+
             summary = st.text_area("Summary")
             full_description = st.text_area("Full Description")
 
             if st.form_submit_button("Create"):
-                st.write("Raw input for date_occurred:", repr(date_occurred))  # 🔍 DEBUG
                 day, month, year, world_day = parse_custom_date(date_occurred)
-                st.write("Parsed Date:", day, month, year, world_day)  # 🔍 DEBUG
 
                 try:
                     c.execute("""
-                        INSERT INTO campaignevents (title, date_occurred, summary, full_description, day, month, year, world_day)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                    """, (title, date_occurred, summary, full_description, day, month, year, world_day))
+                        INSERT INTO campaignevents 
+                            (title, date_occurred, location_id, summary, full_description, day, month, year, world_day)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """, (
+                        title,
+                        date_occurred,
+                        loc_dict[loc],  
+                        summary,
+                        full_description,
+                        day,
+                        month,
+                        year,
+                        world_day
+                    ))
                     conn.commit()
                     st.success("Event created.")
                 except Exception as e:
@@ -241,6 +294,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
