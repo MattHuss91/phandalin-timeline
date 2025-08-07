@@ -130,10 +130,18 @@ with col1:
 with col2:
     if character_img:
         st.markdown(
-            f"<div style='text-align: center;'><img src='{character_img}' style='max-width: 100%; height: auto; border-radius: 10px;'></div>"; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+            f"""
+            <div style='text-align: center;'>
+                <img src='{character_img}' style='
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 10px;
+                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+                '>
+            </div>
+            """,
             unsafe_allow_html=True
         )
-        
 # --- Permissions Check ---
 if user == "Admin":
     st.info("You are logged in as Admin. You can edit any character.")
