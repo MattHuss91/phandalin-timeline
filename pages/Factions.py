@@ -111,7 +111,28 @@ st.header(selected_faction)
 st.write("### Bio")
 st.write(faction_row["goals"])
 
+# --- Related Characters ---
+try:
+    character_df = pd.read_sql_query("""
+        SELECT ch.character_id, ch.name
+        FROM characters ch
+        JOIN characterfaction cf ON ch.character_id = cf.character_id
+        WHERE cf.faction_id = %s
+    """, conn, params=(faction_id,))
+except Exception as e:
+    st.error(f"Failed to fetch related factions: {e}")
+    character_df = pd.DataFrame()
 
+conn.close()
 
+# --- Display Events ---
+if not character_df.empty:
+    with st.expander("Members"):
+        for _, row in character_df.iterrows():
+            st.markdown(f"- {row['name']}")
+else:
+    st.warning("No Members")
 
+encoded_name = urllib.parse.quote(row["name"])
+st.markdown(f"- [{row['name']}](Character_Profile.py?name={encoded_name})")
 
