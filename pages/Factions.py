@@ -19,6 +19,7 @@ st.markdown("""
     background-repeat: no-repeat;
     background-position: center;
     font-family: 'Lora', serif !important;
+    padding-top: 2rem;
 }
     .block-container {
         background-color: rgba(255, 255, 255, 0.9);
@@ -134,6 +135,7 @@ else:
 
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
 
