@@ -100,10 +100,7 @@ factions_df = pd.read_sql_query("SELECT faction_id, name, alignment, goals FROM 
 
 # --- Faction dropdown ---
 faction_name = factions_df["name"].tolist()
-try:
-    index = faction_name.index(default_name) if default_name else 0
-except ValueError:
-    index = 0
+
 
 selected_faction = st.selectbox("Choose a Faction", faction_names, index=index)
 faction_row = faction_df[faction_df["name"] == selected_faction].iloc[0]
@@ -113,5 +110,6 @@ faction_id = int(faction_row["faction_id"])
 st.header(selected_faction)
 st.write("### Bio")
 st.write(character_row["goals"])
+
 
 
