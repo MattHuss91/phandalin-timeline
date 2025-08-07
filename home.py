@@ -37,6 +37,12 @@ st.markdown("""
 
 from datetime import date
 
+def get_ordinal(n):
+    if 11 <= n % 100 <= 13:
+        return f"{n}th"
+    else:
+        return f"{n}{['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]}"
+
 def get_current_fantasy_date():
     # --- Config ---
     fantasy_months = [
@@ -88,7 +94,7 @@ st.markdown(f"""
     margin-bottom: 1rem;
 '>
     <strong>Today in the world:</strong><br>
-    <em>{fantasy_date['weekday']}, {fantasy_date['day']} {fantasy_date['month']}</em><br>
+    <em>{fantasy_date['weekday']}, {get_ordinal(fantasy_date['day'])} of {fantasy_date['month']}</em><br>
     <small>(IRL: {fantasy_date['irl']})</small>
 </div>
 """, unsafe_allow_html=True)
