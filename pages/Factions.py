@@ -129,16 +129,13 @@ conn.close()
 if not character_df.empty:
     with st.expander("Members"):
         for _, row in character_df.iterrows():
-            encoded_name = urllib.parse.quote(row["name"])
-            st.markdown(f"- [{row['name']}](character_profile.py?name={encoded_name})")
-
+            st.markdown(f"- [{row['name']}](/character_profiles?character_id={row['character_id']})")
 else:
     st.warning("No Members")
 
-
-
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
 
