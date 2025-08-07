@@ -26,8 +26,8 @@ An interactive web app built with Streamlit and SQLite to track the timeline of 
 
 | Version | Target Features                                                               | ETA         |
 |---------|-------------------------------------------------------------------------------|-------------|
-| **V1**  | Character bios and timeline viewer with login-based editing permissions       | âœ” Released  |
-| **V2**  | Factions & Locations pages (bios, characters, related events, images)         | Septâ€“Oct    |
+| **V1**  | Character bios and timeline viewer with login-based editing permissions       |  Released  |
+| **V2**  | Factions & Locations pages (bios, characters, related events, images)         | Sept/Oct    |
 | **V3**  | Admin tool to add/edit all SQL data (events, locations, links) in one form    | Late 2025   |
 | **V4**  | Interactive map integration for towns/regions with clickable event overlays   | Late 2025   |
 | **V5**  | Blank version for public use with config options                              | 2026        |
