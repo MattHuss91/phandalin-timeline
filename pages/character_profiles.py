@@ -95,7 +95,7 @@ character_df = pd.read_sql_query("SELECT character_id, name, bio, editable_by FR
 
 # --- Get character ID from URL ---
 query_params = st.query_params
-character_id_str = query_params.get("character_id", [""])[0]
+character_id_str = query_params.get("character_id", "")
 
 character_row = None
 character_id = None
