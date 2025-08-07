@@ -131,12 +131,16 @@ with col2:
     if character_img:
         st.markdown(
             f"""
-            <div style='text-align: center;'>
+            <div style='
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            '>
                 <img src='{character_img}' style='
                     max-width: 100%;
                     height: auto;
                     border-radius: 10px;
-                    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
                 '>
             </div>
             """,
