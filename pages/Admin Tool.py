@@ -1,4 +1,3 @@
-
 import streamlit as st
 import psycopg2
 from datetime import datetime
@@ -54,8 +53,14 @@ def parse_custom_date(date_str):
     except Exception as e:
         st.error(f"Failed to parse date '{date_str}': {e}")
         return None, None, None, None
-def get_all(table, id_col, name_col):
-    c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
+
+def get_all(table, id_col, name_col, sort_by_name=True, sort_by_world_day=False):
+    if sort_by_world_day:
+        c.execute(f"SELECT {id_col}, {name_col} FROM {table} ORDER BY world_day")
+    elif sort_by_name:
+        c.execute(f"SELECT {id_col}, {name_col} FROM {table} ORDER BY {name_col}")
+    else:
+        c.execute(f"SELECT {id_col}, {name_col} FROM {table}")
     return c.fetchall()
 
 # --- Main interface ---
@@ -101,18 +106,16 @@ if mode == "Characters":
                           (name, ctype, status, bio, is_player))
                 conn.commit()
                 st.success("Character created.")
-# Events
+
+# --- Events ---
 elif mode == "Events":
     submode = st.radio("Action", ["Create", "Edit"])
-
-    # --- EDIT MODE ---
     if submode == "Edit":
-        # Get events and locations
-        events = get_all("campaignevents", "event_id", "title")
+        events = get_all("campaignevents", "event_id", "title", sort_by_name=False, sort_by_world_day=True)
         event_dict = {name: eid for eid, name in events}
 
         locs = get_all("locations", "location_id", "name")
-        loc_dict = {name: lid for lid, name in locs}
+        loc_dict = {name: lid for name, lid in locs}
         reverse_loc_dict = {lid: name for name, lid in loc_dict.items()}
 
         selected = st.selectbox("Select Event", list(event_dict.keys()))
@@ -168,11 +171,9 @@ elif mode == "Events":
                 ))
                 conn.commit()
                 st.success("Event updated.")
-
-    # --- CREATE MODE ---
     else:
         locs = get_all("locations", "location_id", "name")
-        loc_dict = {name: lid for lid, name in locs}
+        loc_dict = {name: lid for name, lid in locs}
 
         with st.form("create_event"):
             title = st.text_input("Title")
@@ -205,13 +206,12 @@ elif mode == "Events":
                 except Exception as e:
                     st.error(f"Error creating event: {e}")
 
-
 # --- Locations ---
 elif mode == "Locations":
     submode = st.radio("Action", ["Create", "Edit"])
     if submode == "Edit":
         locs = get_all("locations", "location_id", "name")
-        loc_dict = {name: lid for lid, name in locs}
+        loc_dict = {name: lid for name, lid in locs}
         selected = st.selectbox("Select Location", list(loc_dict.keys()))
         lid = loc_dict[selected]
         c.execute("SELECT name, region, description FROM locations WHERE location_id = %s", (lid,))
@@ -240,7 +240,7 @@ elif mode == "Factions":
     submode = st.radio("Action", ["Create", "Edit"])
     if submode == "Edit":
         factions = get_all("factions", "faction_id", "name")
-        fac_dict = {name: fid for fid, name in factions}
+        fac_dict = {name: fid for name, fid in factions}
         selected = st.selectbox("Select Faction", list(fac_dict.keys()))
         fid = fac_dict[selected]
         c.execute("SELECT name, alignment, goals FROM factions WHERE faction_id = %s", (fid,))
@@ -267,9 +267,9 @@ elif mode == "Factions":
 # --- Link Character to Event ---
 elif mode == "Link Character to Event":
     chars = get_all("characters", "character_id", "name")
-    events = get_all("campaignevents", "event_id", "title")
-    char_dict = {name: cid for cid, name in chars}
-    event_dict = {title: eid for eid, title in events}
+    events = get_all("campaignevents", "event_id", "title", sort_by_name=False, sort_by_world_day=True)
+    char_dict = {name: cid for name, cid in chars}
+    event_dict = {title: eid for title, eid in events}
     with st.form("link_char_event"):
         char = st.selectbox("Character", list(char_dict.keys()))
         event = st.selectbox("Event", list(event_dict.keys()))
@@ -283,8 +283,8 @@ elif mode == "Link Character to Event":
 elif mode == "Link Character to Faction":
     chars = get_all("characters", "character_id", "name")
     factions = get_all("factions", "faction_id", "name")
-    char_dict = {name: cid for cid, name in chars}
-    fac_dict = {name: fid for fid, name in factions}
+    char_dict = {name: cid for name, cid in chars}
+    fac_dict = {name: fid for name, fid in factions}
     with st.form("link_char_faction"):
         char = st.selectbox("Character", list(char_dict.keys()))
         fac = st.selectbox("Faction", list(fac_dict.keys()))
@@ -298,13 +298,3 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
-
-
-
-
-
-
-
-
-
-
