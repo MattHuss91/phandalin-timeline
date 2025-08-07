@@ -7,71 +7,44 @@ import urllib.parse
 st.set_page_config(page_title="Factions", layout="centered")
 user = st.session_state.get("username")
 
-# --- Styling ---
+# Styling 
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
     .stApp {
-    background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center;
-    font-family: 'Lora', serif !important;
-    padding-top: 3rem;  /* This is the gap above your logo */
-}
-
-.block-container {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 1rem;
-    border-radius: 10px;
-    color: #000000;
-}
-
-    h1, h2, h3 {
-        font-family: 'Cinzel', serif !important;
-        text-transform: uppercase;
-        color: #000000 !important;
-    }
-
-    label, .stTextInput label, .stTextArea label {
-        color: #000000 !important;
-        font-weight: bold !important;
-        font-family: 'Cinzel', serif !important;
-    }
-
-    textarea, div[data-baseweb="textarea"] textarea {
-        color: #000000 !important;
-        background-color: #ffffff !important;
+        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
         font-family: 'Lora', serif !important;
+        color: #000000 !important;
     }
 
-    button[role="button"] {
+    label {
+        color: #000000 !important;
+        font-weight: bold;
+    }
+
+    div.stButton > button {
         background-color: #333333 !important;
         color: #ffffff !important;
-        font-family: 'Cinzel', serif !important;
         font-weight: bold !important;
+        font-family: 'Cinzel', serif !important;
         border: none !important;
         padding: 0.5rem 1rem !important;
         border-radius: 5px !important;
     }
-
-    button[role="button"]:hover {
-        background-color: #444444 !important;
-        color: #ffffff !important;
-    }
-
-    summary {
-        color: #000000 !important;
-        font-family: 'Cinzel', serif !important;
-        font-weight: bold !important;
-    }
-
-    .markdown-text-container, .stMarkdown, .stMarkdown p {
-        color: #000000 !important;
-    }
     </style>
+""", unsafe_allow_html=True)
+
+# logo
+st.markdown("""
+    <div style='text-align: center; margin-top: -20px;'>
+        <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
+        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Heroes of Phandalin</h1>
+    </div>
 """, unsafe_allow_html=True)
 
 # --- Title ---
@@ -136,6 +109,7 @@ else:
 
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
 
