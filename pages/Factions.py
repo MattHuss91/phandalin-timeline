@@ -136,3 +136,6 @@ else:
 encoded_name = urllib.parse.quote(row["name"])
 st.markdown(f"- [{row['name']}](Character_Profile.py?name={encoded_name})")
 
+st.markdown("---")
+st.caption("Loreweave")
+
