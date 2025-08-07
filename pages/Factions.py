@@ -102,7 +102,7 @@ factions_df = pd.read_sql_query("SELECT faction_id, name, alignment, goals FROM 
 faction_name = factions_df["name"].tolist()
 
 
-selected_faction = st.selectbox("Choose a Faction", faction_names, index=index)
+selected_faction = st.selectbox("Choose a Faction", faction_name, index=index)
 faction_row = faction_df[faction_df["name"] == selected_faction].iloc[0]
 faction_id = int(faction_row["faction_id"])
 
@@ -110,6 +110,7 @@ faction_id = int(faction_row["faction_id"])
 st.header(selected_faction)
 st.write("### Bio")
 st.write(character_row["goals"])
+
 
 
 
