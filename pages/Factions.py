@@ -12,15 +12,14 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    html, body, .stApp, .block-container {
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: 'Lora', serif !important;
-    }
-
+    .stApp, .block-container {
+    background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'Lora', serif !important;
+}
     .block-container {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 1rem;
@@ -135,6 +134,7 @@ else:
 
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
 
