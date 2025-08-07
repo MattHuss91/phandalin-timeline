@@ -129,7 +129,7 @@ with col1:
 
 with col2:
     if character_img:
-        st.image(character_img, use_column_width=True)
+        st.image(character_img, use_container_width=True)
         
 # --- Permissions Check ---
 if user == "Admin":
