@@ -91,7 +91,7 @@ except Exception as e:
     st.stop()
 
 # --- Load character data ---
-character_df = pd.read_sql_query("SELECT character_id, name, bio, editable_by FROM characters ORDER BY name", conn)
+character_df = pd.read_sql_query("SELECT character_id, name, bio, editable_by, character_img FROM characters ORDER BY name", conn)
 
 # --- Get character ID from URL ---
 query_params = st.query_params
@@ -113,15 +113,24 @@ if character_row is None:
     character_row = character_df[character_df["name"] == selected_character].iloc[0]
     character_id = int(character_row["character_id"])
 
+
 # --- Extract fields ---
 selected_character = character_row["name"]
 editable_by = character_row["editable_by"]
+character_img = character_row["character_img"]  
+
+col1, col2 = st.columns([2, 1])
 
 # --- Display Bio ---
-st.header(selected_character)
-st.write("### Bio")
-st.write(character_row["bio"])
+with col1:
+    st.header(selected_character)
+    st.write("### Bio")
+    st.write(character_row["bio"])
 
+with col2:
+    if character_img:
+        st.image(character_img, use_column_width=True)
+        
 # --- Permissions Check ---
 if user == "Admin":
     st.info("You are logged in as Admin. You can edit any character.")
