@@ -87,7 +87,7 @@ st.markdown(f"""
     text-align: center;
     margin-bottom: 1rem;
 '>
-    📅 <strong>Today in the world:</strong><br>
+    <strong>Today in the world:</strong><br>
     <em>{fantasy_date['weekday']}, {fantasy_date['day']} {fantasy_date['month']}</em><br>
     <small>(IRL: {fantasy_date['irl']})</small>
 </div>
