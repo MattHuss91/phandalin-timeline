@@ -75,7 +75,7 @@ st.markdown("""
 
 # --- Title ---
 st.markdown("""
-    <div style='text-align: center; margin-top: -20px;'>
+    <div style='text-align: center; margin-top: 2rem;'>
         <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
         <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Characters</h1>
     </div>
