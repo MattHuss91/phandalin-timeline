@@ -153,18 +153,10 @@ with col2:
         )
 # --- Permissions Check ---
 if user == "Admin":
-    st.info("You are logged in as Admin. You can edit any character.")
     can_edit = True
 elif user == editable_by:
-    st.info(f"You are logged in as {user}, and you are allowed to edit this character.")
     can_edit = True
 elif user:
-    st.markdown(
-        f"<div style='background-color:#fff3cd; padding:1em; border-radius:5px; color:#000000; font-weight:bold;'>"
-        f"You are logged in as {user}, but you cannot edit this character."
-        f"</div>",
-        unsafe_allow_html=True
-    )
     can_edit = False
 else:
     can_edit = False
