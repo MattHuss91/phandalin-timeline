@@ -74,7 +74,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Title ---
-st.title("Character Profiles")
+st.markdown("""
+    <div style='text-align: center; margin-top: -20px;'>
+        <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
+        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Characters</h1>
+    </div>
+""", unsafe_allow_html=True)
 
 # --- Connect to Supabase ---
 try:
