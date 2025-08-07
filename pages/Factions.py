@@ -12,21 +12,22 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
-    .stApp, .block-container {
+    .stApp {
     background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center;
     font-family: 'Lora', serif !important;
-    padding-top: 2rem;
+    padding-top: 3rem;  /* This is the gap above your logo */
 }
-    .block-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 1rem;
-        border-radius: 10px;
-        color: #000000;
-    }
+
+.block-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-radius: 10px;
+    color: #000000;
+}
 
     h1, h2, h3 {
         font-family: 'Cinzel', serif !important;
@@ -135,6 +136,7 @@ else:
 
 st.markdown("---")
 st.caption("Loreweave")
+
 
 
 
