@@ -129,10 +129,10 @@ with col1:
 
 with col2:
     if character_img:
-    st.markdown(
-        f"<div style='text-align: center;'><img src='{character_img}' style='max-width: 100%; height: auto; border-radius: 10px;'></div>",
-        unsafe_allow_html=True
-    )
+        st.markdown(
+            f"<div style='text-align: center;'><img src='{character_img}' style='max-width: 100%; height: auto; border-radius: 10px;'></div>"; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+            unsafe_allow_html=True
+        )
         
 # --- Permissions Check ---
 if user == "Admin":
