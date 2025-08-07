@@ -81,7 +81,7 @@ if mode == "Characters":
         char_dict = {name: cid for cid, name in characters}
         selected = st.selectbox("Select Character", list(char_dict.keys()))
         cid = char_dict[selected]
-        c.execute("SELECT name, type, status, bio, is_player FROM characters WHERE character_id = %s", (cid,))
+        c.execute("SELECT name, type, status, bio, is_player, character_img FROM characters WHERE character_id = %s", (cid,))
         row = c.fetchone()
         with st.form("edit_char"):
             name = st.text_input("Name", value=row[0])
@@ -89,9 +89,10 @@ if mode == "Characters":
             status = st.text_input("Status", value=row[2])
             bio = st.text_area("Bio", value=row[3])
             is_player = st.checkbox("Is Player?", value=row[4])
+            character_img = st.text_input("Character Image URL", value=row[5])
             if st.form_submit_button("Update"):
-                c.execute("UPDATE characters SET name=%s, type=%s, status=%s, bio=%s, is_player=%s WHERE character_id = %s",
-                          (name, ctype, status, bio, is_player, cid))
+                c.execute("UPDATE characters SET name=%s, type=%s, status=%s, bio=%s, is_player=%s, character_img=%s WHERE character_id = %s",
+                          (name, ctype, status, bio, is_player, character_img, cid))
                 conn.commit()
                 st.success("Character updated.")
     else:
@@ -101,9 +102,10 @@ if mode == "Characters":
             status = st.text_input("Status")
             bio = st.text_area("Bio")
             is_player = st.checkbox("Is Player?")
+            character_img = st.text_input("Character Image Url")
             if st.form_submit_button("Create"):
-                c.execute("INSERT INTO characters (name, type, status, bio, is_player) VALUES (%s, %s, %s, %s, %s)",
-                          (name, ctype, status, bio, is_player))
+                c.execute("INSERT INTO characters (name, type, status, bio, is_player, character_img) VALUES (%s, %s, %s, %s, %s, %s)",
+                          (name, ctype, status, bio, is_player, character_img))
                 conn.commit()
                 st.success("Character created.")
 
@@ -249,9 +251,10 @@ elif mode == "Factions":
             name = st.text_input("Name", value=row[0])
             ali = st.text_area("Allignment", value=row[1])
             desc = st.text_area("Description", value=row[2])
+            faction_img = st.text_input("Character Image URL", value=row[3])
             if st.form_submit_button("Update"):
-                c.execute("UPDATE factions SET name = %s, alignment = %s, goals = %s WHERE faction_id = %s",
-                          (name, ali, desc, fid))
+                c.execute("UPDATE factions SET name = %s, alignment = %s, goals = %s, faction_img=%s WHERE faction_id = %s",
+                          (name, ali, desc, faction_img, fid))
                 conn.commit()
                 st.success("Faction updated.")
     else:
@@ -259,8 +262,9 @@ elif mode == "Factions":
             name = st.text_input("Name")
             ali = st.text_input("Alignment")
             desc = st.text_area("Description")
+            faction_img = st.text_input("Faction Image URL")
             if st.form_submit_button("Create"):
-                c.execute("INSERT INTO factions (name, alignment, goals) VALUES (%s, %s, %s)", (name, ali, desc))
+                c.execute("INSERT INTO factions (name, alignment, goals, faction_img) VALUES (%s, %s, %s, %s))", (name, ali, desc, faction_img))
                 conn.commit()
                 st.success("Faction created.")
 
@@ -298,3 +302,4 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
