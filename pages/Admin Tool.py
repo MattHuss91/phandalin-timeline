@@ -117,9 +117,9 @@ elif mode == "Events":
         event_dict = {name: eid for eid, name in events}
 
         locs = get_all("locations", "location_id", "name")
-        locs_sorted = sorted(locs, key=lambda x: x[1])  # sort by location_id
-        loc_names = [name for name, _ in locs_sorted]
-        loc_id_by_name = {name: lid for name, lid in locs_sorted}
+        locs_sorted = sorted(locs, key=lambda x: x[0])
+        loc_names = [name for _, name in locs_sorted]
+        loc_id_by_name = {name: lid for lid, name in locs_sorted}
 
         selected = st.selectbox("Select Event", list(event_dict.keys()))
         eid = event_dict[selected]
@@ -143,7 +143,7 @@ elif mode == "Events":
 
             current_loc_id = row[2]
             try:
-                current_index = next(i for i, (_, lid) in enumerate(locs_sorted) if lid == current_loc_id)
+                current_index = next(i for i, (lid, _) in enumerate(locs_sorted) if lid == current_loc_id)
             except StopIteration:
                 current_index = 0
             loc_name = st.selectbox("Location", loc_names, index=current_index)
@@ -153,7 +153,6 @@ elif mode == "Events":
 
             if st.form_submit_button("Update"):
                 day, month, year, world_day = parse_custom_date(date_occurred)
-
                 c.execute("""
                     UPDATE campaignevents
                     SET title = %s,
@@ -182,9 +181,9 @@ elif mode == "Events":
                 st.success("Event updated.")
     else:
         locs = get_all("locations", "location_id", "name")
-        locs_sorted = sorted(locs, key=lambda x: x[1])  # sort by location_id
-        loc_names = [name for name, _ in locs_sorted]
-        loc_id_by_name = {name: lid for name, lid in locs_sorted}
+        locs_sorted = sorted(locs, key=lambda x: x[0])
+        loc_names = [name for _, name in locs_sorted]
+        loc_id_by_name = {name: lid for lid, name in locs_sorted}
 
         with st.form("create_event"):
             title = st.text_input("Title")
@@ -195,7 +194,6 @@ elif mode == "Events":
 
             if st.form_submit_button("Create"):
                 day, month, year, world_day = parse_custom_date(date_occurred)
-
                 try:
                     c.execute("""
                         INSERT INTO campaignevents 
@@ -222,21 +220,27 @@ elif mode == "Locations":
     submode = st.radio("Action", ["Create", "Edit"])
     if submode == "Edit":
         locs = get_all("locations", "location_id", "name")
-        loc_dict = {name: lid for name, lid in locs}
-        selected = st.selectbox("Select Location", list(loc_dict.keys()))
+        loc_dict = {name: lid for lid, name in locs}
+        selected = st.selectbox("Select Location", [name for _, name in locs])
         lid = loc_dict[selected]
+
         c.execute("SELECT name, region, description FROM locations WHERE location_id = %s", (lid,))
         row = c.fetchone()
+
         with st.form("edit_loc"):
             name = st.text_input("Name", value=row[0])
-            reg = st.text_input("Region", value=row[1])
-            desc = st.text_area("Description", value=row[2])
+            region = st.text_input("Region", value=row[1])
+            description = st.text_area("Description", value=row[2])
+
             if st.form_submit_button("Update"):
-                c.execute("UPDATE locations SET name = %s, region = %s, description = %s WHERE location_id = %s",
-                          (name, reg, desc, lid))
+                c.execute("""
+                    UPDATE locations
+                    SET name = %s, region = %s, description = %s
+                    WHERE location_id = %s
+                """, (name, region, description, lid))
                 conn.commit()
                 st.success("Location updated.")
-    else:
+                
         with st.form("create_loc"):
             name = st.text_input("Name")
             reg = st.text_input("Region")
@@ -326,6 +330,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
