@@ -1,6 +1,7 @@
 
 
 # Loreweave: Phandalin Timeline
+https://heroes-of-phandalin.streamlit.app/
 > **A Future Echoes Project**
 ---
 Loreweave is a self-hostable campaign database and timeline manager for tabletop RPGs, built with Python, Streamlit, and PostgreSQL. It’s designed to help Dungeon Masters (DMs) manage and present their campaign canon—characters, events, locations, and factions—on a custom 10-month fantasy calendar.
