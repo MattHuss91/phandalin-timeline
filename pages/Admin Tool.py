@@ -241,6 +241,7 @@ elif mode == "Locations":
                 conn.commit()
                 st.success("Location updated.")
                 
+   else:
         with st.form("create_loc"):
             name = st.text_input("Name")
             reg = st.text_input("Region")
@@ -249,6 +250,7 @@ elif mode == "Locations":
                 c.execute("INSERT INTO locations (name, region, description) VALUES (%s, %s, %s)", (name, reg, desc))
                 conn.commit()
                 st.success("Location created.")
+
 
 # --- Factions ---
 elif mode == "Factions":
@@ -330,6 +332,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
