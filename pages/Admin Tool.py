@@ -302,8 +302,8 @@ elif mode == "Factions":
 elif mode == "Link Character to Event":
     chars = get_all("characters", "character_id", "name")
     events = get_all("campaignevents", "event_id", "title", sort_by_name=False, sort_by_world_day=True)
-    char_dict = {name: cid for name, cid in chars}
-    event_dict = {title: eid for title, eid in events}
+    char_dict = {name: cid for cid, name in chars}
+    event_dict = {title: eid for eid, title in events}
     with st.form("link_char_event"):
         char = st.selectbox("Character", list(char_dict.keys()))
         event = st.selectbox("Event", list(event_dict.keys()))
@@ -317,8 +317,8 @@ elif mode == "Link Character to Event":
 elif mode == "Link Character to Faction":
     chars = get_all("characters", "character_id", "name")
     factions = get_all("factions", "faction_id", "name")
-    char_dict = {name: cid for name, cid in chars}
-    fac_dict = {name: fid for name, fid in factions}
+    char_dict = {name: cid for cid, name in chars}
+    fac_dict = {name: fid for fid, name in factions}
     with st.form("link_char_faction"):
         char = st.selectbox("Character", list(char_dict.keys()))
         fac = st.selectbox("Faction", list(fac_dict.keys()))
@@ -332,6 +332,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
