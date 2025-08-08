@@ -240,23 +240,34 @@ elif mode == "Locations":
 # --- Factions ---
 elif mode == "Factions":
     submode = st.radio("Action", ["Create", "Edit"])
+
     if submode == "Edit":
         factions = get_all("factions", "faction_id", "name")
-        fac_dict = {name: fid for name, fid in factions}
+
+        fac_dict = {name: fid for fid, name in factions}
+
         selected = st.selectbox("Select Faction", list(fac_dict.keys()))
         fid = fac_dict[selected]
-        c.execute("SELECT name, alignment, goals FROM factions WHERE faction_id = %s", (fid,))
+
+        c.execute(
+            "SELECT name, alignment, goals, faction_img FROM factions WHERE faction_id = %s",
+            (fid,)
+        )
         row = c.fetchone()
+
         with st.form("edit_faction"):
-            name = st.text_input("Name", value=row[0])
-            ali = st.text_area("Allignment", value=row[1])
-            desc = st.text_area("Description", value=row[2])
-            faction_img = st.text_input("Character Image URL", value=row[3])
+            name = st.text_input("Name", value=row[0] or "")
+            ali = st.text_input("Alignment", value=row[1] or "")
+            desc = st.text_area("Description", value=row[2] or "")
+            faction_img = st.text_input("Faction Image URL", value=row[3] or "")
             if st.form_submit_button("Update"):
-                c.execute("UPDATE factions SET name = %s, alignment = %s, goals = %s, faction_img=%s WHERE faction_id = %s",
-                          (name, ali, desc, faction_img, fid))
+                c.execute(
+                    "UPDATE factions SET name = %s, alignment = %s, goals = %s, faction_img = %s WHERE faction_id = %s",
+                    (name, ali, desc, faction_img, fid)
+                )
                 conn.commit()
                 st.success("Faction updated.")
+
     else:
         with st.form("create_faction"):
             name = st.text_input("Name")
@@ -264,9 +275,13 @@ elif mode == "Factions":
             desc = st.text_area("Description")
             faction_img = st.text_input("Faction Image URL")
             if st.form_submit_button("Create"):
-                c.execute("INSERT INTO factions (name, alignment, goals, faction_img) VALUES (%s, %s, %s, %s))", (name, ali, desc, faction_img))
+                c.execute(
+                    "INSERT INTO factions (name, alignment, goals, faction_img) VALUES (%s, %s, %s, %s)",
+                    (name, ali, desc, faction_img)
+                )
                 conn.commit()
                 st.success("Faction created.")
+
 
 # --- Link Character to Event ---
 elif mode == "Link Character to Event":
@@ -302,4 +317,5 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
