@@ -44,7 +44,6 @@ Players can browse the timeline and entity pages in read-only mode. The interfac
 - psycopg2 for database connectivity
 
 ---
-
 ## Current Features
 
 - Create and edit characters, events, locations, and factions  
@@ -85,7 +84,3 @@ If you're interested in collaborating, using the tool, or just want to talk shop
 
 © 2025 Matthew Husselbury. All rights reserved.  
 **This repository is publicly visible but is not open source.**
-
-You may view and learn from this code for personal use only.  
-**Reproduction, modification, distribution, or commercial use is strictly prohibited** without the express written permission of the author.
-**Loreweave** is a free TTRPG management tool developed by Matthew Husselbury.  
