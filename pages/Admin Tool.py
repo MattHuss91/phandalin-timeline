@@ -117,16 +117,23 @@ elif mode == "Events":
         event_dict = {name: eid for eid, name in events}
 
         locs = get_all("locations", "location_id", "name")
-        loc_dict = {name: lid for name, lid in locs}
-        reverse_loc_dict = {lid: name for name, lid in loc_dict.items()}
+        locs_sorted = sorted(locs, key=lambda x: x[1])  # sort by location_id
+        loc_names = [name for name, _ in locs_sorted]
+        loc_id_by_name = {name: lid for name, lid in locs_sorted}
 
         selected = st.selectbox("Select Event", list(event_dict.keys()))
         eid = event_dict[selected]
 
         c.execute("""
-            SELECT title, date_occurred, location_id, summary, full_description
-            FROM campaignevents
-            WHERE event_id = %s
+            SELECT e.title,
+                   e.date_occurred,
+                   e.location_id,
+                   l.name AS location_name,
+                   e.summary,
+                   e.full_description
+            FROM campaignevents e
+            LEFT JOIN locations l ON e.location_id = l.location_id
+            WHERE e.event_id = %s
         """, (eid,))
         row = c.fetchone()
 
@@ -134,15 +141,15 @@ elif mode == "Events":
             title = st.text_input("Title", value=row[0])
             date_occurred = st.text_input("Date Occurred", value=row[1])
 
-            current_loc_name = reverse_loc_dict.get(row[2])
-            loc = st.selectbox(
-                "Location",
-                list(loc_dict.keys()),
-                index=list(loc_dict.keys()).index(current_loc_name) if current_loc_name else 0
-            )
+            current_loc_id = row[2]
+            try:
+                current_index = next(i for i, (_, lid) in enumerate(locs_sorted) if lid == current_loc_id)
+            except StopIteration:
+                current_index = 0
+            loc_name = st.selectbox("Location", loc_names, index=current_index)
 
-            summary = st.text_area("Summary", value=row[3])
-            full_description = st.text_area("Full Description", value=row[4])
+            summary = st.text_area("Summary", value=row[4])
+            full_description = st.text_area("Full Description", value=row[5])
 
             if st.form_submit_button("Update"):
                 day, month, year, world_day = parse_custom_date(date_occurred)
@@ -162,7 +169,7 @@ elif mode == "Events":
                 """, (
                     title,
                     date_occurred,
-                    loc_dict[loc],  
+                    loc_id_by_name[loc_name],
                     summary,
                     full_description,
                     day,
@@ -175,12 +182,14 @@ elif mode == "Events":
                 st.success("Event updated.")
     else:
         locs = get_all("locations", "location_id", "name")
-        loc_dict = {name: lid for name, lid in locs}
+        locs_sorted = sorted(locs, key=lambda x: x[1])  # sort by location_id
+        loc_names = [name for name, _ in locs_sorted]
+        loc_id_by_name = {name: lid for name, lid in locs_sorted}
 
         with st.form("create_event"):
             title = st.text_input("Title")
             date_occurred = st.text_input("Date Occurred (e.g., 4th Verdanir 1041)")
-            loc = st.selectbox("Location", list(loc_dict.keys()))  
+            loc_name = st.selectbox("Location", loc_names)
             summary = st.text_area("Summary")
             full_description = st.text_area("Full Description")
 
@@ -195,7 +204,7 @@ elif mode == "Events":
                     """, (
                         title,
                         date_occurred,
-                        loc_dict[loc],  
+                        loc_id_by_name[loc_name],
                         summary,
                         full_description,
                         day,
@@ -317,5 +326,6 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
