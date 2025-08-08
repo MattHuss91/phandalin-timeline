@@ -218,7 +218,18 @@ elif mode == "Events":
 # --- Locations ---
 elif mode == "Locations":
     submode = st.radio("Action", ["Create", "Edit"])
-    if submode == "Edit":
+
+    if submode == "Create":
+        with st.form("create_loc"):
+            name = st.text_input("Name")
+            reg = st.text_input("Region")
+            desc = st.text_area("Description")
+            if st.form_submit_button("Create"):
+                c.execute("INSERT INTO locations (name, region, description) VALUES (%s, %s, %s)", (name, reg, desc))
+                conn.commit()
+                st.success("Location created.")
+
+    else:
         locs = get_all("locations", "location_id", "name")
         loc_dict = {name: lid for lid, name in locs}
         selected = st.selectbox("Select Location", [name for _, name in locs])
@@ -240,17 +251,6 @@ elif mode == "Locations":
                 """, (name, region, description, lid))
                 conn.commit()
                 st.success("Location updated.")
-                
-   else:
-        with st.form("create_loc"):
-            name = st.text_input("Name")
-            reg = st.text_input("Region")
-            desc = st.text_area("Description")
-            if st.form_submit_button("Create"):
-                c.execute("INSERT INTO locations (name, region, description) VALUES (%s, %s, %s)", (name, reg, desc))
-                conn.commit()
-                st.success("Location created.")
-
 
 # --- Factions ---
 elif mode == "Factions":
@@ -332,6 +332,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
