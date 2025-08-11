@@ -1,214 +1,60 @@
 import streamlit as st
-import psycopg2
 import pandas as pd
-import urllib.parse
+from utils.db import query
+from utils.ui import apply_global_styles, page_header, footer
 
-# --- Streamlit config ---
-st.set_page_config(page_title="Character Profiles", layout="centered")
-user = st.session_state.get("username")
+# --- Streamlit page config ---
+st.set_page_config(page_title="Loreweave • Characters", layout="centered")
+apply_global_styles()
+page_header("Characters")
 
-# --- Styling ---
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
-
-    html, body, .stApp, .block-container {
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        background-position: center;
-        font-family: 'Lora', serif !important;
-    }
-
-    .block-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 1rem;
-        border-radius: 10px;
-        color: #000000;
-    }
-
-    h1, h2, h3 {
-        font-family: 'Cinzel', serif !important;
-        text-transform: uppercase;
-        color: #000000 !important;
-    }
-
-    label, .stTextInput label, .stTextArea label {
-        color: #000000 !important;
-        font-weight: bold !important;
-        font-family: 'Cinzel', serif !important;
-    }
-
-    textarea, div[data-baseweb="textarea"] textarea {
-        color: #000000 !important;
-        background-color: #ffffff !important;
-        font-family: 'Lora', serif !important;
-    }
-
-    button[role="button"] {
-        background-color: #333333 !important;
-        color: #ffffff !important;
-        font-family: 'Cinzel', serif !important;
-        font-weight: bold !important;
-        border: none !important;
-        padding: 0.5rem 1rem !important;
-        border-radius: 5px !important;
-    }
-
-    button[role="button"]:hover {
-        background-color: #444444 !important;
-        color: #ffffff !important;
-    }
-
-    summary {
-        color: #000000 !important;
-        font-family: 'Cinzel', serif !important;
-        font-weight: bold !important;
-    }
-
-    .markdown-text-container, .stMarkdown, .stMarkdown p {
-        color: #000000 !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# --- Title ---
-st.markdown("""
-    <div style='text-align: center; margin-top: 2rem;'>
-        <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
-        <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Characters</h1>
-    </div>
-""", unsafe_allow_html=True)
-
-# --- Connect to Supabase ---
-try:
-    conn = psycopg2.connect(
-        host=st.secrets["db_host"],
-        dbname=st.secrets["db_name"],
-        user=st.secrets["db_user"],
-        password=st.secrets["db_password"],
-        port=st.secrets["port"],
-        sslmode="require"
-    )
-except Exception as e:
-    st.error(f"Failed to connect to database: {e}")
+# --- Get all characters for dropdown ---
+characters = query("SELECT character_id, name FROM characters ORDER BY name ASC")
+if not characters:
+    st.info("No characters found in the database.")
+    footer()
     st.stop()
 
-# --- Load character data ---
-character_df = pd.read_sql_query("SELECT character_id, name, bio, editable_by, character_img FROM characters ORDER BY name", conn)
+char_dict = {c["name"]: c["character_id"] for c in characters}
 
-# --- Get character ID from URL ---
-query_params = st.query_params
-character_id_str = query_params.get("character_id", "")
+# --- Character selection ---
+selected_name = st.selectbox("Select a character", list(char_dict.keys()))
+selected_id = char_dict[selected_name]
 
-character_row = None
-character_id = None
+# --- Get selected character details ---
+row = query("""
+    SELECT name, type, status, bio, is_player, character_img
+    FROM characters
+    WHERE character_id = %s
+""", (selected_id,))
 
-if character_id_str.isdigit():
-    character_id = int(character_id_str)
-    match = character_df[character_df["character_id"] == character_id]
-    if not match.empty:
-        character_row = match.iloc[0]
+if not row:
+    st.warning("Character not found.")
+    footer()
+    st.stop()
 
-# --- Fallback to dropdown if no character found via URL ---
-if character_row is None:
-    character_names = character_df["name"].tolist()
-    selected_character = st.selectbox("Choose a character", character_names)
-    character_row = character_df[character_df["name"] == selected_character].iloc[0]
-    character_id = int(character_row["character_id"])
+char = row[0]
 
+# --- Render character profile ---
+st.markdown(f"## {char['name']}")
+if char["type"]:
+    st.markdown(f"**Type:** {char['type']}")
+if char["status"]:
+    st.markdown(f"**Status:** {char['status']}")
 
-# --- Extract fields ---
-selected_character = character_row["name"]
-editable_by = character_row["editable_by"]
-character_img = character_row["character_img"]  
+# Character image
+if char["character_img"]:
+    st.image(char["character_img"], width=None)  # compatible with older Streamlit
 
-col1, col2 = st.columns([2, 1])
+# Bio
+if char["bio"]:
+    st.markdown("### Biography")
+    st.write(char["bio"])
 
-# --- Display Bio ---
-with col1:
-    st.header(selected_character)
-    st.write("### Bio")
-    st.write(character_row["bio"])
-
-with col2:
-    if character_img:
-        st.markdown(
-            f"""
-            <div style='
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-            '>
-                <img src='{character_img}' style='
-                    max-width: 100%;
-                    height: auto;
-                    border-radius: 10px;
-                '>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-# --- Permissions Check ---
-if user == "Admin":
-    can_edit = True
-elif user == editable_by:
-    can_edit = True
-elif user:
-    can_edit = False
+# Is player?
+if char["is_player"]:
+    st.markdown("*Player Character*")
 else:
-    can_edit = False
+    st.markdown("*Non-Player Character*")
 
-# --- Edit Bio ---
-if can_edit:
-    with st.expander("Edit Bio"):
-        with st.form("edit_bio_form"):
-            new_bio = st.text_area("Edit Bio", character_row["bio"], height=200)
-            submitted = st.form_submit_button("Save Changes")
-
-        if submitted and new_bio != character_row["bio"]:
-            try:
-                cursor = conn.cursor()
-                cursor.execute(
-                    "UPDATE characters SET bio = %s WHERE character_id = %s",
-                    (new_bio, character_id)
-                )
-                conn.commit()
-                cursor.close()
-                st.success("Bio updated successfully.")
-                st.rerun()
-            except Exception as e:
-                st.error(f"Error updating bio: {e}")
-
-# --- Related Events ---
-try:
-    event_df = pd.read_sql_query("""
-        SELECT ce.date_occurred, ce.title
-        FROM characterappearances ca
-        JOIN CampaignEvents ce ON ca.event_id = ce.event_id
-        WHERE ca.character_id = %s
-        ORDER BY ce.world_day
-    """, conn, params=(character_id,))
-except Exception as e:
-    st.error(f"Failed to fetch related events: {e}")
-    event_df = pd.DataFrame()
-
-conn.close()
-
-# --- Display Events ---
-if not event_df.empty:
-    with st.expander("Events Involved"):
-        for _, row in event_df.iterrows():
-            event_title = row["title"]
-            encoded_event = urllib.parse.quote(event_title)
-            st.markdown(
-                f"- {row['date_occurred']}: "
-                f"[{event_title}](/Timeline?highlight={encoded_event}&from_character_id={character_id})"
-            )
-else:
-    st.warning("No recorded events.")
-
-st.markdown("---")
-st.caption("Loreweave")
+footer()
