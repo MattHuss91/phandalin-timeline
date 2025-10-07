@@ -66,7 +66,7 @@ def get_all(table, id_col, name_col, sort_by_name=True, sort_by_world_day=False)
 # --- Main interface ---
 st.markdown("""
     <div style='text-align: center; margin-top: -20px;'>
-        <img src='https://i.imgur.com/YBozTrh.png' style='width: 200px; margin-bottom: -10px;' />
+        <img src='https://i.postimg.cc/PNGx1Rqx/Copy-of-Loreweave.png' style='width: 200px; margin-bottom: -10px;' />
         <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Admin Tool</h1>
     </div>
 """, unsafe_allow_html=True)
@@ -332,6 +332,7 @@ elif mode == "Link Character to Faction":
 conn.close()
 st.markdown("---")
 st.caption("Loreweave Admin Console")
+
 
 
 
