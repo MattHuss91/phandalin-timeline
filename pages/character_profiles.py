@@ -13,7 +13,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Cinzel&family=Lora&display=swap');
 
     html, body, .stApp, .block-container {
-        background-image: url('https://i.imgur.com/v0Jdhpp.jpeg');
+        background-image: url('https://img.freepik.com/free-photo/wooden-floor-background_53876-88628.jpg');
         background-size: cover;
         background-attachment: fixed;
         background-repeat: no-repeat;
@@ -76,7 +76,7 @@ st.markdown("""
 # --- Title ---
 st.markdown("""
     <div style='text-align: center; margin-top: 2rem;'>
-        <img src='https://i.imgur.com/WEGvkz8.png' style='width: 200px; margin-bottom: -10px;' />
+        <img src='https://i.postimg.cc/PNGx1Rqx/Copy-of-Loreweave.png' style='width: 200px; margin-bottom: -10px;' />
         <h1 style='margin-top: 0; font-family: "Cinzel", serif;'>Characters</h1>
     </div>
 """, unsafe_allow_html=True)
